@@ -7,6 +7,6 @@ public class TileDirt extends Tile {
 	}
 	
 	public char getSymbol() {
-		return '_';
+		return ',';
 	}
 }
