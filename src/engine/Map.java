@@ -4,9 +4,14 @@ import java.awt.Point;
 import java.util.Random;
 import java.util.Vector;
 
+import objects.Player;
+
 import rooms.*;
-import tiles.*;
-import game.Player;
+import tiles.Tile;
+import tiles.TileFactory;
+import tiles.TileGold;
+import tiles.TileStairsDown;
+import tiles.TileVoid;
 
 public class Map {
 	private Tile[][] table;
@@ -14,11 +19,12 @@ public class Map {
 	private Point stairDown;
 	private Player jerry;
 	private int level;
+	private Window win;
 	
 	public Map(int height, int width) {
 		this.table = new Tile[height][width];
 		this.rooms = new Vector<Room>();
-		this.level = -1;
+		this.level = 0;
 		this.jerry = new Player(width/2, height/2);
 		this.jerry.setFloor(TileFactory.getInstance().createTileStone()); 
 		this.stairDown = new Point();
@@ -30,13 +36,13 @@ public class Map {
 	public int getWidth() { return this.table[0].length; }
 	
 	public void fillRectangle(Tile[][] table, int x1, int y1, int x2, int y2, Tile t) {
-		if(x1 < 0 || y1 < 0 || x2 > table.length-1 || y2 > table[0].length-1) {
+		if(x1 < 0 || y1 < 0 || x2 > table[0].length-1 || y2 > table.length-1) {
 			return;
 		}
 		
 		for(int i=x1; i<=x2; i++) {
 			for(int j=y1; j<=y2; j++) {
-				table[i][j] = t;
+				table[j][i] = t;
 			}
 		}
 	}
@@ -68,8 +74,6 @@ public class Map {
 		this.jerry.pos.x = getWidth()/2;
 		this.jerry.pos.y = getHeight()/2;
 		
-		this.level++;
-		
 		this.rooms = new Vector<Room>();
 
 		fillRectangle(this.table, 0, 0, getWidth()-1, getHeight()-1, TileFactory.getInstance().createTileVoid());	
@@ -81,7 +85,7 @@ public class Map {
 		rooms.get(rooms.size()-1).show();
 		rooms.get(rooms.size()-1).printOn(this.table);
 		
-		for(int i=0; i<100; i++) {
+		for(int i=0; i<200; i++) {
 			roomIndex = rnd.nextInt(rooms.size());
 			room = this.rooms.get(roomIndex);
 			
@@ -97,7 +101,7 @@ public class Map {
 					// NORTH
 					mid = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
 					if(checkOn(mid-(width/2), room.p1.y-height, mid+(width/2), room.p1.y)) {
-						rooms.add(new RectangleRoom(mid-(width/2), room.p1.y-height, mid+(width/2), room.p1.y, "Room"+i));
+						rooms.add(new RectangleRoom(mid-(width/2), room.p1.y-height, mid+(width/2), room.p1.y, "Dungeon Room "+this.rooms.size()));
 						// porte pour la premiere salle
 						room.addDoor(new Point(mid, room.p1.y));
 						// porte pour la deuxieme salle
@@ -108,7 +112,7 @@ public class Map {
 					// SOUTH
 					mid = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
 					if(checkOn(mid-(width/2), room.p2.y, mid+(width/2), room.p2.y+height)) {
-						rooms.add(new RectangleRoom(mid-(width/2), room.p2.y, mid+(width/2), room.p2.y+height, "Room"+i));
+						rooms.add(new RectangleRoom(mid-(width/2), room.p2.y, mid+(width/2), room.p2.y+height, "Dungeon Room "+this.rooms.size()));
 						// porte pour la premiere salle
 						room.addDoor(new Point(mid, room.p2.y));
 						// porte pour la deuxieme salle
@@ -118,7 +122,7 @@ public class Map {
 					// EAST
 					mid = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
 					if(checkOn(room.p2.x, mid-(height/2), room.p2.x+width, mid+(height/2))) {
-						rooms.add(new RectangleRoom(room.p2.x, mid-(height/2), room.p2.x+width, mid+(height/2), "Room"+i));
+						rooms.add(new RectangleRoom(room.p2.x, mid-(height/2), room.p2.x+width, mid+(height/2), "Dungeon Room "+this.rooms.size()));
 						// porte pour la premiere salle
 						room.addDoor(new Point(room.p2.x, mid));
 						// porte pour la deuxieme salle
@@ -128,7 +132,7 @@ public class Map {
 					// WEST
 					mid = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
 					if(checkOn(room.p1.x-width, mid-(height/2), room.p1.x, mid+(height/2))) {
-						rooms.add(new RectangleRoom(room.p1.x-width, mid-(height/2), room.p1.x, mid+(height/2), "Room"+i));
+						rooms.add(new RectangleRoom(room.p1.x-width, mid-(height/2), room.p1.x, mid+(height/2), "Dungeon Room "+this.rooms.size()));
 						// porte pour la premiere salle
 						room.addDoor(new Point(room.p1.x, mid));
 						// porte pour la deuxieme salle
@@ -145,7 +149,7 @@ public class Map {
 					height = rnd.nextInt(4)+5;
 					width = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
 					if(checkOn(width-1, room.p1.y-height, width+1, room.p1.y)) {
-						rooms.add(new Corridor(width-1, room.p1.y-height, width+1, room.p1.y, "CorridorNorth"+i));
+						rooms.add(new Corridor(width-1, room.p1.y-height, width+1, room.p1.y, "Corridor North "+this.rooms.size()));
 						// porte pour la premiere salle
 						room.addDoor(new Point(width, room.p1.y));
 						// porte pour la deuxieme salle
@@ -156,7 +160,7 @@ public class Map {
 					height = rnd.nextInt(4)+5;
 					width = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
 					if(checkOn(width-1, room.p2.y, width+1, room.p2.y+height)) {
-						rooms.add(new Corridor(width-1, room.p2.y, width+1, room.p2.y+height, "CorridorSouth"+i));
+						rooms.add(new Corridor(width-1, room.p2.y, width+1, room.p2.y+height, "Corridor South "+this.rooms.size()));
 						// porte pour la premiere salle
 						room.addDoor(new Point(width, room.p2.y));
 						// porte pour la deuxieme salle
@@ -167,7 +171,7 @@ public class Map {
 					width = rnd.nextInt(4)+5;
 					height = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
 					if(checkOn(room.p2.x, height-1, room.p2.x+width, height+1)) {
-						rooms.add(new Corridor(room.p2.x, height-1, room.p2.x+width, height+1, "CorridorEast"+i));
+						rooms.add(new Corridor(room.p2.x, height-1, room.p2.x+width, height+1, "Corridor East "+this.rooms.size()));
 						// porte pour la premiere salle
 						room.addDoor(new Point(room.p2.x, height));
 						// porte pour la deuxieme salle
@@ -178,7 +182,7 @@ public class Map {
 					width = rnd.nextInt(4)+5;
 					height = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
 					if(checkOn(room.p1.x-width, height-1, room.p1.x, height+1)) {
-						rooms.add(new Corridor(room.p1.x-width, height-1, room.p1.x, height+1, "CorridorWest"+i));
+						rooms.add(new Corridor(room.p1.x-width, height-1, room.p1.x, height+1, "Corridor West "+this.rooms.size()));
 						// porte pour la premiere salle
 						room.addDoor(new Point(room.p1.x, height));
 						// porte pour la deuxieme salle
@@ -188,7 +192,7 @@ public class Map {
 			}
 			printDungeon();
 		}
-		integratePlayer();
+		//integratePlayer();
 		placeStairs();
 	}
 	
@@ -215,6 +219,7 @@ public class Map {
 	}
 	
 	private void integratePlayer() {
+		this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
 		this.table[this.jerry.pos.y][this.jerry.pos.x] = TileFactory.getInstance().createTilePlayer();
 	}
 	
@@ -226,6 +231,8 @@ public class Map {
 					&& this.jerry.pos.y >= this.rooms.get(i).p1.y && this.jerry.pos.y <= this.rooms.get(i).p2.y) {
 				roomName = this.rooms.get(i).toString();
 				this.rooms.get(i).show();
+				this.rooms.get(i).isDoor(this.jerry.pos.x, this.jerry.pos.y);
+				this.rooms.get(i).isGold(this.jerry.pos.x, this.jerry.pos.y);
 			}
 		}
 		return roomName;
@@ -238,43 +245,61 @@ public class Map {
 		return false;
 	}
 	
+	private boolean isGold(int x, int y) {
+		if(this.table[y][x] instanceof TileGold) {
+			rewardGold();
+			return true;
+		}
+		return false;
+	}
+	
+	private void rewardGold() {
+		Random rnd = new Random();
+		this.jerry.addGold(rnd.nextInt(10)+1);
+	}
+	
+	private void levelUp() {
+		this.level++;
+		//this.jerry.addGold(5);
+		generateDungeon();
+	}
+	
+	private void checkPlayerPos(int x, int y) {
+		if(isStairs(x, y)) levelUp();
+		isGold(x, y);
+	}
+	
+	private void movePlayer(int x, int y) {
+		this.table[this.jerry.pos.y][this.jerry.pos.x] = this.jerry.getFloor();
+		this.jerry.pos.x = x;
+		this.jerry.pos.y = y;
+		this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
+		checkPlayerPos(this.jerry.pos.x, this.jerry.pos.y);
+		integratePlayer();
+		
+	}
+	
 	public void movePlayerUp() {
 		if((this.table[this.jerry.pos.y-1][this.jerry.pos.x].isWalkable())) {
-			this.table[this.jerry.pos.y][this.jerry.pos.x] = this.jerry.getFloor();
-			this.jerry.pos.y--;
-			//this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
-			if(isStairs(this.jerry.pos.x, this.jerry.pos.y)) generateDungeon();
-			integratePlayer();
+			movePlayer(this.jerry.pos.x, this.jerry.pos.y-1);
 		}
 	}
 	
 	public void movePlayerDown() {
 		if((this.table[this.jerry.pos.y+1][this.jerry.pos.x].isWalkable())) {
-			this.table[this.jerry.pos.y][this.jerry.pos.x] = this.jerry.getFloor();
-			this.jerry.pos.y++;
-			//this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
-			if(isStairs(this.jerry.pos.x, this.jerry.pos.y)) generateDungeon();
-			integratePlayer();
+			movePlayer(this.jerry.pos.x, this.jerry.pos.y+1);
 		}
 	}
 	
 	public void movePlayerLeft() {
 		if((this.table[this.jerry.pos.y][this.jerry.pos.x-1].isWalkable())) {
-			this.table[this.jerry.pos.y][this.jerry.pos.x] = this.jerry.getFloor();
-			this.jerry.pos.x--;
-			//this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
-			if(isStairs(this.jerry.pos.x, this.jerry.pos.y)) generateDungeon();
-			integratePlayer();
+			movePlayer(this.jerry.pos.x-1, this.jerry.pos.y);
 		}
 	}
 	
 	public void movePlayerRight() {
 		if((this.table[this.jerry.pos.y][this.jerry.pos.x+1].isWalkable())) {
-			this.table[this.jerry.pos.y][this.jerry.pos.x] = this.jerry.getFloor();
-			this.jerry.pos.x++;
-			//this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
-			if(isStairs(this.jerry.pos.x, this.jerry.pos.y)) generateDungeon();
-			integratePlayer();
+			movePlayer(this.jerry.pos.x+1, this.jerry.pos.y);
 		}
 	}
 	
@@ -288,8 +313,13 @@ public class Map {
 		this.table[this.stairDown.y][this.stairDown.x] = TileFactory.getInstance().createTileStairsDown();
 	}
 	
-	public String generateLabel() {
-		return ""+playerStepOn()+" | "+this.jerry.getFloor()+" | level "+this.level;
+	public String generateMapInfo() {
+		//return ""+playerStepOn()+" ("+this.jerry.getFloor()+") | \t level "+this.level;
+		return "  "+playerStepOn()+" ("+this.jerry.getFloor()+") \t\n  Level "+this.level+"\t";
+	}
+	
+	public String getPlayerInfo() {
+		return this.jerry.getInfo();
 	}
 	
 	public void printOnConsole() {		
@@ -307,10 +337,10 @@ public class Map {
 	}
 	
 	public void printOnWindow() {
-		Window win = new Window("Dungeon Generator", this);
+		this.win = new Window("Dungeon Generator", this);
 		
-		win.setLabel(playerStepOn()+" | "+this.jerry.getFloor());
+		this.win.setLabel(generateMapInfo(), this.jerry.getInfo());
 		
-		win.refresh();
+		this.win.firstPrint();
 	}
 }

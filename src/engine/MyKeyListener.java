@@ -36,7 +36,7 @@ public class MyKeyListener implements KeyListener {
 			this.map.generateDungeon();
 		}
 		// Refresh map on window
-		this.win.setLabel(this.map.generateLabel());
+		this.win.setLabel(this.map.generateMapInfo(), this.map.getPlayerInfo());
 		this.win.refresh();
 	}
 }

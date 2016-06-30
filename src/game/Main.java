@@ -1,10 +1,10 @@
 package game;
 
-import engine.*;
+import engine.Map;
 
 public class Main {
 	public static void main(String[] args) {
-		Map customMap = new Map(50, 50);
+		Map customMap = new Map(32, 54);
 		customMap.generateDungeon();
 		//customMap.printOnConsole();
 		customMap.printOnWindow();

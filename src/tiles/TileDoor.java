@@ -3,9 +3,9 @@ package tiles;
 public class TileDoor extends Tile {
 	private boolean opened;
 	
-	public TileDoor() {
+	public TileDoor(boolean o) {
 		this.walkable=true;
-		this.opened = false;
+		this.opened = o;
 		this.description="Door";
 	}
 
