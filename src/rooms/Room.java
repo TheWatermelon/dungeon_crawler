@@ -23,6 +23,7 @@ public abstract class Room {
 	public final void show() { this.show=true; }
 	public final void hide() { this.show=false; }
 	public final void addDoor(Point p) { this.door.add(new Door(p)); }
+	public final void addDoor(Point p, Tile t) { this.door.add(new Door(p, t)); }
 	
 	public abstract void isGold(int x, int y);
 	
@@ -47,7 +48,7 @@ public abstract class Room {
 	
 	protected final void printDoors(Tile[][] tab) {
 		for(int i=0; i<this.door.size(); i++) {
-			tab[this.door.get(i).getY()][this.door.get(i).getX()] = TileFactory.getInstance().createTileDoor(this.door.get(i).isOpen());
+			tab[this.door.get(i).getY()][this.door.get(i).getX()] = this.door.get(i).getFloor();
 		}
 	}
 	

@@ -69,13 +69,14 @@ public class Map {
 	public void generateDungeon() {
 		Random rnd = new Random();
 		Room room;
-		int roomIndex, wallSide, height, width, mid;
+		int roomIndex, height, width;
 		
+		// Position joueur
 		this.jerry.pos.x = getWidth()/2;
 		this.jerry.pos.y = getHeight()/2;
 		
+		// Remise a zero de la carte
 		this.rooms = new Vector<Room>();
-
 		fillRectangle(this.table, 0, 0, getWidth()-1, getHeight()-1, TileFactory.getInstance().createTileVoid());	
 		
 		// Premiere salle, au centre du niveau
@@ -85,115 +86,146 @@ public class Map {
 		rooms.get(rooms.size()-1).show();
 		rooms.get(rooms.size()-1).printOn(this.table);
 		
-		for(int i=0; i<200; i++) {
+		// Generation des salles
+		for(int i=0; i<500; i++) {
 			roomIndex = rnd.nextInt(rooms.size());
 			room = this.rooms.get(roomIndex);
 			
-			//if(rnd.nextInt(2)==0) {
 			if(room instanceof Corridor) {
-				// SALLE
-				height = rnd.nextInt(5)+9;
-				width = rnd.nextInt(5)+6;
-				
-				// De quel cote on etend le donjon
-				wallSide = rnd.nextInt(4);
-				if(wallSide == 0) {
-					// NORTH
-					mid = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
-					if(checkOn(mid-(width/2), room.p1.y-height, mid+(width/2), room.p1.y)) {
-						rooms.add(new RectangleRoom(mid-(width/2), room.p1.y-height, mid+(width/2), room.p1.y, "Dungeon Room "+this.rooms.size()));
-						// porte pour la premiere salle
-						room.addDoor(new Point(mid, room.p1.y));
-						// porte pour la deuxieme salle
-						rooms.get(rooms.size()-1).addDoor(new Point(mid, room.p1.y));
-						
-					}
-				} else if(wallSide == 1) {
-					// SOUTH
-					mid = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
-					if(checkOn(mid-(width/2), room.p2.y, mid+(width/2), room.p2.y+height)) {
-						rooms.add(new RectangleRoom(mid-(width/2), room.p2.y, mid+(width/2), room.p2.y+height, "Dungeon Room "+this.rooms.size()));
-						// porte pour la premiere salle
-						room.addDoor(new Point(mid, room.p2.y));
-						// porte pour la deuxieme salle
-						rooms.get(rooms.size()-1).addDoor(new Point(mid, room.p2.y));
-					}
-				} else if(wallSide == 2) {
-					// EAST
-					mid = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
-					if(checkOn(room.p2.x, mid-(height/2), room.p2.x+width, mid+(height/2))) {
-						rooms.add(new RectangleRoom(room.p2.x, mid-(height/2), room.p2.x+width, mid+(height/2), "Dungeon Room "+this.rooms.size()));
-						// porte pour la premiere salle
-						room.addDoor(new Point(room.p2.x, mid));
-						// porte pour la deuxieme salle
-						rooms.get(rooms.size()-1).addDoor(new Point(room.p2.x, mid));
-					}
-				} else if(wallSide == 3) {
-					// WEST
-					mid = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
-					if(checkOn(room.p1.x-width, mid-(height/2), room.p1.x, mid+(height/2))) {
-						rooms.add(new RectangleRoom(room.p1.x-width, mid-(height/2), room.p1.x, mid+(height/2), "Dungeon Room "+this.rooms.size()));
-						// porte pour la premiere salle
-						room.addDoor(new Point(room.p1.x, mid));
-						// porte pour la deuxieme salle
-						rooms.get(rooms.size()-1).addDoor(new Point(room.p1.x, mid));
-					}
+				if(rnd.nextInt(3)==0) {
+					// EXTENSION COULOIR
+					generateCorridor(room, true);
+				} else {
+					// SALLE
+					generateRectangleRoom(room);
 				}
 			} else {
 				// COULOIR
-				
-				// De quel cote on etend le donjon
-				wallSide = rnd.nextInt(4);
-				if(wallSide == 0) {
-					// NORTH
-					height = rnd.nextInt(4)+5;
-					width = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
-					if(checkOn(width-1, room.p1.y-height, width+1, room.p1.y)) {
-						rooms.add(new Corridor(width-1, room.p1.y-height, width+1, room.p1.y, "Corridor North "+this.rooms.size()));
-						// porte pour la premiere salle
-						room.addDoor(new Point(width, room.p1.y));
-						// porte pour la deuxieme salle
-						rooms.get(rooms.size()-1).addDoor(new Point(width, room.p1.y));
-					}
-				} else if(wallSide == 1) {
-					// SOUTH
-					height = rnd.nextInt(4)+5;
-					width = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
-					if(checkOn(width-1, room.p2.y, width+1, room.p2.y+height)) {
-						rooms.add(new Corridor(width-1, room.p2.y, width+1, room.p2.y+height, "Corridor South "+this.rooms.size()));
-						// porte pour la premiere salle
-						room.addDoor(new Point(width, room.p2.y));
-						// porte pour la deuxieme salle
-						rooms.get(rooms.size()-1).addDoor(new Point(width, room.p2.y));
-					}
-				} else if(wallSide == 2) {
-					// EAST
-					width = rnd.nextInt(4)+5;
-					height = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
-					if(checkOn(room.p2.x, height-1, room.p2.x+width, height+1)) {
-						rooms.add(new Corridor(room.p2.x, height-1, room.p2.x+width, height+1, "Corridor East "+this.rooms.size()));
-						// porte pour la premiere salle
-						room.addDoor(new Point(room.p2.x, height));
-						// porte pour la deuxieme salle
-						rooms.get(rooms.size()-1).addDoor(new Point(room.p2.x, height));
-					}
-				} else if(wallSide == 3) {
-					// WEST
-					width = rnd.nextInt(4)+5;
-					height = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
-					if(checkOn(room.p1.x-width, height-1, room.p1.x, height+1)) {
-						rooms.add(new Corridor(room.p1.x-width, height-1, room.p1.x, height+1, "Corridor West "+this.rooms.size()));
-						// porte pour la premiere salle
-						room.addDoor(new Point(room.p1.x, height));
-						// porte pour la deuxieme salle
-						rooms.get(rooms.size()-1).addDoor(new Point(room.p1.x, height));
-					}
-				}
+				generateCorridor(room, false);
 			}
 			printDungeon();
 		}
 		//integratePlayer();
 		placeStairs();
+	}
+
+	private void generateRectangleRoom(Room room) {
+		Random rnd = new Random();
+		int wallSide, height, width, mid;
+		
+		// SALLE
+		height = rnd.nextInt(5)+9;
+		width = rnd.nextInt(5)+6;
+		
+		// De quel cote on etend le donjon
+		wallSide = rnd.nextInt(4);
+		if(wallSide == 0) {
+			// NORTH
+			mid = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
+			if(checkOn(mid-(width/2), room.p1.y-height, mid+(width/2), room.p1.y)) {
+				rooms.add(new RectangleRoom(mid-(width/2), room.p1.y-height, mid+(width/2), room.p1.y, "Dungeon Room "+this.rooms.size()));
+				// porte pour la premiere salle
+				room.addDoor(new Point(mid, room.p1.y));
+				// porte pour la deuxieme salle
+				rooms.get(rooms.size()-1).addDoor(new Point(mid, room.p1.y));
+				
+			}
+		} else if(wallSide == 1) {
+			// SOUTH
+			mid = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
+			if(checkOn(mid-(width/2), room.p2.y, mid+(width/2), room.p2.y+height)) {
+				rooms.add(new RectangleRoom(mid-(width/2), room.p2.y, mid+(width/2), room.p2.y+height, "Dungeon Room "+this.rooms.size()));
+				// porte pour la premiere salle
+				room.addDoor(new Point(mid, room.p2.y));
+				// porte pour la deuxieme salle
+				rooms.get(rooms.size()-1).addDoor(new Point(mid, room.p2.y));
+			}
+		} else if(wallSide == 2) {
+			// EAST
+			mid = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
+			if(checkOn(room.p2.x, mid-(height/2), room.p2.x+width, mid+(height/2))) {
+				rooms.add(new RectangleRoom(room.p2.x, mid-(height/2), room.p2.x+width, mid+(height/2), "Dungeon Room "+this.rooms.size()));
+				// porte pour la premiere salle
+				room.addDoor(new Point(room.p2.x, mid));
+				// porte pour la deuxieme salle
+				rooms.get(rooms.size()-1).addDoor(new Point(room.p2.x, mid));
+			}
+		} else if(wallSide == 3) {
+			// WEST
+			mid = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
+			if(checkOn(room.p1.x-width, mid-(height/2), room.p1.x, mid+(height/2))) {
+				rooms.add(new RectangleRoom(room.p1.x-width, mid-(height/2), room.p1.x, mid+(height/2), "Dungeon Room "+this.rooms.size()));
+				// porte pour la premiere salle
+				room.addDoor(new Point(room.p1.x, mid));
+				// porte pour la deuxieme salle
+				rooms.get(rooms.size()-1).addDoor(new Point(room.p1.x, mid));
+			}
+		}
+	}
+	
+	private void generateCorridor(Room room, boolean junction) {
+		Random rnd = new Random();
+		int wallSide, height, width;
+
+		// De quel cote on etend le donjon
+		wallSide = rnd.nextInt(4);
+		if(wallSide == 0) {
+			// NORTH
+			height = rnd.nextInt(4)+5;
+			width = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
+			if(checkOn(width-1, room.p1.y-height, width+1, room.p1.y)) {
+				rooms.add(new Corridor(width-1, room.p1.y-height, width+1, room.p1.y, "Corridor North "+this.rooms.size()));
+				if(junction) {
+					room.addDoor(new Point(width, room.p1.y), TileFactory.getInstance().createTileStone());
+					rooms.get(rooms.size()-1).addDoor(new Point(width, room.p1.y), TileFactory.getInstance().createTileStone());
+				} else {
+					room.addDoor(new Point(width, room.p1.y));
+					rooms.get(rooms.size()-1).addDoor(new Point(width, room.p1.y));
+				}
+			}
+		} else if(wallSide == 1) {
+			// SOUTH
+			height = rnd.nextInt(4)+5;
+			width = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
+			if(checkOn(width-1, room.p2.y, width+1, room.p2.y+height)) {
+				rooms.add(new Corridor(width-1, room.p2.y, width+1, room.p2.y+height, "Corridor South "+this.rooms.size()));
+				if(junction) {
+					room.addDoor(new Point(width, room.p2.y), TileFactory.getInstance().createTileStone());
+					rooms.get(rooms.size()-1).addDoor(new Point(width, room.p2.y), TileFactory.getInstance().createTileStone());
+				} else {
+					room.addDoor(new Point(width, room.p2.y));
+					rooms.get(rooms.size()-1).addDoor(new Point(width, room.p2.y));
+				}
+			}
+		} else if(wallSide == 2) {
+			// EAST
+			width = rnd.nextInt(4)+5;
+			height = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
+			if(checkOn(room.p2.x, height-1, room.p2.x+width, height+1)) {
+				rooms.add(new Corridor(room.p2.x, height-1, room.p2.x+width, height+1, "Corridor East "+this.rooms.size()));
+				if(junction) {
+					room.addDoor(new Point(room.p2.x, height), TileFactory.getInstance().createTileStone());
+					rooms.get(rooms.size()-1).addDoor(new Point(room.p2.x, height), TileFactory.getInstance().createTileStone());
+				} else {
+					room.addDoor(new Point(room.p2.x, height));
+					rooms.get(rooms.size()-1).addDoor(new Point(room.p2.x, height));
+				}
+			}
+		} else if(wallSide == 3) {
+			// WEST
+			width = rnd.nextInt(4)+5;
+			height = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
+			if(checkOn(room.p1.x-width, height-1, room.p1.x, height+1)) {
+				rooms.add(new Corridor(room.p1.x-width, height-1, room.p1.x, height+1, "Corridor West "+this.rooms.size()));
+				if(junction) {
+					room.addDoor(new Point(room.p1.x, height), TileFactory.getInstance().createTileStone());
+					rooms.get(rooms.size()-1).addDoor(new Point(room.p1.x, height), TileFactory.getInstance().createTileStone());
+				} else {
+					room.addDoor(new Point(room.p1.x, height));
+					rooms.get(rooms.size()-1).addDoor(new Point(room.p1.x, height));
+				}
+			}
+		}
 	}
 	
 	private void placeStairs() {
