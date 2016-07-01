@@ -92,7 +92,7 @@ public class Map {
 			room = this.rooms.get(roomIndex);
 			
 			if(room instanceof Corridor) {
-				if(rnd.nextInt(3)==0) {
+				if(rnd.nextInt(4)==0) {
 					// EXTENSION COULOIR
 					generateCorridor(room, true);
 				} else {
@@ -287,7 +287,7 @@ public class Map {
 	
 	private void rewardGold() {
 		Random rnd = new Random();
-		this.jerry.addGold(rnd.nextInt(10)+1);
+		this.jerry.addGold(rnd.nextInt(5)+1);
 	}
 	
 	private void levelUp() {
