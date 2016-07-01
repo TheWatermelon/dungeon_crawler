@@ -114,7 +114,7 @@ public class Map {
 		int wallSide, height, width, mid;
 		
 		// SALLE
-		height = rnd.nextInt(5)+9;
+		height = rnd.nextInt(5)+6;
 		width = rnd.nextInt(5)+6;
 		
 		// De quel cote on etend le donjon
