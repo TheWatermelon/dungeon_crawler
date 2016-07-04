@@ -33,6 +33,6 @@ public class Player extends Mob {
 	}
 	
 	public String getInfo() {
-		return "  HP : "+Math.round(this.hp)+"\tLevel : "+this.level+"\n  Gold : "+this.gold;
+		return "   HP : "+Math.round(this.hp)+"\t\n   Gold : "+this.gold+"\n"+"   Level : "+this.level;
 	}
 }

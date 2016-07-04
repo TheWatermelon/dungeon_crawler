@@ -19,6 +19,7 @@ public class Map {
 	private Tile[][] table;
 	private Vector<Room> rooms;
 	private Vector<Monster> monsters;
+	private MessageLog log;
 	private Point stairDown;
 	private Player jerry;
 	private int level;
@@ -32,6 +33,7 @@ public class Map {
 		this.jerry = new Player(width/2, height/2);
 		this.jerry.setFloor(TileFactory.getInstance().createTileStone()); 
 		this.stairDown = new Point();
+		this.log = new MessageLog();
 	}
 	
 	public Tile[][] getTable() { return this.table; }
@@ -236,13 +238,13 @@ public class Map {
 	private void generateMonsters() {
 		Random rnd = new Random();
 		Room room;
-		int roomNumber, roomIndex, monsterNumber, height, width;
+		int roomNumber, roomIndex, monsterNumber, height, width, monsterName;
 		
-		roomNumber = rnd.nextInt(rooms.size())/2;
+		roomNumber = (rnd.nextInt(rooms.size())+1)/2;
 		
 		for(int i=0; i<roomNumber; i++) {
 			do {
-				roomIndex = rnd.nextInt(rooms.size());
+				roomIndex = rnd.nextInt(rooms.size()-1)+1;
 				room = this.rooms.get(roomIndex);
 			} while (room instanceof Corridor);
 			
@@ -253,8 +255,8 @@ public class Map {
 					height = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
 				} while ((width==this.jerry.pos.x) && (height==this.jerry.pos.y));
 				
-				
-				this.monsters.add(new Monster(width, height, 'm', "Monster"));
+				monsterName = rnd.nextInt(26);
+				this.monsters.add(new Monster(width, height, Ressources.getLetterAt(monsterName), Ressources.getNameAt(monsterName)));
 			}
 		}
 	}
@@ -299,7 +301,7 @@ public class Map {
 		// Monsters
 		for(int i=0; i<this.monsters.size(); i++) {
 			this.monsters.get(i).setFloor(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x]);
-			if(!(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] instanceof TileVoid)) {
+			if(!(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] instanceof TileVoid || this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] instanceof TileStairsDown)) {
 				if(!this.monsters.get(i).isDead()) {
 					this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] = TileFactory.getInstance().createTileMonster(this.monsters.get(i).getSymbol());
 				}
@@ -346,15 +348,17 @@ public class Map {
 	
 	private boolean isGold(int x, int y) {
 		if(this.table[y][x] instanceof TileGold) {
-			rewardGold();
+			this.log.appendMessage("Found "+rewardGold()+"G");
 			return true;
 		}
 		return false;
 	}
 	
-	private void rewardGold() {
+	private int rewardGold() {
 		Random rnd = new Random();
-		this.jerry.addGold(rnd.nextInt(5)+1);
+		int gold = rnd.nextInt(5)+1;
+		this.jerry.addGold(gold);
+		return gold;
 	}
 	
 	private void levelUp() {
@@ -372,8 +376,9 @@ public class Map {
 		for(int i=0; i<this.monsters.size(); i++) {
 			if((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y)) {
 				this.monsters.get(i).murder();
+				this.log.appendMessage(this.monsters.get(i).toString()+" killed");
 				if(rnd.nextInt(5)==0) {
-					rewardGold();
+					this.log.appendMessage("Gained "+rewardGold()+"G");
 				}
 			}
 		}
@@ -515,8 +520,8 @@ public class Map {
 		for(int i=0; i<rooms.size(); i++) {
 			rooms.get(i).printOn(this.table);
 		}
-		integrateMobs();
 		this.table[this.stairDown.y][this.stairDown.x] = TileFactory.getInstance().createTileStairsDown();
+		integrateMobs();
 	}
 	
 	public String generateMapInfo() {
@@ -526,6 +531,10 @@ public class Map {
 	
 	public String getPlayerInfo() {
 		return this.jerry.getInfo();
+	}
+	
+	public String getLog() {
+		return this.log.getLast(3);
 	}
 	
 	public void printOnConsole() {		
@@ -545,7 +554,7 @@ public class Map {
 	public void printOnWindow() {
 		this.win = new Window("Dungeon Generator", this);
 		
-		this.win.setLabel(generateMapInfo(), this.jerry.getInfo());
+		this.win.setLabel(generateMapInfo(), this.jerry.getInfo(), getLog());
 		
 		this.win.firstPrint();
 	}

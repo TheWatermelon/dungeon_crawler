@@ -9,7 +9,6 @@ import tiles.Tile;
 import tiles.TileFactory;
 
 public class Corridor extends Room {
-	private Point gold;
 	
 	public Corridor(int x1, int y1, int x2, int y2, String s) {
 		this.description = s;
@@ -19,8 +18,6 @@ public class Corridor extends Room {
 		this.gold = new Point();
 		this.floor = TileFactory.getInstance().createTileStone();
 		this.show = false;
-		
-		parsingGold();
 	}
 	
 	public void isGold(int x, int y) {
@@ -29,7 +26,7 @@ public class Corridor extends Room {
 		}
 	}
 	
-	private void parsingGold() {
+	protected void parsingFloor() {
 		Random rnd = new Random();
 		int parsingChance = rnd.nextInt(4);
 		

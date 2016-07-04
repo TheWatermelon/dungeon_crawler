@@ -36,4 +36,6 @@ public abstract class Mob {
 	public final boolean isDead() { return this.dead; }
 	
 	public final char getSymbol() { return this.symbol; }
+	
+	public String toString() { return this.description; }
 }

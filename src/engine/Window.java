@@ -31,6 +31,7 @@ public class Window extends JFrame{
 	private JTextPane body;
 	private JTextPane foot;
 	private JTextPane foot1;
+	private JTextPane foot2;
 	
 	private StyledDocument sDoc;
 	private Style defaut;
@@ -95,14 +96,21 @@ public class Window extends JFrame{
 		this.foot.setFocusable(false);
 		this.foot.setBackground(Color.black);
 		this.foot.setForeground(Color.white);
-		this.footPanel.add(this.foot, BorderLayout.CENTER);
+		this.footPanel.add(this.foot, BorderLayout.WEST);
 
 		this.foot1 = new JTextPane();
 		this.foot1.setEditable(false);
 		this.foot1.setFocusable(false);
 		this.foot1.setBackground(Color.black);
 		this.foot1.setForeground(Color.white);
-		this.footPanel.add(this.foot1, BorderLayout.WEST);
+		this.footPanel.add(this.foot1, BorderLayout.CENTER);
+		
+		this.foot2 = new JTextPane();
+		this.foot2.setEditable(false);
+		this.foot2.setFocusable(false); 
+		this.foot2.setBackground(Color.black);
+		this.foot2.setForeground(Color.white);
+		this.footPanel.add(this.foot2, BorderLayout.EAST);
 		
 		this.global.add(this.headPanel, BorderLayout.NORTH);
 		this.global.add(this.body, BorderLayout.CENTER);
@@ -153,9 +161,12 @@ public class Window extends JFrame{
 		StyleConstants.setForeground(this.coolRed, new Color(0xEF, 0x3F, 0x23));
 	}
 	
-	public void setLabel(String s, String s1) {
+	public void setLabel(String s, String s1, String s2) {
 		this.head.setText(s);
 		this.foot.setText(s1);
+		this.foot2.setText(s2);
+		this.foot.repaint();
+		this.foot2.repaint();
 		this.headPanel.repaint();
 	}
 	
@@ -209,7 +220,6 @@ public class Window extends JFrame{
 			sDoc.insertString(pos, "\n", defaut);
 		} catch(BadLocationException e) {}
 		
-		//this.body.setText(s);
 		this.body.repaint();	
 	}
 	
@@ -239,7 +249,7 @@ public class Window extends JFrame{
 			sDoc.insertString(pos, "\n", defaut);
 		} catch(BadLocationException e) {}
 		
-		//this.body.setText(s);
+		setLabel(this.map.generateMapInfo(), this.map.getPlayerInfo(), this.map.getLog());
 		this.body.repaint();
 	}
 }
