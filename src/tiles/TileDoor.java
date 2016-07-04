@@ -4,7 +4,11 @@ public class TileDoor extends Tile {
 	private boolean opened;
 	
 	public TileDoor(boolean o) {
-		this.walkable=true;
+		if(o) {
+			this.walkable=true;
+		} else {
+			this.walkable=false;
+		}
 		this.opened = o;
 		this.description="Door";
 	}

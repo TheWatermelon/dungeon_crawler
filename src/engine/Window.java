@@ -38,9 +38,11 @@ public class Window extends JFrame{
 	private Style gold;
 	private Style brown;
 	private Style green;
-	private Style boldGrey;
-	private Style darkGrey;
+	private Style lightGray;
+	private Style gray;
+	private Style darkGray;
 	private Style darkGreen;
+	private Style coolRed;
 	
 	public Window(String title, Map m) {
 		super(title);
@@ -71,6 +73,7 @@ public class Window extends JFrame{
 		this.headPanel.add(this.head, BorderLayout.CENTER);
 		
 		this.body = new JTextPane();
+		this.body.setContentType("charset=UTF-8");
 		this.body.setEditable(false);
 		this.body.setBorder(BorderFactory.createLineBorder(Color.white));
 		this.body.setBackground(Color.black);
@@ -123,30 +126,63 @@ public class Window extends JFrame{
 		this.orange = this.body.addStyle("orange", defaut);
 		StyleConstants.setForeground(this.orange, Color.orange);
 		
-		this.boldGrey = this.body.addStyle("boldGrey", orange);
-		StyleConstants.setBold(this.boldGrey, true);
-		StyleConstants.setForeground(this.boldGrey, Color.gray);
+		this.lightGray = this.body.addStyle("lightGray", orange);
+		StyleConstants.setBold(this.lightGray, true);
+		StyleConstants.setForeground(this.lightGray, Color.gray);
 		
-		this.brown = this.body.addStyle("brown", boldGrey);
+		this.brown = this.body.addStyle("brown", lightGray);
 		StyleConstants.setForeground(this.brown, new Color(0xA5, 0x68, 0x2A));
 		
-		this.darkGrey = this.body.addStyle("darkGrey", brown);
-		StyleConstants.setForeground(this.darkGrey, Color.darkGray);
+		this.darkGray = this.body.addStyle("darkGray", brown);
+		StyleConstants.setForeground(this.darkGray, new Color(0x30, 0x30, 0x30));
 		
-		this.darkGreen = this.body.addStyle("darkGreen", darkGrey);
+		this.gray = this.body.addStyle("gray", darkGray);
+		StyleConstants.setForeground(this.gray, new Color(0x60, 0x60, 0x60));
+		
+		this.darkGreen = this.body.addStyle("darkGreen", gray);
 		StyleConstants.setForeground(this.darkGreen, new Color(0x00, 0x33, 0x00));
 		
 		this.green = this.body.addStyle("green", darkGreen);
+		StyleConstants.setBold(this.green, true);
 		StyleConstants.setForeground(this.green, new Color(0x00, 0x80, 0x00));
 		
 		this.gold = this.body.addStyle("gold", green);
 		StyleConstants.setForeground(this.gold, Color.yellow);
+		
+		this.coolRed = this.body.addStyle("coolRed", gold);
+		StyleConstants.setForeground(this.coolRed, new Color(0xEF, 0x3F, 0x23));
 	}
 	
 	public void setLabel(String s, String s1) {
 		this.head.setText(s);
 		this.foot.setText(s1);
 		this.headPanel.repaint();
+	}
+	
+	private void printInColor(int pos, int i, int j) {
+		try {
+			if(this.tab[i][j] instanceof TilePlayer) {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.green);
+			} else if(this.tab[i][j] instanceof TileWall) {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.lightGray);
+			} else if(this.tab[i][j] instanceof TileDoor) {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.brown);
+			} else if(this.tab[i][j] instanceof TileStone) {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkGray);
+			} else if(this.tab[i][j] instanceof TileMoss) {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkGreen);
+			} else if(this.tab[i][j] instanceof TileStairsDown) {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.orange);
+			} else if(this.tab[i][j] instanceof TileGold) {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.gold);
+			} else if(this.tab[i][j] instanceof TileMonster) {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.coolRed);
+			} else if(this.tab[i][j] instanceof TileCorpse) {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.gray);
+			} else {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", defaut);
+			}
+		} catch (BadLocationException e) {}
 	}
 	
 	public void firstPrint() {
@@ -163,23 +199,7 @@ public class Window extends JFrame{
 				pos++;
 				for(int j=0; j<this.tab[0].length; j++) {
 					s+=""+this.tab[i][j].getSymbol()+" ";
-					if(this.tab[i][j] instanceof TilePlayer) {
-						sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.green);
-					} else if(this.tab[i][j] instanceof TileWall) {
-						sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.boldGrey);
-					} else if(this.tab[i][j] instanceof TileDoor) {
-						sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.brown);
-					} else if(this.tab[i][j] instanceof TileStone) {
-						sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkGrey);
-					} else if(this.tab[i][j] instanceof TileMoss) {
-						sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkGreen);
-					} else if(this.tab[i][j] instanceof TileStairsDown) {
-						sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.orange);
-					} else if(this.tab[i][j] instanceof TileGold) {
-						sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.gold);
-					} else {
-						sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", defaut);
-					}
+					printInColor(pos, i, j);
 					pos=s.length();
 				}
 				s+="\n";
@@ -208,23 +228,7 @@ public class Window extends JFrame{
 				for(int j=0; j<this.tab[0].length; j++) {
 					s+=""+this.tab[i][j].getSymbol()+" ";
 					if(s.substring(pos, pos+1)!=sDoc.getText(pos, pos+1)) {
-						if(this.tab[i][j] instanceof TilePlayer) {
-							sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.green);
-						} else if(this.tab[i][j] instanceof TileWall) {
-							sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.boldGrey);
-						} else if(this.tab[i][j] instanceof TileDoor) {
-							sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.brown);
-						} else if(this.tab[i][j] instanceof TileStone) {
-							sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkGrey);
-						} else if(this.tab[i][j] instanceof TileMoss) {
-							sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkGreen);
-						} else if(this.tab[i][j] instanceof TileStairsDown) {
-							sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.orange);
-						} else if(this.tab[i][j] instanceof TileGold) {
-							sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.gold);
-						} else {
-							sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", defaut);
-						}
+						printInColor(pos, i, j);
 						pos=s.length();
 					}
 				}
