@@ -28,10 +28,10 @@ public abstract class Room {
 	public abstract void isGold(int x, int y);
 	
 	public final void printOn(Tile[][] tab) {
-		//if(show) {
+		if(show) {
 			print(tab);
 			printDoors(tab);
-		//}
+		}
 	}	
 	
 	public void print(Tile[][] tab) {

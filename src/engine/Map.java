@@ -4,18 +4,20 @@ import java.awt.Point;
 import java.util.Random;
 import java.util.Vector;
 
+import objects.Monster;
 import objects.Player;
-
 import rooms.*;
 import tiles.Tile;
 import tiles.TileFactory;
 import tiles.TileGold;
+import tiles.TileMonster;
 import tiles.TileStairsDown;
 import tiles.TileVoid;
 
 public class Map {
 	private Tile[][] table;
 	private Vector<Room> rooms;
+	private Vector<Monster> monsters;
 	private Point stairDown;
 	private Player jerry;
 	private int level;
@@ -24,6 +26,7 @@ public class Map {
 	public Map(int height, int width) {
 		this.table = new Tile[height][width];
 		this.rooms = new Vector<Room>();
+		this.monsters = new Vector<Monster>();
 		this.level = 0;
 		this.jerry = new Player(width/2, height/2);
 		this.jerry.setFloor(TileFactory.getInstance().createTileStone()); 
@@ -77,6 +80,7 @@ public class Map {
 		
 		// Remise a zero de la carte
 		this.rooms = new Vector<Room>();
+		this.monsters = new Vector<Monster>();
 		fillRectangle(this.table, 0, 0, getWidth()-1, getHeight()-1, TileFactory.getInstance().createTileVoid());	
 		
 		// Premiere salle, au centre du niveau
@@ -105,7 +109,7 @@ public class Map {
 			}
 			printDungeon();
 		}
-		//integratePlayer();
+		generateMonsters();
 		placeStairs();
 	}
 
@@ -228,6 +232,32 @@ public class Map {
 		}
 	}
 	
+	private void generateMonsters() {
+		Random rnd = new Random();
+		Room room;
+		int roomNumber, roomIndex, monsterNumber, height, width;
+		
+		roomNumber = rnd.nextInt(rooms.size())/2;
+		
+		for(int i=0; i<roomNumber; i++) {
+			do {
+				roomIndex = rnd.nextInt(rooms.size());
+				room = this.rooms.get(roomIndex);
+			} while (room instanceof Corridor);
+			
+			monsterNumber = rnd.nextInt(((room.getHeight()-1)/2)*((room.getWidth()-1)/2));
+			for(int j=0; j<monsterNumber; j++) {
+				do {
+					width = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
+					height = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
+				} while ((width==this.jerry.pos.x) && (height==this.jerry.pos.y));
+				
+				
+				this.monsters.add(new Monster(width, height, 'm', "Monster"));
+			}
+		}
+	}
+	
 	private void placeStairs() {
 		Vector<Room> roomsIndex = new Vector<Room>();
 		Room selectedRoom;
@@ -253,6 +283,20 @@ public class Map {
 	private void integratePlayer() {
 		this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
 		this.table[this.jerry.pos.y][this.jerry.pos.x] = TileFactory.getInstance().createTilePlayer();
+	}
+	
+	private void integrateMobs() {		
+		for(int i=0; i<this.monsters.size(); i++) {
+			this.monsters.get(i).setFloor(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x]);
+			if(!(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] instanceof TileVoid)) {
+				if(this.monsters.get(i).isDead()) {
+					this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] = TileFactory.getInstance().createTileCorpse();
+				} else {
+					this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] = TileFactory.getInstance().createTileMonster(this.monsters.get(i).getSymbol());
+				}
+			}
+		}
+		integratePlayer();
 	}
 	
 	private String playerStepOn() {
@@ -301,6 +345,14 @@ public class Map {
 		isGold(x, y);
 	}
 	
+	private void checkMonster(int x, int y) {
+		for(int i=0; i<this.monsters.size(); i++) {
+			if((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y)) {
+				this.monsters.get(i).murder();
+			}
+		}
+	}
+	
 	private void movePlayer(int x, int y) {
 		this.table[this.jerry.pos.y][this.jerry.pos.x] = this.jerry.getFloor();
 		this.jerry.pos.x = x;
@@ -308,30 +360,116 @@ public class Map {
 		this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
 		checkPlayerPos(this.jerry.pos.x, this.jerry.pos.y);
 		integratePlayer();
-		
+		moveAllMonsters();
 	}
 	
 	public void movePlayerUp() {
-		if((this.table[this.jerry.pos.y-1][this.jerry.pos.x].isWalkable())) {
+		if(this.table[this.jerry.pos.y-1][this.jerry.pos.x].isWalkable()) {
 			movePlayer(this.jerry.pos.x, this.jerry.pos.y-1);
+		} else if(this.table[this.jerry.pos.y-1][this.jerry.pos.x] instanceof TileMonster){
+			checkMonster(this.jerry.pos.x, this.jerry.pos.y-1);
 		}
 	}
 	
 	public void movePlayerDown() {
-		if((this.table[this.jerry.pos.y+1][this.jerry.pos.x].isWalkable())) {
+		if(this.table[this.jerry.pos.y+1][this.jerry.pos.x].isWalkable()) {
 			movePlayer(this.jerry.pos.x, this.jerry.pos.y+1);
+		} else if(this.table[this.jerry.pos.y+1][this.jerry.pos.x] instanceof TileMonster){
+			checkMonster(this.jerry.pos.x, this.jerry.pos.y+1);
 		}
 	}
 	
 	public void movePlayerLeft() {
-		if((this.table[this.jerry.pos.y][this.jerry.pos.x-1].isWalkable())) {
+		if(this.table[this.jerry.pos.y][this.jerry.pos.x-1].isWalkable()) {
 			movePlayer(this.jerry.pos.x-1, this.jerry.pos.y);
+		} else if(this.table[this.jerry.pos.y][this.jerry.pos.x-1] instanceof TileMonster){
+			checkMonster(this.jerry.pos.x-1, this.jerry.pos.y);
 		}
 	}
 	
 	public void movePlayerRight() {
-		if((this.table[this.jerry.pos.y][this.jerry.pos.x+1].isWalkable())) {
+		if(this.table[this.jerry.pos.y][this.jerry.pos.x+1].isWalkable()) {
 			movePlayer(this.jerry.pos.x+1, this.jerry.pos.y);
+		} else if(this.table[this.jerry.pos.y][this.jerry.pos.x+1] instanceof TileMonster){
+			checkMonster(this.jerry.pos.x+1, this.jerry.pos.y);
+		}
+	}
+	
+	private void moveMonster(Monster m, int x, int y) {
+		this.table[m.pos.y][m.pos.x] = m.getFloor();
+		m.pos.x = x;
+		m.pos.y = y;
+		m.setFloor(this.table[m.pos.y][m.pos.x]);
+	}
+	
+	private void moveAllMonsters() {
+		Monster m;
+		for(int i=0; i<this.monsters.size(); i++) {
+			m=this.monsters.get(i);
+			if(!m.isDead()) {
+				if(this.jerry.pos.y<m.pos.y) {
+					// NORTH
+					if(this.table[m.pos.y-1][m.pos.x].isWalkable()) {
+						moveMonster(m, m.pos.x, m.pos.y-1);
+					} else if(this.jerry.pos.x<m.pos.x) {
+						// ALT WEST
+						if(this.table[m.pos.y][m.pos.x-1].isWalkable()) {
+							moveMonster(m, m.pos.x-1, m.pos.y);
+						}
+					} else if(this.jerry.pos.x>m.pos.x) {
+						// ALT EAST
+						if(this.table[m.pos.y][m.pos.x+1].isWalkable()) {
+							moveMonster(m, m.pos.x+1, m.pos.y);
+						}
+					}
+				} else if(this.jerry.pos.y>m.pos.y) {
+					// SOUTH
+					if(this.table[m.pos.y+1][m.pos.x].isWalkable()) {
+						moveMonster(m, m.pos.x, m.pos.y+1);
+					} else if(this.jerry.pos.x<m.pos.x) {
+						// ALT WEST
+						if(this.table[m.pos.y][m.pos.x-1].isWalkable()) {
+							moveMonster(m, m.pos.x-1, m.pos.y);
+						}
+					} else if(this.jerry.pos.x>m.pos.x) {
+						// ALT EAST
+						if(this.table[m.pos.y][m.pos.x+1].isWalkable()) {
+							moveMonster(m, m.pos.x+1, m.pos.y);
+						}
+					}
+				} else if(this.jerry.pos.x<m.pos.x) {
+					// WEST
+					if(this.table[m.pos.y][m.pos.x-1].isWalkable()) {
+						moveMonster(m, m.pos.x-1, m.pos.y);
+					} else if(this.jerry.pos.y<m.pos.y) {
+						// ALT NORTH
+						if(this.table[m.pos.y-1][m.pos.x].isWalkable()) {
+							moveMonster(m, m.pos.x, m.pos.y-1);
+						}
+					} else if(this.jerry.pos.y>m.pos.y) {
+						// ALT SOUTH
+						if(this.table[m.pos.y+1][m.pos.x].isWalkable()) {
+							moveMonster(m, m.pos.x, m.pos.y+1);
+						}
+					}
+				} else if(this.jerry.pos.x>m.pos.x) {
+					// EAST
+					if(this.table[m.pos.y][m.pos.x+1].isWalkable()) {
+						moveMonster(m, m.pos.x+1, m.pos.y);
+					} else if(this.jerry.pos.y<m.pos.y) {
+						// ALT NORTH
+						if(this.table[m.pos.y-1][m.pos.x].isWalkable()) {
+							moveMonster(m, m.pos.x, m.pos.y-1);
+						}
+					} else if(this.jerry.pos.y>m.pos.y) {
+						// ALT SOUTH
+						if(this.table[m.pos.y+1][m.pos.x].isWalkable()) {
+							moveMonster(m, m.pos.x, m.pos.y+1);
+						}
+					}
+				}
+			}
+			integrateMobs();
 		}
 	}
 	
@@ -341,7 +479,7 @@ public class Map {
 		for(int i=0; i<rooms.size(); i++) {
 			rooms.get(i).printOn(this.table);
 		}
-		integratePlayer();
+		integrateMobs();
 		this.table[this.stairDown.y][this.stairDown.x] = TileFactory.getInstance().createTileStairsDown();
 	}
 	

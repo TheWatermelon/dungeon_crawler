@@ -1,6 +1,6 @@
 package tiles;
 
-public class TilePlayer extends Tile {
+public class TilePlayer extends TileMob {
 	public TilePlayer() {
 		this.walkable = false;
 		this.description = "Player";
