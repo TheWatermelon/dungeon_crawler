@@ -368,10 +368,13 @@ public class Map {
 	}
 	
 	private void checkMonster(int x, int y) {
+		Random rnd = new Random();
 		for(int i=0; i<this.monsters.size(); i++) {
 			if((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y)) {
 				this.monsters.get(i).murder();
-				rewardGold();
+				if(rnd.nextInt(5)==0) {
+					rewardGold();
+				}
 			}
 		}
 	}
