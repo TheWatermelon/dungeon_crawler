@@ -13,6 +13,10 @@ public class TileDoor extends Tile {
 		this.opened=true;
 	}
 	
+	public boolean isOpen() {
+		return this.opened;
+	}
+	
 	public char getSymbol() {
 		if(this.opened) {
 			return ':';

@@ -8,6 +8,7 @@ import objects.Monster;
 import objects.Player;
 import rooms.*;
 import tiles.Tile;
+import tiles.TileDoor;
 import tiles.TileFactory;
 import tiles.TileGold;
 import tiles.TileMonster;
@@ -409,61 +410,85 @@ public class Map {
 			if(!m.isDead()) {
 				if(this.jerry.pos.y<m.pos.y) {
 					// NORTH
-					if(this.table[m.pos.y-1][m.pos.x].isWalkable()) {
+					if(this.table[m.pos.y-1][m.pos.x].isWalkable() 
+							&& !(this.table[m.pos.y-1][m.pos.x] instanceof TileDoor 
+									&& !((TileDoor)this.table[m.pos.y-1][m.pos.x]).isOpen())) {
 						moveMonster(m, m.pos.x, m.pos.y-1);
 					} else if(this.jerry.pos.x<m.pos.x) {
 						// ALT WEST
-						if(this.table[m.pos.y][m.pos.x-1].isWalkable()) {
+						if(this.table[m.pos.y][m.pos.x-1].isWalkable() 
+								&& !(this.table[m.pos.y-1][m.pos.x] instanceof TileDoor 
+										&& !((TileDoor)this.table[m.pos.y-1][m.pos.x]).isOpen())) {
 							moveMonster(m, m.pos.x-1, m.pos.y);
 						}
 					} else if(this.jerry.pos.x>m.pos.x) {
 						// ALT EAST
-						if(this.table[m.pos.y][m.pos.x+1].isWalkable()) {
+						if(this.table[m.pos.y][m.pos.x+1].isWalkable() 
+								&& !(this.table[m.pos.y-1][m.pos.x] instanceof TileDoor 
+										&& !((TileDoor)this.table[m.pos.y-1][m.pos.x]).isOpen())) {
 							moveMonster(m, m.pos.x+1, m.pos.y);
 						}
 					}
 				} else if(this.jerry.pos.y>m.pos.y) {
 					// SOUTH
-					if(this.table[m.pos.y+1][m.pos.x].isWalkable()) {
+					if(this.table[m.pos.y+1][m.pos.x].isWalkable() 
+							&& !(this.table[m.pos.y-1][m.pos.x] instanceof TileDoor 
+									&& !((TileDoor)this.table[m.pos.y-1][m.pos.x]).isOpen())) {
 						moveMonster(m, m.pos.x, m.pos.y+1);
 					} else if(this.jerry.pos.x<m.pos.x) {
 						// ALT WEST
-						if(this.table[m.pos.y][m.pos.x-1].isWalkable()) {
+						if(this.table[m.pos.y][m.pos.x-1].isWalkable() 
+								&& !(this.table[m.pos.y-1][m.pos.x] instanceof TileDoor 
+										&& !((TileDoor)this.table[m.pos.y-1][m.pos.x]).isOpen())) {
 							moveMonster(m, m.pos.x-1, m.pos.y);
 						}
 					} else if(this.jerry.pos.x>m.pos.x) {
 						// ALT EAST
-						if(this.table[m.pos.y][m.pos.x+1].isWalkable()) {
+						if(this.table[m.pos.y][m.pos.x+1].isWalkable() 
+								&& !(this.table[m.pos.y-1][m.pos.x] instanceof TileDoor 
+										&& !((TileDoor)this.table[m.pos.y-1][m.pos.x]).isOpen())) {
 							moveMonster(m, m.pos.x+1, m.pos.y);
 						}
 					}
 				} else if(this.jerry.pos.x<m.pos.x) {
 					// WEST
-					if(this.table[m.pos.y][m.pos.x-1].isWalkable()) {
+					if(this.table[m.pos.y][m.pos.x-1].isWalkable() 
+							&& !(this.table[m.pos.y-1][m.pos.x] instanceof TileDoor 
+									&& !((TileDoor)this.table[m.pos.y-1][m.pos.x]).isOpen())) {
 						moveMonster(m, m.pos.x-1, m.pos.y);
 					} else if(this.jerry.pos.y<m.pos.y) {
 						// ALT NORTH
-						if(this.table[m.pos.y-1][m.pos.x].isWalkable()) {
+						if(this.table[m.pos.y-1][m.pos.x].isWalkable() 
+								&& !(this.table[m.pos.y-1][m.pos.x] instanceof TileDoor 
+										&& !((TileDoor)this.table[m.pos.y-1][m.pos.x]).isOpen())) {
 							moveMonster(m, m.pos.x, m.pos.y-1);
 						}
 					} else if(this.jerry.pos.y>m.pos.y) {
 						// ALT SOUTH
-						if(this.table[m.pos.y+1][m.pos.x].isWalkable()) {
+						if(this.table[m.pos.y+1][m.pos.x].isWalkable() 
+								&& !(this.table[m.pos.y-1][m.pos.x] instanceof TileDoor 
+										&& !((TileDoor)this.table[m.pos.y-1][m.pos.x]).isOpen())) {
 							moveMonster(m, m.pos.x, m.pos.y+1);
 						}
 					}
 				} else if(this.jerry.pos.x>m.pos.x) {
 					// EAST
-					if(this.table[m.pos.y][m.pos.x+1].isWalkable()) {
+					if(this.table[m.pos.y][m.pos.x+1].isWalkable() 
+							&& !(this.table[m.pos.y-1][m.pos.x] instanceof TileDoor 
+									&& !((TileDoor)this.table[m.pos.y-1][m.pos.x]).isOpen())) {
 						moveMonster(m, m.pos.x+1, m.pos.y);
 					} else if(this.jerry.pos.y<m.pos.y) {
 						// ALT NORTH
-						if(this.table[m.pos.y-1][m.pos.x].isWalkable()) {
+						if(this.table[m.pos.y-1][m.pos.x].isWalkable() 
+								&& !(this.table[m.pos.y-1][m.pos.x] instanceof TileDoor 
+										&& !((TileDoor)this.table[m.pos.y-1][m.pos.x]).isOpen())) {
 							moveMonster(m, m.pos.x, m.pos.y-1);
 						}
 					} else if(this.jerry.pos.y>m.pos.y) {
 						// ALT SOUTH
-						if(this.table[m.pos.y+1][m.pos.x].isWalkable()) {
+						if(this.table[m.pos.y+1][m.pos.x].isWalkable() 
+								&& !(this.table[m.pos.y-1][m.pos.x] instanceof TileDoor 
+										&& !((TileDoor)this.table[m.pos.y-1][m.pos.x]).isOpen())) {
 							moveMonster(m, m.pos.x, m.pos.y+1);
 						}
 					}
