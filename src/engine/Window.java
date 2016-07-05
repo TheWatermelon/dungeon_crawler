@@ -3,6 +3,7 @@ package engine;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -34,6 +35,8 @@ public class Window extends JFrame{
 	//private JTextPane foot2;
 	
 	private StyledDocument sDoc;
+	private Style wall;
+	private Style floor;
 	private Style defaut;
 	private Style orange;
 	private Style gold;
@@ -44,6 +47,8 @@ public class Window extends JFrame{
 	private Style darkGray;
 	private Style darkGreen;
 	private Style coolRed;
+	private Style darkRed;
+	private Style floorRed;
 	
 	public Window(String title, Map m) {
 		super(title);
@@ -162,6 +167,16 @@ public class Window extends JFrame{
 		
 		this.coolRed = this.body.addStyle("coolRed", gold);
 		StyleConstants.setForeground(this.coolRed, new Color(0xEF, 0x3F, 0x23));
+		
+		this.darkRed = this.body.addStyle("darkRed", coolRed);
+		StyleConstants.setForeground(this.darkRed, new Color(0x7F, 0x00, 0x00));
+		
+		this.floorRed = this.body.addStyle("floorRed", darkRed);
+		StyleConstants.setForeground(this.floorRed, new Color(0x4C, 0x00, 0x00));
+	}
+	
+	public void pickTheme() {
+		Random rnd = new Random();
 	}
 	
 	public void setLabel(String s, String s1, String s2) {
@@ -178,11 +193,13 @@ public class Window extends JFrame{
 			if(this.tab[i][j] instanceof TilePlayer) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.green);
 			} else if(this.tab[i][j] instanceof TileWall) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.lightGray);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkRed);
+				//sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.lightGray);
 			} else if(this.tab[i][j] instanceof TileDoor) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.brown);
 			} else if(this.tab[i][j] instanceof TileStone) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkGray);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.floorRed);
+				//sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkGray);
 			} else if(this.tab[i][j] instanceof TileMoss) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkGreen);
 			} else if(this.tab[i][j] instanceof TileStairsDown) {

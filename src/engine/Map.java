@@ -558,7 +558,7 @@ public class Map {
 	}
 	
 	public void printOnWindow() {
-		this.win = new Window("Dungeon Generator", this);
+		this.win = new Window("Dungeon Crawler", this);
 		
 		this.win.setLabel(generateMapInfo(), this.jerry.getInfo(), getLog());
 		
