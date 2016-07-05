@@ -1,7 +1,9 @@
 package objects;
 
 import java.awt.Point;
+import java.util.Random;
 
+import engine.MessageLog;
 import tiles.TileFactory;
 
 public class Monster extends Mob {
@@ -22,5 +24,19 @@ public class Monster extends Mob {
 	public void murder() {
 		this.dead = true;
 		this.floor = TileFactory.getInstance().createTileCorpse();
+	}
+	
+	public void fight(Player p, MessageLog l) {
+		Random rnd = new Random();
+		int deg;
+
+		deg = rnd.nextInt(3);
+		p.hp -= deg*this.atk;
+		if(deg==0) { l.appendMessage(description+" miss"); }
+		else { l.appendMessage(description+" deals "+(deg*this.atk)+" dmg to "+p.description); }
+		if(p.hp <= 0) { 
+			p.murder(); 
+			l.appendMessage("Dead! Press r to restart");
+		}
 	}
 }

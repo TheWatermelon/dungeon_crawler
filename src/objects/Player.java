@@ -41,7 +41,7 @@ public class Player extends Mob {
 		
 		deg = rnd.nextInt(3);
 		this.hp -= deg*m.atk;
-		if(deg==0) { l.appendMessage(m.description+" missed"); }
+		if(deg==0) { l.appendMessage(m.description+" miss"); }
 		else { l.appendMessage(m.description+" deals "+(deg*m.atk)+" dmg to "+description); }
 		if(this.hp <= 0) {
 			this.hp=0;
@@ -52,7 +52,7 @@ public class Player extends Mob {
 
 		deg = rnd.nextInt(3);
 		m.hp -= deg*this.atk;
-		if(deg==0) { l.appendMessage(description+" missed "+m.description); }
+		if(deg==0) { l.appendMessage(description+" miss"); }
 		else { l.appendMessage(description+" deals "+(deg*this.atk)+" dmg to "+m.description); }
 		if(m.hp <= 0) { 
 			m.murder(); 

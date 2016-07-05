@@ -356,6 +356,7 @@ public class Map {
 	}
 	
 	private void levelUp() {
+		this.log.appendMessage("Going down...");
 		this.level++;
 		generateDungeon();
 	}
