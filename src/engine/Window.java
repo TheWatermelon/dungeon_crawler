@@ -47,8 +47,11 @@ public class Window extends JFrame{
 	private Style darkGray;
 	private Style darkGreen;
 	private Style coolRed;
+	private Style red;
 	private Style darkRed;
-	private Style floorRed;
+	private Style blue;
+	private Style darkBlue;
+	
 	
 	public Window(String title, Map m) {
 		super(title);
@@ -128,6 +131,7 @@ public class Window extends JFrame{
 		this.add(this.global);
 		
 		initStyles();
+		pickTheme();
 		
 		this.setVisible(true);
 	}
@@ -169,14 +173,31 @@ public class Window extends JFrame{
 		StyleConstants.setForeground(this.coolRed, new Color(0xEF, 0x3F, 0x23));
 		
 		this.darkRed = this.body.addStyle("darkRed", coolRed);
-		StyleConstants.setForeground(this.darkRed, new Color(0x7F, 0x00, 0x00));
+		StyleConstants.setForeground(this.darkRed, new Color(0x4C, 0x00, 0x00));
 		
-		this.floorRed = this.body.addStyle("floorRed", darkRed);
-		StyleConstants.setForeground(this.floorRed, new Color(0x4C, 0x00, 0x00));
+		this.red = this.body.addStyle("red", darkRed);
+		StyleConstants.setForeground(this.red, new Color(0x7F, 0x00, 0x00));
+		
+		this.darkBlue = this.body.addStyle("darkBlue", red);
+		StyleConstants.setForeground(this.darkBlue, new Color(0x00, 0x00, 0x4C));
+		
+		this.blue = this.body.addStyle("blue", darkBlue);
+		StyleConstants.setForeground(this.blue, new Color(0x00, 0x00, 0x7F));
 	}
 	
 	public void pickTheme() {
 		Random rnd = new Random();
+		int theme = rnd.nextInt(3);
+		if(theme==0) {
+			this.wall = this.lightGray;
+			this.floor = this.darkGray;
+		} else if(theme==1) {
+			this.wall = this.red;
+			this.floor = this.darkRed;
+		} else {
+			this.wall = this.blue;
+			this.floor = this.darkBlue;
+		}
 	}
 	
 	public void setLabel(String s, String s1, String s2) {
@@ -193,13 +214,11 @@ public class Window extends JFrame{
 			if(this.tab[i][j] instanceof TilePlayer) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.green);
 			} else if(this.tab[i][j] instanceof TileWall) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkRed);
-				//sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.lightGray);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.wall);
 			} else if(this.tab[i][j] instanceof TileDoor) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.brown);
 			} else if(this.tab[i][j] instanceof TileStone) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.floorRed);
-				//sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkGray);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.floor);
 			} else if(this.tab[i][j] instanceof TileMoss) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkGreen);
 			} else if(this.tab[i][j] instanceof TileStairsDown) {

@@ -33,9 +33,10 @@ public class MyKeyListener implements KeyListener {
 				this.map.movePlayerLeft();
 			} else if(ke.getKeyChar() == 'd') {
 				this.map.movePlayerRight();
-			} /*else if(ke.getKeyChar() == 'r') {
+			} else if(ke.getKeyChar() == 'r') {
+				this.win.pickTheme();
 				this.map.generateDungeon();
-			} */
+			} 
 			// Refresh map on window
 			this.win.refresh();
 		} else {
