@@ -24,18 +24,24 @@ public class MyKeyListener implements KeyListener {
 	}
 
 	public void keyTyped(KeyEvent ke) {
-		if(ke.getKeyChar() == 'z') {
-			this.map.movePlayerUp();
-		} else if(ke.getKeyChar() == 's') {
-			this.map.movePlayerDown();
-		} else if(ke.getKeyChar() == 'q') {
-			this.map.movePlayerLeft();
-		} else if(ke.getKeyChar() == 'd') {
-			this.map.movePlayerRight();
-		} else if(ke.getKeyChar() == 'r') {
-			this.map.generateDungeon();
+		if(!this.map.isPlayerDead()) {
+			if(ke.getKeyChar() == 'z') {
+				this.map.movePlayerUp();
+			} else if(ke.getKeyChar() == 's') {
+				this.map.movePlayerDown();
+			} else if(ke.getKeyChar() == 'q') {
+				this.map.movePlayerLeft();
+			} else if(ke.getKeyChar() == 'd') {
+				this.map.movePlayerRight();
+			} /*else if(ke.getKeyChar() == 'r') {
+				this.map.generateDungeon();
+			} */
+			// Refresh map on window
+			this.win.refresh();
+		} else {
+			if(ke.getKeyChar()=='r') {
+				this.map.newGame();
+			}
 		}
-		// Refresh map on window
-		this.win.refresh();
 	}
 }

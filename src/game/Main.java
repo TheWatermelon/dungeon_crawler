@@ -4,7 +4,7 @@ import engine.Map;
 
 public class Main {
 	public static void main(String[] args) {
-		Map customMap = new Map(32, 54);
+		Map customMap = new Map(31, 54);
 		customMap.generateDungeon();
 		//customMap.printOnConsole();
 		customMap.printOnWindow();

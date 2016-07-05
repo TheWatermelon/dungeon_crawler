@@ -31,7 +31,7 @@ public class Window extends JFrame{
 	private JTextPane body;
 	private JTextPane foot;
 	private JTextPane foot1;
-	private JTextPane foot2;
+	//private JTextPane foot2;
 	
 	private StyledDocument sDoc;
 	private Style defaut;
@@ -50,6 +50,7 @@ public class Window extends JFrame{
 		this.map = m;
 		this.tab = m.getTable();
 		this.setSize(800, 600);
+		this.setLocation(150, 100);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
@@ -103,15 +104,17 @@ public class Window extends JFrame{
 		this.foot1.setFocusable(false);
 		this.foot1.setBackground(Color.black);
 		this.foot1.setForeground(Color.white);
+		StyledDocument doc1 = this.foot1.getStyledDocument();
+		doc1.setParagraphAttributes(0, doc1.getLength(), center, false);
 		this.footPanel.add(this.foot1, BorderLayout.CENTER);
-		
+		/*
 		this.foot2 = new JTextPane();
 		this.foot2.setEditable(false);
 		this.foot2.setFocusable(false); 
 		this.foot2.setBackground(Color.black);
 		this.foot2.setForeground(Color.white);
 		this.footPanel.add(this.foot2, BorderLayout.EAST);
-		
+		*/
 		this.global.add(this.headPanel, BorderLayout.NORTH);
 		this.global.add(this.body, BorderLayout.CENTER);
 		this.global.add(this.leftPanel, BorderLayout.WEST);
@@ -164,9 +167,9 @@ public class Window extends JFrame{
 	public void setLabel(String s, String s1, String s2) {
 		this.head.setText(s);
 		this.foot.setText(s1);
-		this.foot2.setText(s2);
+		this.foot1.setText(s2);
 		this.foot.repaint();
-		this.foot2.repaint();
+		this.foot1.repaint();
 		this.headPanel.repaint();
 	}
 	
@@ -226,30 +229,33 @@ public class Window extends JFrame{
 	public void refresh() {
 		String s="";
 		int pos=0;
-		
-		this.map.printDungeon();
-		
-		try {
-			sDoc.insertString(pos, "\n", defaut);
-			for(int i=0; i<this.tab.length; i++) {
-				s+=" ";
-				sDoc.insertString(pos, " ", defaut);
-				pos++;
-				for(int j=0; j<this.tab[0].length; j++) {
-					s+=""+this.tab[i][j].getSymbol()+" ";
-					if(s.substring(pos, pos+1)!=sDoc.getText(pos, pos+1)) {
-						printInColor(pos, i, j);
-						pos=s.length();
-					}
-				}
-				s+="\n";
+		if(!this.map.isPlayerDead()) {
+			this.map.printDungeon();
+			
+			try {
 				sDoc.insertString(pos, "\n", defaut);
-				pos++;
-			}
-			sDoc.insertString(pos, "\n", defaut);
-		} catch(BadLocationException e) {}
-		
-		setLabel(this.map.generateMapInfo(), this.map.getPlayerInfo(), this.map.getLog());
+				for(int i=0; i<this.tab.length; i++) {
+					s+=" ";
+					sDoc.insertString(pos, " ", defaut);
+					pos++;
+					for(int j=0; j<this.tab[0].length; j++) {
+						s+=""+this.tab[i][j].getSymbol()+" ";
+						if(s.substring(pos, pos+1)!=sDoc.getText(pos, pos+1)) {
+							printInColor(pos, i, j);
+							pos=s.length();
+						}
+					}
+					s+="\n";
+					sDoc.insertString(pos, "\n", defaut);
+					pos++;
+				}
+				sDoc.insertString(pos, "\n", defaut);
+			} catch(BadLocationException e) {}
+			
+			setLabel(this.map.generateMapInfo(), this.map.getPlayerInfo(), this.map.getLog());
+		} else {
+			setLabel(this.map.getFinalScreen(), this.map.getPlayerInfo(), this.map.getLog());
+		}
 		this.body.repaint();
 	}
 }

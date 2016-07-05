@@ -10,6 +10,8 @@ public class Monster extends Mob {
 	}
 	
 	public Monster(int x, int y, char s, String desc) {
+		this.hp = 20;
+		this.atk = 3;
 		this.dead = false;
 		this.pos = new Point(x, y);
 		this.symbol = s;

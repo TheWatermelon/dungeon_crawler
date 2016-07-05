@@ -78,8 +78,7 @@ public class Map {
 		int roomIndex, height, width;
 		
 		// Position joueur
-		this.jerry.pos.x = getWidth()/2;
-		this.jerry.pos.y = getHeight()/2;
+		this.jerry.placeOn(getWidth()/2, getHeight()/2);
 		
 		// Remise a zero de la carte
 		this.rooms = new Vector<Room>();
@@ -339,6 +338,8 @@ public class Map {
 		return roomIndex;
 	}
 	
+	public boolean isPlayerDead() { return this.jerry.isDead(); }
+	
 	private boolean isStairs(int x, int y) {
 		if(this.table[y][x] instanceof TileStairsDown) {
 			return true;
@@ -348,22 +349,24 @@ public class Map {
 	
 	private boolean isGold(int x, int y) {
 		if(this.table[y][x] instanceof TileGold) {
-			this.log.appendMessage("Found "+rewardGold()+"G");
+			this.log.appendMessage("Found "+this.jerry.rewardGold()+"G");
 			return true;
 		}
 		return false;
 	}
 	
-	private int rewardGold() {
-		Random rnd = new Random();
-		int gold = rnd.nextInt(5)+1;
-		this.jerry.addGold(gold);
-		return gold;
-	}
-	
 	private void levelUp() {
 		this.level++;
 		generateDungeon();
+	}
+	
+	public void newGame() {
+		this.level = 0;
+		this.jerry.reset();
+		generateDungeon();
+		this.log.clear();
+		this.win.dispose();
+		printOnWindow();
 	}
 	
 	private void checkPlayerPos(int x, int y) {
@@ -372,23 +375,19 @@ public class Map {
 	}
 	
 	private void checkMonster(int x, int y) {
-		Random rnd = new Random();
 		for(int i=0; i<this.monsters.size(); i++) {
 			if((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y)) {
-				this.monsters.get(i).murder();
-				this.log.appendMessage(this.monsters.get(i).toString()+" killed");
-				if(rnd.nextInt(5)==0) {
-					this.log.appendMessage("Gained "+rewardGold()+"G");
-				}
+				this.jerry.fight(this.monsters.get(i), this.log);
 			}
 		}
 	}
-	
+		
 	private void movePlayer(int x, int y) {
 		this.table[this.jerry.pos.y][this.jerry.pos.x] = this.jerry.getFloor();
 		this.jerry.pos.x = x;
 		this.jerry.pos.y = y;
 		this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
+		this.jerry.restoreHealth();
 		checkPlayerPos(this.jerry.pos.x, this.jerry.pos.y);
 		integratePlayer();
 		moveAllMonsters();
@@ -520,7 +519,9 @@ public class Map {
 		for(int i=0; i<rooms.size(); i++) {
 			rooms.get(i).printOn(this.table);
 		}
-		this.table[this.stairDown.y][this.stairDown.x] = TileFactory.getInstance().createTileStairsDown();
+		if(!(this.table[this.stairDown.y][this.stairDown.x] instanceof TileVoid)) {
+			this.table[this.stairDown.y][this.stairDown.x] = TileFactory.getInstance().createTileStairsDown();
+		}
 		integrateMobs();
 	}
 	
@@ -535,6 +536,10 @@ public class Map {
 	
 	public String getLog() {
 		return this.log.getLast(3);
+	}
+	
+	public String getFinalScreen() {
+		return "  Game Over\t\n  Level "+this.level+"\t";
 	}
 	
 	public void printOnConsole() {		

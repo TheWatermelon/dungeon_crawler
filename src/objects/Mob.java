@@ -13,13 +13,16 @@ public abstract class Mob {
 	protected String description;
 	protected Tile floor;
 	
-	protected double hp;
+	public int hp;
+	public int atk;
+	public int def;
 
 	public abstract void murder();
 
+	
+	
 	public final void placeOn(int x, int y) {
-		this.pos.x = x;
-		this.pos.y = y;
+		this.pos = new Point(x, y);
 	}
 	
 	public final void setFloor(Tile t) {

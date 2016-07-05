@@ -31,4 +31,8 @@ public class MessageLog {
 		
 		return res;
 	}
+	
+	public void clear() {
+		this.log = new Vector<String>();
+	}
 }
