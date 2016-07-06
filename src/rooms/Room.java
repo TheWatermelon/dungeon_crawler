@@ -6,6 +6,7 @@ import java.util.Vector;
 import tiles.Tile;
 import tiles.TileFactory;
 import objects.Door;
+import objects.Item;
 
 public abstract class Room {
 	protected String description;
@@ -26,13 +27,7 @@ public abstract class Room {
 	public final void addDoor(Point p) { this.door.add(new Door(p)); }
 	public final void addDoor(Point p, Tile t) { this.door.add(new Door(p, t)); }
 	
-	protected abstract void parsingFloor();
-	
-	public final void isItem(int x, int y) {
-		if(x == this.item.x && y == this.item.y) {
-			this.item = new Point();
-		}
-	}
+	public abstract Item parsingFloor();
 	
 	public final void printOn(Tile[][] tab) {
 		if(show) {

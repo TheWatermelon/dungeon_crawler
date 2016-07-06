@@ -205,7 +205,7 @@ public class Window extends JFrame{
 
 		this.basicColors[0] = this.lightGray;
 		this.basicColors[1] = this.white;
-		this.basicColors[2] = this.yellow;
+		this.basicColors[2] = this.brown;
 		this.basicColors[3] = this.orange;
 		this.basicColors[4] = this.red;
 		this.basicColors[5] = this.pink;
@@ -310,37 +310,39 @@ public class Window extends JFrame{
 	}
 	
 	public void refresh() {
-		String s="";
-		int pos=0;
 		if(!this.map.isPlayerDead()) {
 			this.map.printDungeon();
-			
-			try {
-				sDoc.insertString(pos, "\n", defaut);
-				for(int i=0; i<this.tab.length; i++) {
-					s+=" ";
-					sDoc.insertString(pos, " ", defaut);
-					pos++;
-					for(int j=0; j<this.tab[0].length; j++) {
-						s+=""+this.tab[i][j].getSymbol()+" ";
-						if(!s.substring(pos, pos+1).equals(sDoc.getText(pos, pos+1))) {
-							printInColor(pos, i, j);
-							pos=s.length();
-						}
-					}
-					s+="\n";
-					sDoc.insertString(pos, "\n", defaut);
-					pos++;
-				}
-				sDoc.insertString(pos, "\n", defaut);
-			} catch(BadLocationException e) {}
-			
+			printOnScreen();
 			setLabel(this.map.generateMapInfo(), this.map.getPlayer().getAllInfo(), this.map.getLog());
 			//setLabel(this.map.generateMapInfo(), this.map.getPlayerInfo(), this.map.getLog(), this.map.getWeaponInfo());
 		} else {
-			setLabel(this.map.generateMapInfo(), this.map.getPlayer().getAllInfo(), this.map.getLog());
+			setLabel(this.map.getFinalScreen(), this.map.getPlayer().getAllInfo(), this.map.getLog());
 			//setLabel(this.map.getFinalScreen(), this.map.getPlayerInfo(), this.map.getLog(), this.map.getWeaponInfo());
 		}
-		this.body.repaint();
+		//this.body.repaint();
+	}
+	
+	private void printOnScreen() {
+		String s="";
+		int pos=0;
+		try {
+			sDoc.insertString(pos, "\n", defaut);
+			for(int i=0; i<this.tab.length; i++) {
+				s+=" ";
+				sDoc.insertString(pos, " ", defaut);
+				pos++;
+				for(int j=0; j<this.tab[0].length; j++) {
+					s+=""+this.tab[i][j].getSymbol()+" ";
+					if(!s.substring(pos, pos+1).equals(sDoc.getText(pos, pos+1))) {
+						printInColor(pos, i, j);
+						pos=s.length();
+					}
+				}
+				s+="\n";
+				sDoc.insertString(pos, "\n", defaut);
+				pos++;
+			}
+			sDoc.insertString(pos, "\n", defaut);
+		} catch(BadLocationException e) {}
 	}
 }

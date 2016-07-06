@@ -5,6 +5,8 @@ import java.util.Random;
 import java.util.Vector;
 
 import objects.Door;
+import objects.Gold;
+import objects.Item;
 import tiles.Tile;
 import tiles.TileFactory;
 
@@ -17,12 +19,8 @@ public class RectangleRoom extends Room {
 		this.p2 = new Point(x2, y2);
 		this.door = new Vector<Door>();
 		this.moss = new Vector<Point>();
-		this.item = new Point();
 		this.floor = TileFactory.getInstance().createTileStone();
-		this.room = new Tile[this.getHeight()][this.getWidth()];
 		this.show = false;
-		
-		parsingFloor();
 	}
 
 	public void print(Tile[][] tab) {
@@ -42,12 +40,9 @@ public class RectangleRoom extends Room {
 		for(int i=0; i<this.moss.size(); i++) {
 			tab[this.moss.get(i).y][this.moss.get(i).x] = TileFactory.getInstance().createTileMoss();
 		}
-		if(this.item.x != 0 && this.item.y != 0) {
-			tab[this.item.y][this.item.x] = TileFactory.getInstance().createTileGold();
-		}
 	}
 	
-	protected void parsingFloor() {
+	public Item parsingFloor() {
 		Random rnd = new Random();
 		int placingChance = rnd.nextInt(3), floorChance;
 		
@@ -58,9 +53,8 @@ public class RectangleRoom extends Room {
 					if(floorChance<20) this.moss.add(new Point(this.p1.x+j,this.p1.y+i));
 				}
 			}
-			this.item.y = rnd.nextInt(this.getHeight()-1)+1+this.p1.y;
-			this.item.x = rnd.nextInt(this.getWidth()-1)+1+this.p1.x;
+			return new Gold(rnd.nextInt(this.getHeight()-1)+1+this.p1.x, rnd.nextInt(this.getWidth()-1)+1+this.p1.y);
 		}
-		
+		return null;
 	}
 }

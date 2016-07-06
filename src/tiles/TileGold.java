@@ -1,6 +1,6 @@
 package tiles;
 
-public class TileGold extends Tile {
+public class TileGold extends TileItem {
 	public TileGold() {
 		this.walkable = true;
 		this.description = "Gold";

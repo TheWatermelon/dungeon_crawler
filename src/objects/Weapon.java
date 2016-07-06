@@ -1,5 +1,9 @@
 package objects;
 
+import java.awt.Point;
+
+import tiles.Tile;
+import tiles.TileFactory;
 import engine.Ressources;
 
 public class Weapon extends Equipement {
@@ -11,10 +15,15 @@ public class Weapon extends Equipement {
 		this.description = Ressources.getWeaponAt(0);
 	}
 	
-	public Weapon(int v) {
-		this.val=v;
-		this.maxDurability = v*10;
+	public Weapon(int x, int y) {
+		this.pos = new Point(x, y);
+		this.val=pickVal(5);
+		this.maxDurability = val*10;
 		this.resetDurability();
-		this.description = Ressources.getWeaponAt(v);
+		this.description = Ressources.getWeaponAt(val);
+	}
+	
+	public Tile getTile() {
+		return TileFactory.getInstance().createTileWeapon();
 	}
 }

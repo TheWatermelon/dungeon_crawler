@@ -7,7 +7,6 @@ import engine.MessageLog;
 
 public class Player extends Mob {
 	private int gold;
-	private int level;
 	private int monstersKilled;
 	private Weapon w;
 	private Shield s;
@@ -19,7 +18,6 @@ public class Player extends Mob {
 		this.w = new Weapon();
 		this.s = new Shield();
 		this.gold=0;
-		this.level=1;
 		this.monstersKilled=0;
 		this.dead = false;
 		this.pos = new Point();
@@ -33,7 +31,6 @@ public class Player extends Mob {
 		this.w = new Weapon();
 		this.s = new Shield();
 		this.gold=0;
-		this.level=1;
 		this.monstersKilled=0;
 		this.dead = false;
 		this.pos = new Point(x, y);
@@ -95,7 +92,7 @@ public class Player extends Mob {
 		return gold;
 	}
 	
-	private void addGold(int amount) {
+	public void addGold(int amount) {
 		this.gold+=amount;
 		log.appendMessage("Gained "+amount+"G");
 	}
@@ -133,7 +130,7 @@ public class Player extends Mob {
 			this.w = weapon;
 		} else {
 			if(this.w.getDurability()<this.w.getMaxDurability()) {
-				this.w.durability += weapon.getVal();
+				this.w.durability += 2*weapon.getVal();
 				if(this.w.durability>this.w.maxDurability) {
 					this.w.resetDurability();
 				}
@@ -146,7 +143,7 @@ public class Player extends Mob {
 			this.s = shield;
 		} else {
 			if(this.s.getDurability()<this.s.getMaxDurability()) {
-				this.s.durability += shield.getVal();
+				this.s.durability += 2*shield.getVal();
 				if(this.s.durability>this.s.maxDurability) {
 					this.s.resetDurability();
 				}
@@ -180,7 +177,6 @@ public class Player extends Mob {
 		this.gold=0;
 		this.w=new Weapon();
 		this.s=new Shield();
-		this.level=1;
 		this.monstersKilled=0;
 		this.dead=false;
 	}
