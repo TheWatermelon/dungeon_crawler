@@ -87,7 +87,7 @@ public class Window extends JFrame{
 		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 		
 		this.headPanel.add(this.head, BorderLayout.CENTER);
-		
+				
 		this.body = new JTextPane();
 		this.body.setContentType("charset=UTF-8");
 		this.body.setEditable(false);
@@ -232,9 +232,9 @@ public class Window extends JFrame{
 		if(!this.foot1.getText().equals(s2)) {
 			this.foot1.setText(s2);
 		}
-		this.foot.repaint();
-		this.foot1.repaint();
-		this.head.repaint();
+		//this.foot.repaint();
+		//this.foot1.repaint();
+		//this.head.repaint();
 	}
 	
 	public void setLabel(String s, String s1, String s2, String s3) {
@@ -250,10 +250,10 @@ public class Window extends JFrame{
 		if(!this.foot2.getText().equals(s3)) {
 			this.foot2.setText(s3);
 		}
-		this.foot.repaint();
-		this.foot1.repaint();
-		this.foot2.repaint();
-		this.head.repaint();
+		//this.foot.repaint();
+		//this.foot1.repaint();
+		//this.foot2.repaint();
+		//this.head.repaint();
 	}
 	
 	private void printInColor(int pos, int i, int j) {
@@ -308,7 +308,7 @@ public class Window extends JFrame{
 			sDoc.insertString(pos, "\n", defaut);
 		} catch(BadLocationException e) {}
 		
-		this.body.repaint();	
+		//this.body.repaint();	
 	}
 	
 	public void refresh() {
@@ -346,5 +346,11 @@ public class Window extends JFrame{
 			}
 			sDoc.insertString(pos, "\n", defaut);
 		} catch(BadLocationException e) {}
+	}
+	
+	public void flash() {
+		this.body.setBorder(BorderFactory.createLineBorder(Color.red));
+		// affichage
+		this.body.setBorder(BorderFactory.createLineBorder(Color.white));
 	}
 }

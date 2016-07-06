@@ -10,6 +10,7 @@ public class Gold extends Item {
 	public Gold(int x, int y) {
 		this.pos = new Point(x, y);
 		this.val = pickVal();
+		this.description="Gold";
 	}
 	
 	private int pickVal() {

@@ -53,7 +53,7 @@ public class RectangleRoom extends Room {
 					if(floorChance<20) this.moss.add(new Point(this.p1.x+j,this.p1.y+i));
 				}
 			}
-			return new Gold(rnd.nextInt(this.getHeight()-1)+1+this.p1.x, rnd.nextInt(this.getWidth()-1)+1+this.p1.y);
+			return new Gold(rnd.nextInt(this.getHeight()-2)+1+this.p1.x, rnd.nextInt(this.getWidth()-2)+1+this.p1.y);
 		}
 		return null;
 	}

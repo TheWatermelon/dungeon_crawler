@@ -24,15 +24,23 @@ public class Corridor extends Room {
 	
 	public Item parsingFloor() {
 		Random rnd = new Random();
-		int parsingChance = rnd.nextInt(5), floorType = rnd.nextInt(3);
+		int parsingChance = rnd.nextInt(4), floorType = rnd.nextInt(3), height=0, width=0;
 		
 		if(parsingChance==0) {
+			if(getHeight()==2) {
+				height=1;
+				width=rnd.nextInt(getWidth()-1)+1; 
+			} else if(getWidth()==2) {
+				width=1;
+				height=rnd.nextInt(getHeight()-1)+1;
+			}
+			
 			if(floorType==0) {
-				return new Gold(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y);
+				return new Gold(width+this.p1.x, height+this.p1.y);
 			} else if(floorType==1) {
-				return new Weapon(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y);
+				return new Weapon(width+this.p1.x, height+this.p1.y);
 			} else if(floorType==2) {
-				return new Shield(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y);
+				return new Shield(width+this.p1.x, height+this.p1.y);
 			}
 		}
 		return null;

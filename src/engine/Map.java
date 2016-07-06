@@ -269,7 +269,7 @@ public class Map {
 				room = this.rooms.get(roomIndex);
 			} while (room instanceof Corridor);
 			
-			monsterNumber = rnd.nextInt(((room.getHeight()-1)/2)*((room.getWidth()-1)/2));
+			monsterNumber = rnd.nextInt(((room.getHeight()-1)/2)*((room.getWidth()-1)/2))+1;
 			for(int j=0; j<monsterNumber; j++) {
 				do {
 					width = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
@@ -606,8 +606,9 @@ public class Map {
 	
 	public void printOnWindow() {
 		this.win = new Window("Dungeon Crawler", this);
-		
-		this.win.setLabel(generateMapInfo(), this.jerry.getInfo(), getLog(), this.jerry.getWeaponInfo());
+
+		this.win.setLabel(generateMapInfo(), getPlayer().getAllInfo(), getLog());
+		//this.win.setLabel(generateMapInfo(), this.jerry.getInfo(), getLog(), this.jerry.getWeaponInfo());
 		
 		this.win.firstPrint();
 	}
