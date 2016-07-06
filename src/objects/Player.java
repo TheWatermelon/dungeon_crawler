@@ -8,6 +8,7 @@ import engine.MessageLog;
 public class Player extends Mob {
 	private int gold;
 	private int level;
+	private int monstersKilled;
 	private Weapon w;
 	private Shield s;
 	private MessageLog log;
@@ -19,6 +20,7 @@ public class Player extends Mob {
 		this.s = new Shield();
 		this.gold=0;
 		this.level=1;
+		this.monstersKilled=0;
 		this.dead = false;
 		this.pos = new Point();
 		this.symbol = '@';
@@ -32,6 +34,7 @@ public class Player extends Mob {
 		this.s = new Shield();
 		this.gold=0;
 		this.level=1;
+		this.monstersKilled=0;
 		this.dead = false;
 		this.pos = new Point(x, y);
 		this.log = l;
@@ -77,6 +80,7 @@ public class Player extends Mob {
 		}
 		if(m.hp <= 0) { 
 			m.murder(); 
+			this.monstersKilled++;
 			log.appendMessage(m.description+" killed");
 			if(rnd.nextInt(5)==0) {
 				rewardGold();
@@ -177,11 +181,16 @@ public class Player extends Mob {
 		this.w=new Weapon();
 		this.s=new Shield();
 		this.level=1;
+		this.monstersKilled=0;
 		this.dead=false;
 	}
 	
+		public int getKills() {
+			return this.monstersKilled;
+		}
+	
 	public String getInfo() {
-		return "   HP : "+this.hp+"\t\n   Gold : "+this.gold+"\t\n"+"   Level : "+this.level;
+		return "   HP : "+this.hp+"\t\n   Gold : "+this.gold+"\t\n"+"   Kills : "+this.monstersKilled;
 	}
 	
 	public String getAllInfo() {
@@ -193,7 +202,7 @@ public class Player extends Mob {
 		if(this.s.getVal()>0) {
 			shield=this.s+" +"+this.s.getVal()+" ("+this.s.getDurability()+"/"+this.s.getMaxDurability()+")";
 		}
-		return "   HP : "+this.hp+"\t"+weapon+"\n   Gold : "+this.gold+"\t"+shield+"\n"+"   Level : "+this.level;
+		return "   HP : "+this.hp+"\t"+weapon+"\n   Gold : "+this.gold+"\t"+shield+"\n"+"   Kills : "+this.monstersKilled;
 	}
 	
 	public String getWeaponInfo() {
