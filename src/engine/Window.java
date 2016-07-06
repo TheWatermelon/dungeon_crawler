@@ -146,7 +146,7 @@ public class Window extends JFrame{
 	private void initStyles() {
 		this.sDoc = (StyledDocument)this.body.getDocument();
 		//
-		// définition des styles pour les caractères des JTextPane
+		// dï¿½finition des styles pour les caractï¿½res des JTextPane
 		//
 		this.defaut = this.body.getStyle("defaut");
 		
@@ -272,7 +272,9 @@ public class Window extends JFrame{
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.orange);
 			} else if(this.tab[i][j] instanceof TileGold) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.yellow);
-			} else if(this.tab[i][j] instanceof TileMonster) {
+			} else if(this.tab[i][j] instanceof TileItem) {
+			 sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.blue);
+			}else if(this.tab[i][j] instanceof TileMonster) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.mob);
 			} else if(this.tab[i][j] instanceof TileCorpse) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.gray);
