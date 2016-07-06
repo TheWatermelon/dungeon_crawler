@@ -254,7 +254,7 @@ public class Map {
 				do {
 					width = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
 					height = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
-				} while ((width==this.jerry.pos.x) && (height==this.jerry.pos.y));
+				} while (((width==this.jerry.pos.x) && (height==this.jerry.pos.y)) && !isMonster(width, height));
 				
 				monsterName = rnd.nextInt(26);
 				this.monsters.add(new Monster(width, height, Ressources.getLetterAt(monsterName), Ressources.getNameAt(monsterName)));
@@ -390,6 +390,15 @@ public class Map {
 				this.jerry.fight(this.monsters.get(i));
 			}
 		}
+	}
+	
+	private boolean isMonster(int x, int y) {
+		for(int i=0; i<this.monsters.size(); i++) {
+			if((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y)) {
+				return true;
+			}
+		}
+		return false;
 	}
 		
 	private void movePlayer(int x, int y) {
@@ -540,15 +549,12 @@ public class Map {
 		return "  "+playerStepOn()+" ("+this.jerry.getFloor()+") \t\n  Level "+this.level+"\t";
 	}
 	
-	public String getPlayerInfo() {
-		return this.jerry.getInfo();
-	}
-	
-	public String getWeaponInfo() {
-		return this.jerry.getWeaponInfo();
+	public Player getPlayer() {
+		return this.jerry;
 	}
 	
 	public String getLog() {
+		this.log.clean();
 		return this.log.getLast(3);
 	}
 	
@@ -573,7 +579,7 @@ public class Map {
 	public void printOnWindow() {
 		this.win = new Window("Dungeon Crawler", this);
 		
-		this.win.setLabel(generateMapInfo(), getPlayerInfo(), getLog(), getWeaponInfo());
+		this.win.setLabel(generateMapInfo(), this.jerry.getInfo(), getLog(), this.jerry.getWeaponInfo());
 		
 		this.win.firstPrint();
 	}

@@ -26,7 +26,7 @@ public class Corridor extends Room {
 	
 	protected void parsingFloor() {
 		Random rnd = new Random();
-		int parsingChance = rnd.nextInt(6), floorType = rnd.nextInt(3);
+		int parsingChance = rnd.nextInt(5), floorType = rnd.nextInt(3);
 		
 		if(parsingChance==0) {
 			if(floorType==0) {

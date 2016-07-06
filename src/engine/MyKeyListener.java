@@ -36,7 +36,11 @@ public class MyKeyListener implements KeyListener {
 			} else if(ke.getKeyChar() == 'r') {
 				this.win.pickTheme();
 				this.map.generateDungeon();
-			} 
+			} else if(ke.getKeyChar() == 'w') {
+				this.map.getPlayer().repareWeapon();
+			} else if(ke.getKeyChar() == 'x') {
+				this.map.getPlayer().repareShield();
+			}
 			// Refresh map on window
 			this.win.refresh();
 		} else {

@@ -5,11 +5,13 @@ public class Shield extends Equipement {
 		this.val=0;
 		this.maxDurability = -1;
 		this.resetDurability();
+		this.description = "Shield";
 	}
 	
 	public Shield(int v) {
 		this.val=v;
 		this.maxDurability = v*10;
 		this.resetDurability();
+		this.description = "Shield";
 	}
 }

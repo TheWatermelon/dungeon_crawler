@@ -222,14 +222,38 @@ public class Window extends JFrame{
 		this.wall = this.basicColors[rnd.nextInt(this.basicColors.length)];
 	}
 	
-	public void setLabel(String s, String s1, String s2, String s3) {
-		this.head.setText(s);
-		this.foot.setText(s1);
-		this.foot1.setText(s2);
-		this.foot2.setText(s3);
+	public void setLabel(String s, String s1, String s2) {
+		if(!this.head.getText().equals(s)) {
+			this.head.setText(s);
+		}
+		if(!this.foot.getText().equals(s1)) {
+			this.foot.setText(s1);
+		}
+		if(!this.foot1.getText().equals(s2)) {
+			this.foot1.setText(s2);
+		}
 		this.foot.repaint();
 		this.foot1.repaint();
-		this.headPanel.repaint();
+		this.head.repaint();
+	}
+	
+	public void setLabel(String s, String s1, String s2, String s3) {
+		if(!this.head.getText().equals(s)) {
+			this.head.setText(s);
+		}
+		if(!this.foot.getText().equals(s1)) {
+			this.foot.setText(s1);
+		}
+		if(!this.foot1.getText().equals(s2)) {
+			this.foot1.setText(s2);
+		}
+		if(!this.foot2.getText().equals(s3)) {
+			this.foot2.setText(s3);
+		}
+		this.foot.repaint();
+		this.foot1.repaint();
+		this.foot2.repaint();
+		this.head.repaint();
 	}
 	
 	private void printInColor(int pos, int i, int j) {
@@ -299,7 +323,7 @@ public class Window extends JFrame{
 					pos++;
 					for(int j=0; j<this.tab[0].length; j++) {
 						s+=""+this.tab[i][j].getSymbol()+" ";
-						if(s.substring(pos, pos+1)!=sDoc.getText(pos, pos+1)) {
+						if(!s.substring(pos, pos+1).equals(sDoc.getText(pos, pos+1))) {
 							printInColor(pos, i, j);
 							pos=s.length();
 						}
@@ -311,9 +335,11 @@ public class Window extends JFrame{
 				sDoc.insertString(pos, "\n", defaut);
 			} catch(BadLocationException e) {}
 			
-			setLabel(this.map.generateMapInfo(), this.map.getPlayerInfo(), this.map.getLog(), this.map.getWeaponInfo());
+			setLabel(this.map.generateMapInfo(), this.map.getPlayer().getAllInfo(), this.map.getLog());
+			//setLabel(this.map.generateMapInfo(), this.map.getPlayerInfo(), this.map.getLog(), this.map.getWeaponInfo());
 		} else {
-			setLabel(this.map.getFinalScreen(), this.map.getPlayerInfo(), this.map.getLog(), this.map.getWeaponInfo());
+			setLabel(this.map.generateMapInfo(), this.map.getPlayer().getAllInfo(), this.map.getLog());
+			//setLabel(this.map.getFinalScreen(), this.map.getPlayerInfo(), this.map.getLog(), this.map.getWeaponInfo());
 		}
 		this.body.repaint();
 	}
