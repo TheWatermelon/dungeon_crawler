@@ -32,14 +32,17 @@ public class Window extends JFrame{
 	private JTextPane body;
 	private JTextPane foot;
 	private JTextPane foot1;
-	//private JTextPane foot2;
+	private JTextPane foot2;
 	
 	private StyledDocument sDoc;
+	private Style[] basicColors;
 	private Style wall;
 	private Style floor;
+	private Style mob;
 	private Style defaut;
+	private Style white;
+	private Style yellow;
 	private Style orange;
-	private Style gold;
 	private Style brown;
 	private Style green;
 	private Style lightGray;
@@ -51,6 +54,9 @@ public class Window extends JFrame{
 	private Style darkRed;
 	private Style blue;
 	private Style darkBlue;
+	private Style cyan;
+	private Style magenta;
+	private Style pink;
 	
 	
 	public Window(String title, Map m) {
@@ -115,14 +121,14 @@ public class Window extends JFrame{
 		StyledDocument doc1 = this.foot1.getStyledDocument();
 		doc1.setParagraphAttributes(0, doc1.getLength(), center, false);
 		this.footPanel.add(this.foot1, BorderLayout.CENTER);
-		/*
+		
 		this.foot2 = new JTextPane();
 		this.foot2.setEditable(false);
 		this.foot2.setFocusable(false); 
 		this.foot2.setBackground(Color.black);
 		this.foot2.setForeground(Color.white);
 		this.footPanel.add(this.foot2, BorderLayout.EAST);
-		*/
+		
 		this.global.add(this.headPanel, BorderLayout.NORTH);
 		this.global.add(this.body, BorderLayout.CENTER);
 		this.global.add(this.leftPanel, BorderLayout.WEST);
@@ -130,6 +136,7 @@ public class Window extends JFrame{
 		this.global.add(this.footPanel, BorderLayout.SOUTH);
 		this.add(this.global);
 		
+		this.basicColors = new Style[10];
 		initStyles();
 		pickTheme();
 		
@@ -166,44 +173,60 @@ public class Window extends JFrame{
 		StyleConstants.setBold(this.green, true);
 		StyleConstants.setForeground(this.green, new Color(0x00, 0x80, 0x00));
 		
-		this.gold = this.body.addStyle("gold", green);
-		StyleConstants.setForeground(this.gold, Color.yellow);
+		this.yellow = this.body.addStyle("yellow", green);
+		StyleConstants.setForeground(this.yellow, Color.yellow);
 		
-		this.coolRed = this.body.addStyle("coolRed", gold);
+		this.coolRed = this.body.addStyle("coolRed", yellow);
 		StyleConstants.setForeground(this.coolRed, new Color(0xEF, 0x3F, 0x23));
 		
 		this.darkRed = this.body.addStyle("darkRed", coolRed);
-		StyleConstants.setForeground(this.darkRed, new Color(0x4C, 0x00, 0x00));
+		StyleConstants.setForeground(this.darkRed, new Color(0x7F, 0x00, 0x00));
 		
 		this.red = this.body.addStyle("red", darkRed);
-		StyleConstants.setForeground(this.red, new Color(0x7F, 0x00, 0x00));
+		StyleConstants.setForeground(this.red, Color.red);
 		
 		this.darkBlue = this.body.addStyle("darkBlue", red);
-		StyleConstants.setForeground(this.darkBlue, new Color(0x00, 0x00, 0x4C));
+		StyleConstants.setForeground(this.darkBlue, new Color(0x00, 0x00, 0x7F));
 		
 		this.blue = this.body.addStyle("blue", darkBlue);
-		StyleConstants.setForeground(this.blue, new Color(0x00, 0x00, 0x7F));
+		StyleConstants.setForeground(this.blue, Color.blue);
+		
+		this.cyan = this.body.addStyle("cyan", blue);
+		StyleConstants.setForeground(this.cyan, Color.cyan);
+		
+		this.magenta = this.body.addStyle("magenta", cyan);
+		StyleConstants.setForeground(this.magenta, Color.magenta);
+		
+		this.pink = this.body.addStyle("pink", magenta);
+		StyleConstants.setForeground(this.pink, Color.pink);
+		
+		this.white = this.body.addStyle("white", pink);
+		StyleConstants.setForeground(this.white, Color.white);
+
+		this.basicColors[0] = this.lightGray;
+		this.basicColors[1] = this.white;
+		this.basicColors[2] = this.yellow;
+		this.basicColors[3] = this.orange;
+		this.basicColors[4] = this.red;
+		this.basicColors[5] = this.pink;
+		this.basicColors[6] = this.magenta;
+		this.basicColors[7] = this.blue;
+		this.basicColors[8] = this.cyan;
+		this.basicColors[9] = this.green;
 	}
 	
 	public void pickTheme() {
 		Random rnd = new Random();
-		int theme = rnd.nextInt(3);
-		if(theme==0) {
-			this.wall = this.lightGray;
-			this.floor = this.darkGray;
-		} else if(theme==1) {
-			this.wall = this.red;
-			this.floor = this.darkRed;
-		} else {
-			this.wall = this.blue;
-			this.floor = this.darkBlue;
-		}
+		this.floor = this.darkGray;
+		this.mob = this.coolRed;
+		this.wall = this.basicColors[rnd.nextInt(this.basicColors.length)];
 	}
 	
-	public void setLabel(String s, String s1, String s2) {
+	public void setLabel(String s, String s1, String s2, String s3) {
 		this.head.setText(s);
 		this.foot.setText(s1);
 		this.foot1.setText(s2);
+		this.foot2.setText(s3);
 		this.foot.repaint();
 		this.foot1.repaint();
 		this.headPanel.repaint();
@@ -224,9 +247,9 @@ public class Window extends JFrame{
 			} else if(this.tab[i][j] instanceof TileStairsDown) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.orange);
 			} else if(this.tab[i][j] instanceof TileGold) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.gold);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.yellow);
 			} else if(this.tab[i][j] instanceof TileMonster) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.coolRed);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.mob);
 			} else if(this.tab[i][j] instanceof TileCorpse) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.gray);
 			} else {
@@ -288,9 +311,9 @@ public class Window extends JFrame{
 				sDoc.insertString(pos, "\n", defaut);
 			} catch(BadLocationException e) {}
 			
-			setLabel(this.map.generateMapInfo(), this.map.getPlayerInfo(), this.map.getLog());
+			setLabel(this.map.generateMapInfo(), this.map.getPlayerInfo(), this.map.getLog(), this.map.getWeaponInfo());
 		} else {
-			setLabel(this.map.getFinalScreen(), this.map.getPlayerInfo(), this.map.getLog());
+			setLabel(this.map.getFinalScreen(), this.map.getPlayerInfo(), this.map.getLog(), this.map.getWeaponInfo());
 		}
 		this.body.repaint();
 	}

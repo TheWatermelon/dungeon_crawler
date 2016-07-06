@@ -1,5 +1,7 @@
 package tiles;
 
+import java.util.Random;
+
 public class TileFactory {
 	private static TileFactory fact = null;
 	
@@ -36,4 +38,6 @@ public class TileFactory {
 	public TileStairsDown createTileStairsDown() { return tileStairsDown; }
 	public TileMonster createTileMonster(char s) { return new TileMonster(s); }
 	public TileCorpse createTileCorpse() { return tileCorpse; }
+	public TileWeapon createTileWeapon() { Random rnd = new Random(); return new TileWeapon(rnd.nextInt(5)+1); }
+	public TileShield createTileShield() { Random rnd = new Random(); return new TileShield(rnd.nextInt(5)+1); }
 }

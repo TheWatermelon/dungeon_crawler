@@ -12,8 +12,10 @@ import tiles.TileDoor;
 import tiles.TileFactory;
 import tiles.TileGold;
 import tiles.TileMonster;
+import tiles.TileShield;
 import tiles.TileStairsDown;
 import tiles.TileVoid;
+import tiles.TileWeapon;
 
 public class Map {
 	private Tile[][] table;
@@ -30,10 +32,10 @@ public class Map {
 		this.rooms = new Vector<Room>();
 		this.monsters = new Vector<Monster>();
 		this.level = 0;
-		this.jerry = new Player(width/2, height/2);
-		this.jerry.setFloor(TileFactory.getInstance().createTileStone()); 
 		this.stairDown = new Point();
 		this.log = new MessageLog();
+		this.jerry = new Player(width/2, height/2, log);
+		this.jerry.setFloor(TileFactory.getInstance().createTileStone()); 
 	}
 	
 	public Tile[][] getTable() { return this.table; }
@@ -319,7 +321,7 @@ public class Map {
 				roomName = this.rooms.get(i).toString();
 				//this.rooms.get(i).show();
 				this.rooms.get(i).isDoor(this.jerry.pos.x, this.jerry.pos.y);
-				this.rooms.get(i).isGold(this.jerry.pos.x, this.jerry.pos.y);
+				this.rooms.get(i).isItem(this.jerry.pos.x, this.jerry.pos.y);
 			}
 		}
 		return roomName;
@@ -347,10 +349,16 @@ public class Map {
 		return false;
 	}
 	
-	private boolean isGold(int x, int y) {
+	private boolean isItem(int x, int y) {
 		if(this.table[y][x] instanceof TileGold) {
-			this.log.appendMessage("Found "+this.jerry.rewardGold()+"G");
+			this.jerry.rewardGold();
 			return true;
+		} else if(this.table[y][x] instanceof TileWeapon) {
+			this.log.appendMessage("Found +"+((TileWeapon)this.table[y][x]).getWeapon().getVal()+" "+this.table[y][x]);
+			this.jerry.setWeapon(((TileWeapon)this.table[y][x]).getWeapon());
+		} else if(this.table[y][x] instanceof TileShield) {
+			this.log.appendMessage("Found +"+((TileShield)this.table[y][x]).getShield().getVal()+" "+this.table[y][x]);
+			this.jerry.setShield(((TileShield)this.table[y][x]).getShield());
 		}
 		return false;
 	}
@@ -373,13 +381,13 @@ public class Map {
 	
 	private void checkPlayerPos(int x, int y) {
 		if(isStairs(x, y)) levelUp();
-		isGold(x, y);
+		isItem(x, y);
 	}
 	
 	private void checkMonster(int x, int y) {
 		for(int i=0; i<this.monsters.size(); i++) {
 			if((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y)) {
-				this.jerry.fight(this.monsters.get(i), this.log);
+				this.jerry.fight(this.monsters.get(i));
 			}
 		}
 	}
@@ -536,6 +544,10 @@ public class Map {
 		return this.jerry.getInfo();
 	}
 	
+	public String getWeaponInfo() {
+		return this.jerry.getWeaponInfo();
+	}
+	
 	public String getLog() {
 		return this.log.getLast(3);
 	}
@@ -561,7 +573,7 @@ public class Map {
 	public void printOnWindow() {
 		this.win = new Window("Dungeon Crawler", this);
 		
-		this.win.setLabel(generateMapInfo(), this.jerry.getInfo(), getLog());
+		this.win.setLabel(generateMapInfo(), getPlayerInfo(), getLog(), getWeaponInfo());
 		
 		this.win.firstPrint();
 	}

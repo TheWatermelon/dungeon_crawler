@@ -9,30 +9,35 @@ import tiles.Tile;
 import tiles.TileFactory;
 
 public class Corridor extends Room {
+	private Tile additionalFloor;
 	
 	public Corridor(int x1, int y1, int x2, int y2, String s) {
+		
 		this.description = s;
 		this.p1 = new Point(x1, y1);
 		this.p2 = new Point(x2, y2);
 		this.door = new Vector<Door>();
-		this.gold = new Point();
+		this.item = new Point();
 		this.floor = TileFactory.getInstance().createTileStone();
 		this.show = false;
-	}
-	
-	public void isGold(int x, int y) {
-		if(x == this.gold.x && y == this.gold.y) {
-			this.gold = new Point();
-		}
+		
+		parsingFloor();
 	}
 	
 	protected void parsingFloor() {
 		Random rnd = new Random();
-		int parsingChance = rnd.nextInt(4);
+		int parsingChance = rnd.nextInt(6), floorType = rnd.nextInt(3);
 		
 		if(parsingChance==0) {
-			this.gold.y = rnd.nextInt(this.getHeight()-1)+1+this.p1.y;
-			this.gold.x = rnd.nextInt(this.getWidth()-1)+1+this.p1.x;
+			if(floorType==0) {
+				this.additionalFloor = TileFactory.getInstance().createTileGold();
+			} else if(floorType==1) {
+				this.additionalFloor = TileFactory.getInstance().createTileWeapon();
+			} else if(floorType==2) {
+				this.additionalFloor = TileFactory.getInstance().createTileShield();
+			}
+			this.item.y = rnd.nextInt(this.getHeight()-1)+1+this.p1.y;
+			this.item.x = rnd.nextInt(this.getWidth()-1)+1+this.p1.x;
 		}
 	}
 	
@@ -50,8 +55,8 @@ public class Corridor extends Room {
 	}
 	
 	private void printAdditionalFloor(Tile[][] tab) {
-		if(this.gold.x != 0 && this.gold.y != 0) {
-			tab[this.gold.y][this.gold.x] = TileFactory.getInstance().createTileGold();
+		if(this.item.x != 0 && this.item.y != 0) {
+			tab[this.item.y][this.item.x] = this.additionalFloor;
 		}
 	}
 }

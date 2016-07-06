@@ -12,7 +12,7 @@ public abstract class Room {
 	public Point p1;
 	public Point p2;
 	public Vector<Door> door;
-	protected Point gold;
+	protected Point item;
 	protected boolean show;
 	protected Tile floor;
 	protected Tile[][] room;
@@ -26,8 +26,13 @@ public abstract class Room {
 	public final void addDoor(Point p) { this.door.add(new Door(p)); }
 	public final void addDoor(Point p, Tile t) { this.door.add(new Door(p, t)); }
 	
-	public abstract void isGold(int x, int y);
 	protected abstract void parsingFloor();
+	
+	public final void isItem(int x, int y) {
+		if(x == this.item.x && y == this.item.y) {
+			this.item = new Point();
+		}
+	}
 	
 	public final void printOn(Tile[][] tab) {
 		if(show) {
