@@ -130,6 +130,7 @@ public class Window extends JFrame{
 		this.foot2.setFocusable(false); 
 		this.foot2.setBackground(Color.black);
 		this.foot2.setForeground(Color.white);
+		this.foot2.setText("z,q,s,d: move\nw: repare weapon  \nx:  repare shield");
 		this.footPanel.add(this.foot2, BorderLayout.EAST);
 		
 		this.global.add(this.headPanel, BorderLayout.NORTH);
@@ -322,9 +323,10 @@ public class Window extends JFrame{
 		} else {
 			setLabel(this.map.getFinalScreen(), this.map.getPlayer().getAllInfo(), this.map.getLog());
 		}
+		revalidate();
 	}
 	
-	private void printOnScreen() {
+	public void printOnScreen() {
 		String s="";
 		int pos=0;
 		
@@ -339,6 +341,17 @@ public class Window extends JFrame{
 					if(s.charAt(pos) != this.map.oldString.charAt(pos)) {
 						sDoc.remove(pos, 1);
 						printInColor(pos, i, j);
+					}
+					if((i==this.map.getLooker().getY()) && (j==this.map.getLooker().getX()) && (this.map.getLooker().isVisible())) {
+						sDoc.remove(pos-1,  1);
+						sDoc.insertString(pos-1, ""+this.map.getLooker().getLeft(), yellow);
+						sDoc.remove(pos+1,  1);
+						sDoc.insertString(pos+1, ""+this.map.getLooker().getRight(), yellow);
+					} else if((i==this.map.getLooker().getY()) && (j==this.map.getLooker().getX()) && !(this.map.getLooker().isVisible())) {
+						sDoc.remove(pos-1,  1);
+						sDoc.insertString(pos-1, " ", defaut);
+						sDoc.remove(pos+1,  1);
+						sDoc.insertString(pos+1, " ", defaut);
 					}
 					pos+=2;
 				}

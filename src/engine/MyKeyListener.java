@@ -26,12 +26,20 @@ public class MyKeyListener implements KeyListener {
 	public void keyTyped(KeyEvent ke) {
 		if(!this.map.isPlayerDead()) {
 			if(ke.getKeyChar() == 'z') {
+				this.map.getLooker().hide();
+				this.win.printOnScreen();
 				this.map.movePlayerUp();
 			} else if(ke.getKeyChar() == 's') {
+				this.map.getLooker().hide();
+				this.win.printOnScreen();
 				this.map.movePlayerDown();
 			} else if(ke.getKeyChar() == 'q') {
+				this.map.getLooker().hide();
+				this.win.printOnScreen();
 				this.map.movePlayerLeft();
 			} else if(ke.getKeyChar() == 'd') {
+				this.map.getLooker().hide();
+				this.win.printOnScreen();
 				this.map.movePlayerRight();
 			} else if(ke.getKeyChar() == 'w') {
 				this.map.getPlayer().repareWeapon();
@@ -40,6 +48,9 @@ public class MyKeyListener implements KeyListener {
 			} else if(ke.getKeyChar() == 'r') {
 				this.win.pickTheme();
 				this.map.generateDungeon();
+			} else if(ke.getKeyChar() == 'l') {
+				this.map.getLooker().placeOn(this.map.getPlayer().pos.x, this.map.getPlayer().pos.y);
+				this.map.getLooker().show();
 			}
 			// Refresh map on window
 			this.win.refresh();

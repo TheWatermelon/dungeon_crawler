@@ -5,11 +5,11 @@ import java.util.Random;
 public class Ressources {
 	private static Ressources res;
 		
-	private static String[] monsterName = { "alphyn", "bunyip", "cockatrice", "dandan", "eachy", "fachen", "goblin", "hog", "imp", "jummy", "kelpy", "leprechaun", "mantis", "nyan", "odo", "pazu", "qilin", "rat", "snake", "troll", "uxie", "vermillion", "wasp", "xylopod", "yolocamph", "zilly" };
-	private static String[] monsterName1= { "Alpha", "Bunny", "Cuckcoo", "Dino", "Elephant", "Fitrik", "Goblin mother", "Hugh", "Icetroll", "Jester", "Kangaroo", "Linen", "Mummy", "Ninja", "Olpus", "Pinat", "Quester", "Rat", "Snake", "Troll", "Uber", "Vizir", "Werewolf", "Xinus", "Yopor", "Zebra" };
+	private static String[] monsterName = { "alphyn",	"bunny",	"chima",	"dandan",	"elemal",	"fachen",	"goblin",	"hog",		"imp",		"jest",		"koalad",	"linum",	"mummy",	"nyan",		"olos", 	"pata", 	"qi", 	"rat", 		"snake", "troll", "uxie", 	"vermillion", 	"wasp", 	"xylopod", 	"yolocamph", 	"zilly" };
+	private static String[] monsterName1= { "Alpha", 	"Bunner", 	"Chimera", 	"Daran", 	"Elemental","Fraken", 	"Goblord", 	"Hedgard", 	"Imperos", 	"Jester", 	"Koamad", 	"Lordum", 	"Mastras", 	"Ninja", 	"Olopus", 	"Partara", 	"Quim", "Routard", 	"Snake", "Troll", "Uximer", "Vizir", 		"Werewolf", "Xinus", 	"Yopor", 		"Zebra" };
 	
-	private static String[] weaponName = { "void", "Wooden Sword", "Dagger", "Iron Dagger", "Iron Sword", "Master Sword" };
-	private static String[] shieldName = { "void", "Wooden Shield", "Copper Shield", "Iron Shield", "Gold Shield", "Master Shield" };
+	private static String[] weaponName = { "void", "Wooden Sword", "Dagger", "Sword", "Broadsword", "Master Sword" };
+	private static String[] shieldName = { "void", "Wooden Shield", "Copper Shield", "Iron Shield", "Silver Shield", "Master Shield" };
 	
 	private Ressources() {
 		

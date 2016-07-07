@@ -119,7 +119,7 @@ public class Player extends Mob {
 	}
 	
 	public void setWeapon(Weapon weapon) {
-		if(this.w.getVal() < weapon.getVal()) {
+		if(this.w.getVal() <= weapon.getVal() && this.w.getVal() != 5) {
 			this.w = weapon;
 		} else {
 			if(this.w.getDurability()<this.w.getMaxDurability()) {
