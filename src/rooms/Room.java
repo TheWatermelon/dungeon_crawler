@@ -30,10 +30,10 @@ public abstract class Room {
 	public abstract Item parsingFloor();
 	
 	public final void printOn(Tile[][] tab) {
-		//if(show) {
+		if(show) {
 			print(tab);
 			printDoors(tab);
-		//}
+		}
 	}	
 	
 	public void print(Tile[][] tab) {

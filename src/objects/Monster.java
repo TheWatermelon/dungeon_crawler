@@ -7,18 +7,24 @@ import engine.MessageLog;
 import tiles.TileFactory;
 
 public class Monster extends Mob {
+	
 	public Monster() {
 		
 	}
 	
 	public Monster(int x, int y, char s, String desc) {
 		this.hp = 20;
-		this.atk = 3;
+		this.atk = pickAtk();
 		this.dead = false;
 		this.pos = new Point(x, y);
 		this.symbol = s;
 		this.description = desc;
 		this.floor = TileFactory.getInstance().createTileMonster(this.symbol);
+	}
+	
+	private int pickAtk() {
+		Random rnd = new Random();
+		return rnd.nextInt(4)+3;
 	}
 	
 	public void murder() {

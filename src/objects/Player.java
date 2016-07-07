@@ -12,19 +12,6 @@ public class Player extends Mob {
 	private Shield s;
 	private MessageLog log;
 	
-	public Player() {
-		this.hp=100;
-		this.atk=5;
-		this.w = new Weapon();
-		this.s = new Shield();
-		this.gold=0;
-		this.monstersKilled=0;
-		this.dead = false;
-		this.pos = new Point();
-		this.symbol = '@';
-		this.description = "Player";
-	}
-	
 	public Player(int x, int y, MessageLog l) {
 		this.hp=100;
 		this.atk=5;
@@ -43,7 +30,7 @@ public class Player extends Mob {
 		this.dead = true;
 	}
 	
-	public void fight(Monster m) {
+	public boolean fight(Monster m) {
 		Random rnd = new Random();
 		int deg;
 		
@@ -63,7 +50,7 @@ public class Player extends Mob {
 			this.hp=0;
 			murder();
 			log.appendMessage("Dead! Press r to restart");
-			return;
+			return false;
 		}
 
 		deg = rnd.nextInt(3);
@@ -79,15 +66,21 @@ public class Player extends Mob {
 			m.murder(); 
 			this.monstersKilled++;
 			log.appendMessage(m.description+" killed");
-			if(rnd.nextInt(5)==0) {
-				rewardGold();
-			}
+			return true;
 		}
+		return false;
 	}
 	
 	public int rewardGold() {
 		Random rnd = new Random();
 		int gold = rnd.nextInt(5)+1;
+		this.addGold(gold);
+		return gold;
+	}
+	
+	public int rewardGold(int limit) {
+		Random rnd = new Random();
+		int gold = rnd.nextInt(limit)+1;
 		this.addGold(gold);
 		return gold;
 	}

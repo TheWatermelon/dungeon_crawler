@@ -269,7 +269,7 @@ public class Window extends JFrame{
 			} else if(this.tab[i][j] instanceof TileGold) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.yellow);
 			} else if(this.tab[i][j] instanceof TileItem) {
-			 sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.blue);
+			 sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.pink);
 			}else if(this.tab[i][j] instanceof TileMonster) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.mob);
 			} else if(this.tab[i][j] instanceof TileCorpse) {
@@ -327,7 +327,6 @@ public class Window extends JFrame{
 	private void printOnScreen() {
 		String s="";
 		int pos=0;
-		//int ping=0;
 		
 		try {
 			s+="\n";
@@ -340,7 +339,6 @@ public class Window extends JFrame{
 					if(s.charAt(pos) != this.map.oldString.charAt(pos)) {
 						sDoc.remove(pos, 1);
 						printInColor(pos, i, j);
-						//ping++;
 					}
 					pos+=2;
 				}

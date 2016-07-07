@@ -13,6 +13,12 @@ public class Gold extends Item {
 		this.description="Gold";
 	}
 	
+	public Gold(int x, int y, int v) {
+		this.pos = new Point(x, y);
+		this.val = pickVal(v);
+		this.description="Gold";
+	}
+	
 	private int pickVal() {
 		Random rnd = new Random();
 		

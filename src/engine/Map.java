@@ -279,7 +279,11 @@ public class Map {
 				} while (((width==this.jerry.pos.x) && (height==this.jerry.pos.y)) && !isMonster(width, height));
 				
 				monsterName = rnd.nextInt(26);
-				this.monsters.add(new Monster(width, height, Ressources.getLetterAt(monsterName), Ressources.getNameAt(monsterName)));
+				if(rnd.nextInt(5)==0) {
+					this.monsters.add(new Monster(width, height, Ressources.getCapitalLetterAt(monsterName), Ressources.getCapitalNameAt(monsterName)));
+				} else {
+					this.monsters.add(new Monster(width, height, Ressources.getLetterAt(monsterName), Ressources.getNameAt(monsterName)));
+				}
 			}
 		}
 	}
@@ -420,7 +424,12 @@ public class Map {
 	private void checkMonster(int x, int y) {
 		for(int i=0; i<this.monsters.size(); i++) {
 			if(((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y) && !this.monsters.get(i).isDead())) {
-				this.jerry.fight(this.monsters.get(i));
+				if(this.jerry.fight(this.monsters.get(i))) {
+					Random rnd = new Random();
+					if(rnd.nextInt(4)==0) {
+						this.items.add(new Gold(monsters.get(i).pos.x, monsters.get(i).pos.y, 5+this.level));
+					}
+				}
 			}
 		}
 	}
@@ -487,7 +496,6 @@ public class Map {
 	private void moveMonster(Monster m, int x, int y) {
 		m.pos.x = x;
 		m.pos.y = y;
-		//m.setFloor(this.table[m.pos.y][m.pos.x]);
 	}
 	
 	private void moveAllMonsters() {
