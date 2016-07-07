@@ -343,15 +343,19 @@ public class Window extends JFrame{
 						printInColor(pos, i, j);
 					}
 					if((i==this.map.getLooker().getY()) && (j==this.map.getLooker().getX()) && (this.map.getLooker().isVisible())) {
-						sDoc.remove(pos-1,  1);
-						sDoc.insertString(pos-1, ""+this.map.getLooker().getLeft(), yellow);
-						sDoc.remove(pos+1,  1);
-						sDoc.insertString(pos+1, ""+this.map.getLooker().getRight(), yellow);
+						if(sDoc.getText(pos-1, 3).equals(" "+this.tab[i][j].getSymbol()+" ")) {
+							sDoc.remove(pos-1,  1);
+							sDoc.insertString(pos-1, ""+this.map.getLooker().getLeft(), yellow);
+							sDoc.remove(pos+1,  1);
+							sDoc.insertString(pos+1, ""+this.map.getLooker().getRight(), yellow);
+						}
 					} else if((i==this.map.getLooker().getY()) && (j==this.map.getLooker().getX()) && !(this.map.getLooker().isVisible())) {
-						sDoc.remove(pos-1,  1);
-						sDoc.insertString(pos-1, " ", defaut);
-						sDoc.remove(pos+1,  1);
-						sDoc.insertString(pos+1, " ", defaut);
+						if(!sDoc.getText(pos-1, 3).equals(" "+this.tab[i][j].getSymbol()+" ")) {
+							sDoc.remove(pos-1,  1);
+							sDoc.insertString(pos-1, " ", defaut);
+							sDoc.remove(pos+1,  1);
+							sDoc.insertString(pos+1, " ", defaut);
+						}
 					}
 					pos+=2;
 				}
