@@ -292,11 +292,12 @@ public class Map {
 		do {
 			// choisit une salle
 			selectedRoom = rooms.get(rnd.nextInt(rooms.size()));
-			// choisit un point dans la salle
-			height = rnd.nextInt(selectedRoom.getHeight()-1)+1+selectedRoom.p1.y;
-			width = rnd.nextInt(selectedRoom.getWidth()-1)+1+selectedRoom.p1.x;
 		} while(selectedRoom instanceof Corridor);
-		
+		do {
+			// choisit un point dans la salle
+			height = rnd.nextInt(selectedRoom.getHeight()-3)+2+selectedRoom.p1.y;
+			width = rnd.nextInt(selectedRoom.getWidth()-3)+2+selectedRoom.p1.x;
+		} while(width == this.jerry.pos.x && height == this.jerry.pos.y);
 		// placement de l'escalier
 		this.stairDown = new Point(width, height);
 	}
@@ -330,7 +331,7 @@ public class Map {
 	
 	private void integrateItems() {
 		for(int i=0; i<items.size(); i++) {
-			if(!isMonster(items.get(i).pos.x, items.get(i).pos.y) && !(this.table[items.get(i).pos.y][items.get(i).pos.x] instanceof TileVoid)) {
+			if(!isMonster(items.get(i).pos.x, items.get(i).pos.y) && !(this.table[items.get(i).pos.y][items.get(i).pos.x] instanceof TileVoid) && !(this.table[items.get(i).pos.y][items.get(i).pos.x] instanceof TileStairsDown)) {
 				this.table[items.get(i).pos.y][items.get(i).pos.x] = items.get(i).getTile();
 			}
 		}
@@ -566,7 +567,7 @@ public class Map {
 		for(int i=0; i<rooms.size(); i++) {
 			rooms.get(i).printOn(this.table);
 		}
-		if(!(this.table[this.stairDown.y][this.stairDown.x] instanceof TileVoid)) {
+		if(!(this.table[this.stairDown.y][this.stairDown.x] instanceof TileVoid) && !isMonster(this.stairDown.x, this.stairDown.y)) {
 			this.table[this.stairDown.y][this.stairDown.x] = TileFactory.getInstance().createTileStairsDown();
 		}
 		integrateMobs();

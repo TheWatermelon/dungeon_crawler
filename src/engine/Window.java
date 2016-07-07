@@ -312,31 +312,22 @@ public class Window extends JFrame{
 	
 	public void refresh() {
 		if(!this.map.isPlayerDead()) {
-			System.out.print("Print dungeon...");
 			this.map.printDungeon();
-			System.out.println("Done");
-			System.out.print("PrintOnScreen...");
 			if(this.map.oldString.equals("")) {
 				firstPrint();
 			} else {
 				printOnScreen();
 			}
-			System.out.println("Done");
-			System.out.print("SetLabel...");
 			setLabel(this.map.generateMapInfo(), this.map.getPlayer().getAllInfo(), this.map.getLog());
-			System.out.println("Done");
-			//setLabel(this.map.generateMapInfo(), this.map.getPlayerInfo(), this.map.getLog(), this.map.getWeaponInfo());
 		} else {
 			setLabel(this.map.getFinalScreen(), this.map.getPlayer().getAllInfo(), this.map.getLog());
-			//setLabel(this.map.getFinalScreen(), this.map.getPlayerInfo(), this.map.getLog(), this.map.getWeaponInfo());
 		}
-		//this.body.repaint();
 	}
 	
 	private void printOnScreen() {
 		String s="";
 		int pos=0;
-		int ping=0;
+		//int ping=0;
 		
 		try {
 			s+="\n";
@@ -349,7 +340,7 @@ public class Window extends JFrame{
 					if(s.charAt(pos) != this.map.oldString.charAt(pos)) {
 						sDoc.remove(pos, 1);
 						printInColor(pos, i, j);
-						ping++;
+						//ping++;
 					}
 					pos+=2;
 				}
@@ -357,7 +348,6 @@ public class Window extends JFrame{
 				pos=s.length();
 			}
 			this.map.oldString=s;
-			System.out.println("Ping : "+ping);
 		} catch(BadLocationException e) {}
 	}
 }
