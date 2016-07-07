@@ -40,9 +40,7 @@ public class MyKeyListener implements KeyListener {
 			} else if(ke.getKeyChar() == 'r') {
 				this.win.pickTheme();
 				this.map.generateDungeon();
-			} /*else if(ke.getKeyChar() == 'f') {
-				this.win.flash();
-			}*/
+			}
 			// Refresh map on window
 			this.win.refresh();
 		} else {

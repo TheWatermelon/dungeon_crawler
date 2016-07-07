@@ -28,6 +28,7 @@ public class Map {
 	private Player jerry;
 	private int level;
 	private Window win;
+	public String oldString;
 	
 	public Map(int height, int width) {
 		this.table = new Tile[height][width];
@@ -93,6 +94,7 @@ public class Map {
 		this.rooms = new Vector<Room>();
 		this.monsters = new Vector<Monster>();
 		this.items = new Vector<Item>();
+		this.oldString = "";
 		fillRectangle(this.table, 0, 0, getWidth()-1, getHeight()-1, TileFactory.getInstance().createTileVoid());	
 		
 		// Premiere salle, au centre du niveau
@@ -561,7 +563,6 @@ public class Map {
 	
 	public void printDungeon() {
 		fillRectangle(this.table, 0, 0, getWidth()-1, getHeight()-1, TileFactory.getInstance().createTileVoid());
-		//playerStepOn();
 		for(int i=0; i<rooms.size(); i++) {
 			rooms.get(i).printOn(this.table);
 		}
@@ -573,7 +574,6 @@ public class Map {
 	}
 	
 	public String generateMapInfo() {
-		//return ""+playerStepOn()+" ("+this.jerry.getFloor()+") | \t level "+this.level;
 		return "  "+rooms.get(playerIn(this.jerry.pos.x, this.jerry.pos.y)).toString()+" ("+this.jerry.getFloor()+") \t\n  Level "+this.level+"\t";
 	}
 	
@@ -608,7 +608,6 @@ public class Map {
 		this.win = new Window("Dungeon Crawler", this);
 
 		this.win.setLabel(generateMapInfo(), getPlayer().getAllInfo(), getLog());
-		//this.win.setLabel(generateMapInfo(), this.jerry.getInfo(), getLog(), this.jerry.getWeaponInfo());
 		
 		this.win.firstPrint();
 	}

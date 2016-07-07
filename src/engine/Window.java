@@ -23,6 +23,8 @@ public class Window extends JFrame{
 	private Map map;
 	private Tile[][] tab;
 	
+	private MyKeyListener keyListener;
+	
 	private JPanel global;
 	private JPanel headPanel;
 	private JPanel footPanel;
@@ -95,7 +97,8 @@ public class Window extends JFrame{
 		this.body.setBackground(Color.black);
 		this.body.setForeground(Color.white);
 		this.body.setFont(new Font("Consolas", Font.PLAIN, 12));
-		this.body.addKeyListener(new MyKeyListener(this.map, this));
+		this.keyListener = new MyKeyListener(this.map, this);
+		this.body.addKeyListener(keyListener);
 		
 		this.leftPanel = new JPanel();
 		this.leftPanel.setBackground(Color.black);
@@ -232,9 +235,6 @@ public class Window extends JFrame{
 		if(!this.foot1.getText().equals(s2)) {
 			this.foot1.setText(s2);
 		}
-		//this.foot.repaint();
-		//this.foot1.repaint();
-		//this.head.repaint();
 	}
 	
 	public void setLabel(String s, String s1, String s2, String s3) {
@@ -250,58 +250,57 @@ public class Window extends JFrame{
 		if(!this.foot2.getText().equals(s3)) {
 			this.foot2.setText(s3);
 		}
-		//this.foot.repaint();
-		//this.foot1.repaint();
-		//this.foot2.repaint();
-		//this.head.repaint();
 	}
 	
 	private void printInColor(int pos, int i, int j) {
 		try {
 			if(this.tab[i][j] instanceof TilePlayer) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.green);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.green);
 			} else if(this.tab[i][j] instanceof TileWall) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.wall);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.wall);
 			} else if(this.tab[i][j] instanceof TileDoor) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.brown);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.brown);
 			} else if(this.tab[i][j] instanceof TileStone) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.floor);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.floor);
 			} else if(this.tab[i][j] instanceof TileMoss) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.darkGreen);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.darkGreen);
 			} else if(this.tab[i][j] instanceof TileStairsDown) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.orange);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.orange);
 			} else if(this.tab[i][j] instanceof TileGold) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.yellow);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.yellow);
 			} else if(this.tab[i][j] instanceof TileItem) {
-			 sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.blue);
+			 sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.blue);
 			}else if(this.tab[i][j] instanceof TileMonster) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.mob);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.mob);
 			} else if(this.tab[i][j] instanceof TileCorpse) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", this.gray);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.gray);
 			} else {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol()+" ", defaut);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), defaut);
 			}
 		} catch (BadLocationException e) {}
 	}
 	
 	public void firstPrint() {
-		String s="";
 		int pos=0;
 		
 		this.map.printDungeon();
 		
 		try {
+			this.map.oldString+="\n";
 			sDoc.insertString(pos, "\n", defaut);
+			pos++;
 			for(int i=0; i<this.tab.length; i++) {
-				s+=" ";
+				this.map.oldString+=" ";
 				sDoc.insertString(pos, " ", defaut);
 				pos++;
 				for(int j=0; j<this.tab[0].length; j++) {
-					s+=""+this.tab[i][j].getSymbol()+" ";
+					this.map.oldString+=""+this.tab[i][j].getSymbol()+" ";
 					printInColor(pos, i, j);
-					pos=s.length();
+					pos++;
+					sDoc.insertString(pos, " ", defaut);
+					pos++;
 				}
-				s+="\n";
+				this.map.oldString+="\n";
 				sDoc.insertString(pos, "\n", defaut);
 				pos++;
 			}
@@ -313,9 +312,19 @@ public class Window extends JFrame{
 	
 	public void refresh() {
 		if(!this.map.isPlayerDead()) {
+			System.out.print("Print dungeon...");
 			this.map.printDungeon();
-			printOnScreen();
+			System.out.println("Done");
+			System.out.print("PrintOnScreen...");
+			if(this.map.oldString.equals("")) {
+				firstPrint();
+			} else {
+				printOnScreen();
+			}
+			System.out.println("Done");
+			System.out.print("SetLabel...");
 			setLabel(this.map.generateMapInfo(), this.map.getPlayer().getAllInfo(), this.map.getLog());
+			System.out.println("Done");
 			//setLabel(this.map.generateMapInfo(), this.map.getPlayerInfo(), this.map.getLog(), this.map.getWeaponInfo());
 		} else {
 			setLabel(this.map.getFinalScreen(), this.map.getPlayer().getAllInfo(), this.map.getLog());
@@ -327,30 +336,28 @@ public class Window extends JFrame{
 	private void printOnScreen() {
 		String s="";
 		int pos=0;
+		int ping=0;
+		
 		try {
-			sDoc.insertString(pos, "\n", defaut);
-			for(int i=0; i<this.tab.length; i++) {
+			s+="\n";
+			pos++;
+			for(int i=0; i<this.map.getHeight(); i++) {
 				s+=" ";
-				sDoc.insertString(pos, " ", defaut);
 				pos++;
-				for(int j=0; j<this.tab[0].length; j++) {
+				for(int j=0; j<this.map.getWidth(); j++) {
 					s+=""+this.tab[i][j].getSymbol()+" ";
-					if(!s.substring(pos, pos+1).equals(sDoc.getText(pos, pos+1))) {
+					if(s.charAt(pos) != this.map.oldString.charAt(pos)) {
+						sDoc.remove(pos, 1);
 						printInColor(pos, i, j);
-						pos=s.length();
+						ping++;
 					}
+					pos+=2;
 				}
 				s+="\n";
-				sDoc.insertString(pos, "\n", defaut);
-				pos++;
+				pos=s.length();
 			}
-			sDoc.insertString(pos, "\n", defaut);
+			this.map.oldString=s;
+			System.out.println("Ping : "+ping);
 		} catch(BadLocationException e) {}
-	}
-	
-	public void flash() {
-		this.body.setBorder(BorderFactory.createLineBorder(Color.red));
-		// affichage
-		this.body.setBorder(BorderFactory.createLineBorder(Color.white));
 	}
 }
