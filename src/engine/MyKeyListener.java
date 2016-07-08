@@ -23,6 +23,7 @@ public class MyKeyListener implements KeyListener {
 		// TODO Auto-generated method stub
 	}
 
+	// French version (AZERTY keyboard)
 	public void keyTyped(KeyEvent ke) {
 		if(!this.map.isPlayerDead()) {
 			if(ke.getKeyChar() == 'z') {
@@ -41,16 +42,13 @@ public class MyKeyListener implements KeyListener {
 				this.map.getPlayer().getLooker().hide();
 				this.win.printOnScreen();
 				this.map.movePlayerRight();
-			} else if(ke.getKeyChar() == 'w') {
+			} else if(ke.getKeyChar() == 'a') {
 				this.map.getPlayer().repareWeapon();
-			} else if(ke.getKeyChar() == 'x') {
+			} else if(ke.getKeyChar() == 'e') {
 				this.map.getPlayer().repareShield();
 			} else if(ke.getKeyChar() == 'r') {
 				this.win.pickTheme();
 				this.map.generateDungeon();
-			} else if(ke.getKeyChar() == 'l') {
-				this.map.getPlayer().getLooker().placeOn(this.map.getPlayer().pos.x, this.map.getPlayer().pos.y);
-				this.map.getPlayer().getLooker().show();
 			}
 			// Refresh map on window
 			this.win.refresh();
@@ -60,4 +58,42 @@ public class MyKeyListener implements KeyListener {
 			}
 		}
 	}
+	
+	// Canadian version (QWERTY keyboard)
+	/*
+	public void keyTyped(KeyEvent ke) {
+		if(!this.map.isPlayerDead()) {
+			if(ke.getKeyChar() == 'w') {
+				this.map.getPlayer().getLooker().hide();
+				this.win.printOnScreen();
+				this.map.movePlayerUp();
+			} else if(ke.getKeyChar() == 's') {
+				this.map.getPlayer().getLooker().hide();
+				this.win.printOnScreen();
+				this.map.movePlayerDown();
+			} else if(ke.getKeyChar() == 'a') {
+				this.map.getPlayer().getLooker().hide();
+				this.win.printOnScreen();
+				this.map.movePlayerLeft();
+			} else if(ke.getKeyChar() == 'd') {
+				this.map.getPlayer().getLooker().hide();
+				this.win.printOnScreen();
+				this.map.movePlayerRight();
+			} else if(ke.getKeyChar() == 'q') {
+				this.map.getPlayer().repareWeapon();
+			} else if(ke.getKeyChar() == 'e') {
+				this.map.getPlayer().repareShield();
+			} else if(ke.getKeyChar() == 'r') {
+				this.win.pickTheme();
+				this.map.generateDungeon();
+			}
+			// Refresh map on window
+			this.win.refresh();
+		} else {
+			if(ke.getKeyChar()=='r') {
+				this.map.newGame();
+			}
+		}
+	}
+	*/
 }

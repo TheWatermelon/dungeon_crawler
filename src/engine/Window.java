@@ -134,7 +134,7 @@ public class Window extends JFrame{
 		this.foot2.setFocusable(false); 
 		this.foot2.setBackground(Color.black);
 		this.foot2.setForeground(Color.white);
-		this.foot2.setText("z,q,s,d: move\nw: repare weapon  \nx:  repare shield");
+		this.foot2.setText("z,q,s,d: move\na: repare weapon  \ne:  repare shield");
 		this.footPanel.add(this.foot2, BorderLayout.EAST);
 		
 		this.global.add(this.headPanel, BorderLayout.NORTH);
