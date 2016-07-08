@@ -15,6 +15,10 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import objects.LookerEquip;
+import objects.LookerGold;
+import objects.LookerHealth;
+import objects.LookerMob;
 import tiles.*;
 
 public class Window extends JFrame{
@@ -281,6 +285,36 @@ public class Window extends JFrame{
 		} catch (BadLocationException e) {}
 	}
 	
+	private void printLooker(int pos, int i, int j) {
+		Style color=defaut;
+		try {
+			if((i==this.map.getPlayer().getLooker().getY()) && (j==this.map.getPlayer().getLooker().getX()) && (this.map.getPlayer().getLooker().isVisible())) {
+				if(sDoc.getText(pos-1, 3).equals(" "+this.tab[i][j].getSymbol()+" ")) {
+					if(this.map.getPlayer().getLooker() instanceof LookerMob) {
+						color = red;
+					} else if(this.map.getPlayer().getLooker() instanceof LookerEquip) {
+						color = pink;
+					} else if(this.map.getPlayer().getLooker() instanceof LookerGold) {
+						color = yellow;
+					} else if(this.map.getPlayer().getLooker() instanceof LookerHealth) {
+						color = green;
+					}
+					sDoc.remove(pos-1,  1);
+					sDoc.insertString(pos-1, ""+this.map.getPlayer().getLooker().getLeft(), color);
+					sDoc.remove(pos+1,  1);
+					sDoc.insertString(pos+1, ""+this.map.getPlayer().getLooker().getRight(), color);
+				}
+			} else if((i==this.map.getPlayer().getLooker().getY()) && (j==this.map.getPlayer().getLooker().getX()) && !(this.map.getPlayer().getLooker().isVisible())) {
+				if(!sDoc.getText(pos-1, 3).equals(" "+this.tab[i][j].getSymbol()+" ")) {
+					sDoc.remove(pos-1,  1);
+					sDoc.insertString(pos-1, " ", defaut);
+					sDoc.remove(pos+1,  1);
+					sDoc.insertString(pos+1, " ", defaut);
+				}
+			}
+		} catch(BadLocationException e) {}
+	}
+	
 	public void firstPrint() {
 		int pos=0;
 		
@@ -342,21 +376,7 @@ public class Window extends JFrame{
 						sDoc.remove(pos, 1);
 						printInColor(pos, i, j);
 					}
-					if((i==this.map.getLooker().getY()) && (j==this.map.getLooker().getX()) && (this.map.getLooker().isVisible())) {
-						if(sDoc.getText(pos-1, 3).equals(" "+this.tab[i][j].getSymbol()+" ")) {
-							sDoc.remove(pos-1,  1);
-							sDoc.insertString(pos-1, ""+this.map.getLooker().getLeft(), yellow);
-							sDoc.remove(pos+1,  1);
-							sDoc.insertString(pos+1, ""+this.map.getLooker().getRight(), yellow);
-						}
-					} else if((i==this.map.getLooker().getY()) && (j==this.map.getLooker().getX()) && !(this.map.getLooker().isVisible())) {
-						if(!sDoc.getText(pos-1, 3).equals(" "+this.tab[i][j].getSymbol()+" ")) {
-							sDoc.remove(pos-1,  1);
-							sDoc.insertString(pos-1, " ", defaut);
-							sDoc.remove(pos+1,  1);
-							sDoc.insertString(pos+1, " ", defaut);
-						}
-					}
+					printLooker(pos, i, j);
 					pos+=2;
 				}
 				s+="\n";

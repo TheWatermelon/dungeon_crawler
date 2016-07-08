@@ -11,6 +11,7 @@ public class Player extends Mob {
 	private Weapon w;
 	private Shield s;
 	private MessageLog log;
+	private Looker looker;
 	
 	public Player(int x, int y, MessageLog l) {
 		this.hp=100;
@@ -21,6 +22,7 @@ public class Player extends Mob {
 		this.monstersKilled=0;
 		this.dead = false;
 		this.pos = new Point(x, y);
+		this.looker = new Looker(x, y);
 		this.log = l;
 		this.symbol = '@';
 		this.description = "Player";
@@ -95,7 +97,10 @@ public class Player extends Mob {
 		if(this.hp<100) {
 			if(rnd.nextInt(5)==0) {
 				this.hp += rnd.nextInt(4)+1;
-				if(this.hp>100) { this.hp = 100; }
+				if(this.hp>=100) { 
+					this.hp = 100; 
+					setLooker(LookerFactory.getInstance().createLookerHealth(pos.x, pos.y));
+				}
 			}
 		}
 	}
@@ -174,9 +179,9 @@ public class Player extends Mob {
 		this.dead=false;
 	}
 	
-		public int getKills() {
-			return this.monstersKilled;
-		}
+	public int getKills() {
+		return this.monstersKilled;
+	}
 	
 	public String getInfo() {
 		return "   HP : "+this.hp+"\t\n   Gold : "+this.gold+"\t\n"+"   Kills : "+this.monstersKilled;
@@ -203,5 +208,15 @@ public class Player extends Mob {
 			res+="Shield +"+this.s.getVal()+" ("+this.s.getDurability()+"/"+this.s.getMaxDurability()+")  ";
 		}
 		return res;
+	}
+	
+	public void setLooker(Looker l) {
+		this.looker = l;
+		this.looker.show();
+	}
+	
+	public Looker getLooker() {
+		this.looker.placeOn(pos.x, pos.y);
+		return this.looker;
 	}
 }

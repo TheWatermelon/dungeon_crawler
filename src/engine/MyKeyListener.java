@@ -26,19 +26,19 @@ public class MyKeyListener implements KeyListener {
 	public void keyTyped(KeyEvent ke) {
 		if(!this.map.isPlayerDead()) {
 			if(ke.getKeyChar() == 'z') {
-				this.map.getLooker().hide();
+				this.map.getPlayer().getLooker().hide();
 				this.win.printOnScreen();
 				this.map.movePlayerUp();
 			} else if(ke.getKeyChar() == 's') {
-				this.map.getLooker().hide();
+				this.map.getPlayer().getLooker().hide();
 				this.win.printOnScreen();
 				this.map.movePlayerDown();
 			} else if(ke.getKeyChar() == 'q') {
-				this.map.getLooker().hide();
+				this.map.getPlayer().getLooker().hide();
 				this.win.printOnScreen();
 				this.map.movePlayerLeft();
 			} else if(ke.getKeyChar() == 'd') {
-				this.map.getLooker().hide();
+				this.map.getPlayer().getLooker().hide();
 				this.win.printOnScreen();
 				this.map.movePlayerRight();
 			} else if(ke.getKeyChar() == 'w') {
@@ -49,8 +49,8 @@ public class MyKeyListener implements KeyListener {
 				this.win.pickTheme();
 				this.map.generateDungeon();
 			} else if(ke.getKeyChar() == 'l') {
-				this.map.getLooker().placeOn(this.map.getPlayer().pos.x, this.map.getPlayer().pos.y);
-				this.map.getLooker().show();
+				this.map.getPlayer().getLooker().placeOn(this.map.getPlayer().pos.x, this.map.getPlayer().pos.y);
+				this.map.getPlayer().getLooker().show();
 			}
 			// Refresh map on window
 			this.win.refresh();

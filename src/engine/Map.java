@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import objects.Gold;
 import objects.Item;
-import objects.Looker;
+import objects.LookerFactory;
 import objects.Monster;
 import objects.Player;
 import objects.Shield;
@@ -26,7 +26,6 @@ public class Map {
 	private Vector<Item> items;
 	private MessageLog log;
 	private Point stairDown;
-	private Looker looker;
 	private Player jerry;
 	private int level;
 	private Window win;
@@ -42,7 +41,6 @@ public class Map {
 		this.log = new MessageLog();
 		this.jerry = new Player(width/2, height/2, log);
 		this.jerry.setFloor(TileFactory.getInstance().createTileStone()); 
-		this.looker = new Looker(width/2, height/2, TileFactory.getInstance().createTilePlayer());
 	}
 	
 	public Tile[][] getTable() { return this.table; }
@@ -392,20 +390,19 @@ public class Map {
 		if(i instanceof Gold) {
 			this.jerry.addGold(((Gold)i).getVal());
 			removeItem(x, y);
+			this.jerry.setLooker(LookerFactory.getInstance().createLookerGold(this.jerry.pos.x, this.jerry.pos.y));
 		} else if(i instanceof Weapon) {
 			this.log.appendMessage("Found "+((Weapon)i));
 			this.jerry.setWeapon((Weapon)i);
 			removeItem(x, y);
+			this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
 		} else if(i instanceof Shield) {
 			this.log.appendMessage("Found "+((Shield)i));
 			this.jerry.setShield(((Shield)i));
 			removeItem(x, y);
+			this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
 		}
-		this.looker.placeOn(this.jerry.pos.x, this.jerry.pos.y);
-		this.looker.show();
 	}
-	
-	public Looker getLooker() { return this.looker; }
 	
 	private void levelUp() {
 		this.log.appendMessage("Going down...");
@@ -436,9 +433,8 @@ public class Map {
 					if(rnd.nextInt(4)==0) {
 						this.items.add(new Gold(monsters.get(i).pos.x, monsters.get(i).pos.y, 5+this.level));
 					}
-					this.looker.placeOn(this.jerry.pos.x, this.jerry.pos.y);
-					this.looker.show();
 				}
+				this.jerry.setLooker(LookerFactory.getInstance().createLookerMob(this.jerry.pos.x, this.jerry.pos.y));
 			}
 		}
 	}

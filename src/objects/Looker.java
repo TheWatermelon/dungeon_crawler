@@ -2,18 +2,14 @@ package objects;
 
 import java.awt.Point;
 
-import tiles.Tile;
-
 public class Looker {
-	private Point pos;
-	private Tile floor;
-	private char left;
-	private char right;
-	private boolean show;
+	protected Point pos;
+	protected char left;
+	protected char right;
+	protected boolean show;
 	
-	public Looker(int x, int y, Tile f) {
+	public Looker(int x, int y) {
 		this.pos = new Point(x, y);
-		this.floor = f;
 		this.show = false;
 		this.left='{';
 		this.right='}';
@@ -36,5 +32,4 @@ public class Looker {
 	public int getY() { return this.pos.y; }
 	public char getLeft() { return this.left; }
 	public char getRight() { return this.right; }
-	public Tile getFloor() { return this.floor; }
 }
