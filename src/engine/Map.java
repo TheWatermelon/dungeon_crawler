@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.Random;
 import java.util.Vector;
 
+import objects.Barrel;
 import objects.Gold;
 import objects.Item;
 import objects.LookerFactory;
@@ -13,7 +14,6 @@ import objects.Shield;
 import objects.Weapon;
 import rooms.*;
 import tiles.Tile;
-import tiles.TileDoor;
 import tiles.TileFactory;
 import tiles.TileItem;
 import tiles.TileStairsDown;
@@ -401,6 +401,18 @@ public class Map {
 			this.jerry.setShield(((Shield)i));
 			removeItem(x, y);
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
+		} else if(i instanceof Barrel) {
+			int content=((Barrel)i).open();
+			removeItem(x, y);
+			if(content == 0) {
+				log.appendMessage("Open Barrel... Gold!");
+				items.add(new Gold(x, y));
+			} else if(content == 1) {
+				log.appendMessage("Open Barrel... Boom!");
+				this.jerry.harm(20);
+			} else {
+				log.appendMessage("Open Barrel... Nothing!");
+			}
 		}
 	}
 	
@@ -463,7 +475,7 @@ public class Map {
 			movePlayer(this.jerry.pos.x, this.jerry.pos.y-1);
 		} else if(isMonster(this.jerry.pos.x, this.jerry.pos.y-1)){
 			checkMonster(this.jerry.pos.x, this.jerry.pos.y-1);
-		} else if(this.table[this.jerry.pos.y-1][this.jerry.pos.x] instanceof TileDoor) {
+		} else {
 			playerIn(this.jerry.pos.x, this.jerry.pos.y-1);
 		}
 	}
@@ -473,7 +485,7 @@ public class Map {
 			movePlayer(this.jerry.pos.x, this.jerry.pos.y+1);
 		} else if(isMonster(this.jerry.pos.x, this.jerry.pos.y+1)){
 			checkMonster(this.jerry.pos.x, this.jerry.pos.y+1);
-		} else if(this.table[this.jerry.pos.y+1][this.jerry.pos.x] instanceof TileDoor) {
+		} else {
 			playerIn(this.jerry.pos.x, this.jerry.pos.y+1);
 		}
 	}
@@ -483,7 +495,7 @@ public class Map {
 			movePlayer(this.jerry.pos.x-1, this.jerry.pos.y);
 		} else if(isMonster(this.jerry.pos.x-1, this.jerry.pos.y)){
 			checkMonster(this.jerry.pos.x-1, this.jerry.pos.y);
-		} else if(this.table[this.jerry.pos.y][this.jerry.pos.x-1] instanceof TileDoor) {
+		} else {
 			playerIn(this.jerry.pos.x-1, this.jerry.pos.y);
 		}
 	}
@@ -493,7 +505,7 @@ public class Map {
 			movePlayer(this.jerry.pos.x+1, this.jerry.pos.y);
 		} else if(isMonster(this.jerry.pos.x+1, this.jerry.pos.y)){
 			checkMonster(this.jerry.pos.x+1, this.jerry.pos.y);
-		} else if(this.table[this.jerry.pos.y][this.jerry.pos.x+1] instanceof TileDoor) {
+		} else {
 			playerIn(this.jerry.pos.x+1, this.jerry.pos.y);
 		}
 	}

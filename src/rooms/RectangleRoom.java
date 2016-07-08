@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.Random;
 import java.util.Vector;
 
+import objects.Barrel;
 import objects.Door;
 import objects.Gold;
 import objects.Item;
@@ -54,6 +55,8 @@ public class RectangleRoom extends Room {
 				}
 			}
 			return new Gold(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y);
+		} else if (placingChance == 1) {
+			return new Barrel(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y);
 		}
 		return null;
 	}

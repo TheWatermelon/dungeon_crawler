@@ -275,7 +275,9 @@ public class Window extends JFrame{
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.yellow);
 			} else if(this.tab[i][j] instanceof TileItem) {
 			 sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.pink);
-			}else if(this.tab[i][j] instanceof TileMonster) {
+			} else if(this.tab[i][j] instanceof TileBarrel) {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.brown);
+			} else if(this.tab[i][j] instanceof TileMonster) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.mob);
 			} else if(this.tab[i][j] instanceof TileCorpse) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.gray);

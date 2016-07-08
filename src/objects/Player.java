@@ -30,6 +30,7 @@ public class Player extends Mob {
 	
 	public void murder() {
 		this.dead = true;
+		log.appendMessage("Dead! Press r to restart");
 	}
 	
 	public boolean fight(Monster m) {
@@ -51,7 +52,6 @@ public class Player extends Mob {
 		if(this.hp <= 0) {
 			this.hp=0;
 			murder();
-			log.appendMessage("Dead! Press r to restart");
 			return false;
 		}
 
@@ -71,6 +71,15 @@ public class Player extends Mob {
 			return true;
 		}
 		return false;
+	}
+	
+	public void harm(int val) {
+		this.hp -= val;
+		setLooker(LookerFactory.getInstance().createLookerMob(pos.x, pos.y));
+		if(this.hp<=0) {
+			this.hp=0;
+			murder();
+		}
 	}
 	
 	public int rewardGold() {

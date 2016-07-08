@@ -14,6 +14,9 @@ public class TileFactory {
 	private TilePlayer tilePlayer = new TilePlayer();
 	private TileStairsDown tileStairsDown = new TileStairsDown();
 	private TileCorpse tileCorpse = new TileCorpse();
+	private TileWeapon tileWeapon = new TileWeapon();
+	private TileShield tileShield = new TileShield();
+	private TileBarrel tileBarrel = new TileBarrel();
 
 	
 	private TileFactory() {
@@ -36,6 +39,7 @@ public class TileFactory {
 	public TileStairsDown createTileStairsDown() { return tileStairsDown; }
 	public TileMonster createTileMonster(char s) { return new TileMonster(s); }
 	public TileCorpse createTileCorpse() { return tileCorpse; }
-	public TileWeapon createTileWeapon() { return new TileWeapon(); }
-	public TileShield createTileShield() { return new TileShield(); }
+	public TileBarrel createTileBarrel() { return tileBarrel; }
+	public TileWeapon createTileWeapon() { return tileWeapon; }
+	public TileShield createTileShield() { return tileShield; }
 }
