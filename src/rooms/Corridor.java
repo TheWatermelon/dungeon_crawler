@@ -22,7 +22,7 @@ public class Corridor extends Room {
 		this.show = false;
 	}
 	
-	public Item parsingFloor() {
+	public void parsingFloor(Vector<Item> v) {
 		Random rnd = new Random();
 		int parsingChance = rnd.nextInt(5), floorType = rnd.nextInt(3), height=0, width=0;
 		
@@ -36,14 +36,13 @@ public class Corridor extends Room {
 			}
 			
 			if(floorType==0) {
-				return new Gold(width+this.p1.x, height+this.p1.y);
+				v.add(new Gold(width+this.p1.x, height+this.p1.y));
 			} else if(floorType==1) {
-				return new Weapon(width+this.p1.x, height+this.p1.y);
+				v.add(new Weapon(width+this.p1.x, height+this.p1.y));
 			} else if(floorType==2) {
-				return new Shield(width+this.p1.x, height+this.p1.y);
+				v.add(new Shield(width+this.p1.x, height+this.p1.y));
 			}
 		}
-		return null;
 	}
 	
 	public void print(Tile[][] tab) {

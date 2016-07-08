@@ -16,6 +16,8 @@ public class Player extends Mob {
 	public Player(int x, int y, MessageLog l) {
 		this.hp=100;
 		this.atk=5;
+		this.def=0;
+		this.vit=0;
 		this.w = new Weapon();
 		this.s = new Shield();
 		this.gold=0;
@@ -34,43 +36,65 @@ public class Player extends Mob {
 	}
 	
 	public boolean fight(Monster m) {
+		String battleLog="";
+		
+		if(this.vit<m.vit) {
+			battleLog+=m.fightTurn(this);
+			if(this.hp <= 0) {
+				this.hp=0;
+				murder();
+				return false;
+			}
+			battleLog+=", "+fightTurn(m);
+			log.appendMessage(battleLog);
+			if(m.hp <= 0) { 
+				m.murder(); 
+				this.monstersKilled++;
+				log.appendMessage(m.description+" killed");
+				return true;
+			}
+		} else {
+			battleLog+=fightTurn(m);
+			if(m.hp <= 0) { 
+				m.murder(); 
+				this.monstersKilled++;
+				battleLog+=", "+m.description+" killed";
+				log.appendMessage(battleLog);
+				return true;
+			}
+			battleLog+=", "+m.fightTurn(this);
+			log.appendMessage(battleLog);
+			if(this.hp <= 0) {
+				this.hp=0;
+				murder();
+				return false;
+			}
+		}
+
+		return false;
+	}
+	
+	private String fightTurn(Monster m) {
+		String battleLog="";
 		Random rnd = new Random();
 		int deg;
 		
 		deg = rnd.nextInt(3);
 		if(deg==0) { 
-			log.appendMessage(m.description+" miss"); 
-		} else if(((deg*m.atk)-this.s.getVal())<=0) {
-			this.s.use();
-			checkShield();
-			log.appendMessage(description+" dodged"); 
+			battleLog+=description+" miss"; 
+		} else if(((deg*getAtk())-m.getDef())<=0) {
+			battleLog+=m.description+" dodged"; 
 		} else {
-			this.hp -= (deg*m.atk)-this.s.getVal();
-			this.s.use();
-			checkShield();
-			log.appendMessage(m.description+" deals "+((deg*m.atk)-this.s.getVal())+" dmg to "+description); }
-		if(this.hp <= 0) {
-			this.hp=0;
-			murder();
-			return false;
+			int dmg=(deg*this.getAtk())-m.getDef();
+			m.hp -= dmg;
+			useWeapon();
+			if(deg==1) {
+				battleLog+=description+" deals "+dmg+" to "+m.description; 
+			} else if(deg==2) {
+				battleLog+=description+" deals !"+dmg+"! to "+m.description; 
+			}
 		}
-
-		deg = rnd.nextInt(3);
-		if(deg==0) { 
-			log.appendMessage(description+" miss"); 
-		} else {
-			m.hp -= deg*(this.atk+this.w.getVal());
-			this.w.use();
-			checkWeapon();
-			log.appendMessage(description+" deals "+(deg*(this.atk+this.w.getVal()))+" dmg to "+m.description); 
-		}
-		if(m.hp <= 0) { 
-			m.murder(); 
-			this.monstersKilled++;
-			log.appendMessage(m.description+" killed");
-			return true;
-		}
-		return false;
+		return battleLog;
 	}
 	
 	public void harm(int val) {
@@ -116,6 +140,16 @@ public class Player extends Mob {
 	
 	public void setHealth(int val) {
 		this.hp = val;
+	}
+	
+	public void useWeapon() {
+		this.w.use();
+		checkWeapon();
+	}
+	
+	public void useShield() {
+		this.s.use();
+		checkShield();
 	}
 	
 	private void checkWeapon() {
@@ -186,6 +220,14 @@ public class Player extends Mob {
 		this.s=new Shield();
 		this.monstersKilled=0;
 		this.dead=false;
+	}
+	
+	public int getAtk() {
+		return this.atk+this.w.getVal();
+	}
+	
+	public int getDef() {
+		return this.def+this.s.getVal();
 	}
 	
 	public int getKills() {

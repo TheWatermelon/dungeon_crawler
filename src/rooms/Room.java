@@ -27,7 +27,7 @@ public abstract class Room {
 	public final void addDoor(Point p) { this.door.add(new Door(p)); }
 	public final void addDoor(Point p, Tile t) { this.door.add(new Door(p, t)); }
 	
-	public abstract Item parsingFloor();
+	public abstract void parsingFloor(Vector<Item> v);
 	
 	public final void printOn(Tile[][] tab) {
 		if(show) {

@@ -12,14 +12,14 @@ import tiles.Tile;
 import tiles.TileFactory;
 
 public class RectangleRoom extends Room {
-	private Vector<Point> moss;
+	private Vector<Point> additionalFloor;
 	
 	public RectangleRoom(int x1, int y1, int x2, int y2, String s) {
 		this.description = s;
 		this.p1 = new Point(x1, y1);
 		this.p2 = new Point(x2, y2);
 		this.door = new Vector<Door>();
-		this.moss = new Vector<Point>();
+		this.additionalFloor = new Vector<Point>();
 		this.floor = TileFactory.getInstance().createTileStone();
 		this.show = false;
 	}
@@ -38,26 +38,63 @@ public class RectangleRoom extends Room {
 	}
 	
 	private void printAdditionalFloor(Tile[][] tab) {
-		for(int i=0; i<this.moss.size(); i++) {
-			tab[this.moss.get(i).y][this.moss.get(i).x] = TileFactory.getInstance().createTileMoss();
+		for(int i=0; i<this.additionalFloor.size(); i++) {
+			tab[this.additionalFloor.get(i).y][this.additionalFloor.get(i).x] = TileFactory.getInstance().createTileMoss();
 		}
 	}
 	
-	public Item parsingFloor() {
+	public void parsingFloor(Vector<Item> v) {
 		Random rnd = new Random();
 		int placingChance = rnd.nextInt(3), floorChance;
 		
 		if(placingChance == 0) {
+			// Moss + 1 gold
 			for(int i=1; i<this.getHeight(); i++) {
 				for(int j=1; j<this.getWidth(); j++) {
 					floorChance = rnd.nextInt(100);
-					if(floorChance<20) this.moss.add(new Point(this.p1.x+j,this.p1.y+i));
+					if(floorChance<20) this.additionalFloor.add(new Point(this.p1.x+j,this.p1.y+i));
 				}
 			}
-			return new Gold(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y);
-		} else if (placingChance == 1) {
-			return new Barrel(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y);
+			v.add(new Gold(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y));
+		} else if(placingChance == 1) {
+			// Barrels (1 to 4)
+			int height=rnd.nextInt(getHeight()-2)+1+this.p1.y, width=rnd.nextInt(getWidth()-2)+1+this.p1.x, gapBarrel=rnd.nextInt(4);
+			floorChance = rnd.nextInt(4)+1;
+			
+			if(floorChance<3) {
+				v.add(new Barrel(width, height));
+				if(rnd.nextInt(2)==0) {
+					v.add(new Barrel(width+1, height));
+				} else {
+					v.add(new Barrel(width, height+1));
+				}
+			} else if(floorChance==3) {
+				if(gapBarrel==0) {
+					v.add(new Barrel(width+1, height));
+					v.add(new Barrel(width+1, height+1));
+					v.add(new Barrel(width, height+1));
+				} else if(gapBarrel==1) {
+					v.add(new Barrel(width, height));
+					v.add(new Barrel(width, height+1));
+					v.add(new Barrel(width+1, height+1));
+				} else if(gapBarrel==2) {
+					v.add(new Barrel(width+1, height));
+					v.add(new Barrel(width, height));
+					v.add(new Barrel(width, height+1));
+				} else {
+					v.add(new Barrel(width, height));
+					v.add(new Barrel(width+1, height));
+					v.add(new Barrel(width+1, height+1));
+				}
+			} else {
+				v.add(new Barrel(width, height));
+				v.add(new Barrel(width+1, height));
+				v.add(new Barrel(width+1, height+1));
+				v.add(new Barrel(width, height+1));
+			}
+			
 		}
-		return null;
 	}
+	
+	
 }
