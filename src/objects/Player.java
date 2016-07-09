@@ -77,22 +77,25 @@ public class Player extends Mob {
 	private String fightTurn(Monster m) {
 		String battleLog="";
 		Random rnd = new Random();
-		int deg;
+		int deg, dmg;
 		
 		deg = rnd.nextInt(3);
 		if(deg==0) { 
 			battleLog+=description+" miss"; 
-		} else if(((deg*getAtk())-m.getDef())<=0) {
-			battleLog+=m.description+" dodged"; 
-		} else {
-			int dmg=(deg*this.getAtk())-m.getDef();
+		} else if(deg==1) { 
+			dmg=(deg*this.getAtk())-m.getDef();
+			if(dmg<=0) {
+				battleLog+=m.description+" dodged"; 
+			} else {
+				m.hp -= dmg;
+				useWeapon();
+				battleLog+=description+" deals "+dmg+" to "+m.description; 
+			}
+		} else if(deg==2) {
+			dmg=deg*this.getAtk();
 			m.hp -= dmg;
 			useWeapon();
-			if(deg==1) {
-				battleLog+=description+" deals "+dmg+" to "+m.description; 
-			} else if(deg==2) {
-				battleLog+=description+" deals !"+dmg+"! to "+m.description; 
-			}
+			battleLog+=description+" deals !"+dmg+"! to "+m.description; 
 		}
 		return battleLog;
 	}
