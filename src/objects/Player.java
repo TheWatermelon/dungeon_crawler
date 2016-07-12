@@ -170,7 +170,7 @@ public class Player extends Mob {
 	}
 	
 	public void setWeapon(Weapon weapon) {
-		if(this.w.getVal() <= weapon.getVal() && this.w.getVal() != 5) {
+		if(this.w.getVal() <= weapon.getVal()) {
 			this.w = weapon;
 		} else {
 			if(this.w.getDurability()<this.w.getMaxDurability()) {
@@ -183,7 +183,7 @@ public class Player extends Mob {
 	}
 	
 	public void setShield(Shield shield) {
-		if(this.s.getVal() < shield.getVal()) {
+		if(this.s.getVal() <= shield.getVal()) {
 			this.s = shield;
 		} else {
 			if(this.s.getDurability()<this.s.getMaxDurability()) {

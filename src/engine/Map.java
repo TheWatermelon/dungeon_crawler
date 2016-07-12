@@ -33,6 +33,7 @@ public class Map {
 	private Player jerry;
 	private int level;
 	private Window win;
+	private Random rnd;
 	public String oldString;
 	
 	public Map(int height, int width) {
@@ -44,7 +45,8 @@ public class Map {
 		this.stairDown = new Point();
 		this.log = new MessageLog();
 		this.jerry = new Player(width/2, height/2, log);
-		this.jerry.setFloor(TileFactory.getInstance().createTileStone()); 
+		this.jerry.setFloor(TileFactory.getInstance().createTileStone());
+		this.rnd = new Random();
 	}
 	
 	public Tile[][] getTable() { return this.table; }
@@ -88,7 +90,6 @@ public class Map {
 	}
 	
 	public void generateDungeon() {
-		Random rnd = new Random();
 		Room room;
 		int roomIndex, height, width;
 		
@@ -136,7 +137,6 @@ public class Map {
 	}
 
 	private void generateRectangleRoom(Room room) {
-		Random rnd = new Random();
 		int wallSide, height, width, mid;
 		
 		// SALLE
@@ -190,7 +190,6 @@ public class Map {
 	}
 	
 	private void generateCorridor(Room room, boolean junction) {
-		Random rnd = new Random();
 		int wallSide, height, width;
 
 		// De quel cote on etend le donjon
@@ -261,7 +260,6 @@ public class Map {
 	}
 	
 	private void generateMonsters() {
-		Random rnd = new Random();
 		Room room;
 		int roomNumber, roomIndex, monsterNumber, height, width, monsterName;
 		
@@ -302,7 +300,6 @@ public class Map {
 	
 	private void placeStairs() {
 		Room selectedRoom;
-		Random rnd = new Random();
 		int height, width;
 		
 		do {
@@ -421,8 +418,18 @@ public class Map {
 			int content=((Barrel)i).open();
 			removeItem(x, y);
 			if(content == 0) {
-				log.appendMessage("Open Barrel... Gold!");
-				items.add(new Gold(x, y));
+				if(rnd.nextInt(2)==0) {
+					log.appendMessage("Open Barrel... Gold!");
+					items.add(new Gold(x, y));
+				} else {
+					if(rnd.nextInt(2)==0) {
+						log.appendMessage("Open Barrel... Weapon!");
+						items.add(new Weapon(x, y));
+					} else {
+						log.appendMessage("Open Barrel... Shield!");
+						items.add(new Shield(x, y));
+					}
+				}
 			} else if(content == 1) {
 				log.appendMessage("Open Barrel... Boom!");
 				this.jerry.harm(25);
@@ -535,8 +542,7 @@ public class Map {
 	}
 	
 	private void moveAllMonsters() {
-		Random rnd = new Random();
-		Mob m;
+		Monster m;
 		
 		for(int i=0; i<this.monsters.size(); i++) {
 			m=this.monsters.get(i);
