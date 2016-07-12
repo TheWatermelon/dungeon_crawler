@@ -22,6 +22,7 @@ public abstract class Room {
 	public final int getWidth() { return (this.p2.x - this.p1.x); }
 	public final int getHeight() { return (this.p2.y - this.p1.y); }
 	public final String toString() { return this.description; }
+	public final boolean isVisible() { return this.show; }
 	public final void show() { this.show=true; }
 	public final void hide() { this.show=false; }
 	public final void addDoor(Point p) { this.door.add(new Door(p)); }

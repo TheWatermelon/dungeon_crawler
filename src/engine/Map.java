@@ -85,6 +85,17 @@ public class Map {
 		return true;
 	}
 	
+	public boolean isVisible(int x, int y) {
+		for(int i=0; i<rooms.size(); i++) {
+			if(x>rooms.get(i).p1.x && x<rooms.get(i).p2.x
+					&& y>rooms.get(i).p1.y && y<rooms.get(i).p2.y) {
+				return this.rooms.get(i).isVisible();
+			}
+		}
+		
+		return true;
+	}
+	
 	public boolean isWalkable(int x, int y) {
 		return this.table[y][x].isWalkable() && !isMonster(x, y);
 	}
@@ -271,7 +282,8 @@ public class Map {
 				room = this.rooms.get(roomIndex);
 			} while (room instanceof Corridor);
 			
-			monsterNumber = (rnd.nextInt((room.getHeight()-1)*(room.getWidth()-1))+1)/2;
+			monsterNumber = (rnd.nextInt((room.getHeight()-1)*(room.getWidth()-1))+1)/3;
+			System.out.println("Height : "+room.getHeight()+" Width : "+room.getWidth()+" MonsterNumber : "+monsterNumber);
 			for(int j=0; j<monsterNumber; j++) {
 				do {
 					width = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
@@ -442,18 +454,18 @@ public class Map {
 	private void levelUp() {
 		this.log.appendMessage("Going down...");
 		this.level++;
-		this.win.pickTheme();
-		this.oldString="";
 		generateDungeon();
+		this.win.pickTheme();
+		this.win.firstPrint();
 	}
 	
 	public void newGame() {
 		this.level = 0;
 		this.jerry.reset();
-		generateDungeon();
 		this.log.clear();
-		this.win.dispose();
-		printOnWindow();
+		generateDungeon();
+		this.win.firstPrint();
+		this.win.setLabel(generateMapInfo(), getPlayer().getAllInfo(), getLog());
 	}
 	
 	private void checkPlayerPos(int x, int y) {
@@ -546,7 +558,7 @@ public class Map {
 		
 		for(int i=0; i<this.monsters.size(); i++) {
 			m=this.monsters.get(i);
-			if(!m.isDead() && rnd.nextInt(10)>0) {
+			if(!m.isDead() && rnd.nextInt(10)>1 && isVisible(m.pos.x, m.pos.y)) {
 				if(this.jerry.pos.y<m.pos.y) {
 					// NORTH
 					if(isWalkable(m.pos.x, m.pos.y-1)) {
