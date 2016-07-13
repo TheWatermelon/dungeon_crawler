@@ -9,7 +9,6 @@ import objects.Boss;
 import objects.Gold;
 import objects.Item;
 import objects.LookerFactory;
-import objects.Mob;
 import objects.Monster;
 import objects.Player;
 import objects.Shield;
@@ -548,7 +547,7 @@ public class Map {
 		}
 	}
 	
-	private void moveMonster(Mob m, int x, int y) {
+	private void moveMonster(Monster m, int x, int y) {
 		m.pos.x = x;
 		m.pos.y = y;
 	}
