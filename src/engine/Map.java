@@ -282,7 +282,6 @@ public class Map {
 			} while (room instanceof Corridor);
 			
 			monsterNumber = (rnd.nextInt((room.getHeight()-1)*(room.getWidth()-1))+1)/3;
-			System.out.println("Height : "+room.getHeight()+" Width : "+room.getWidth()+" MonsterNumber : "+monsterNumber);
 			for(int j=0; j<monsterNumber; j++) {
 				do {
 					width = rnd.nextInt(room.getWidth()-1)+1+room.p1.x;
