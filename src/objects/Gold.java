@@ -9,7 +9,7 @@ import tiles.TileFactory;
 public class Gold extends Item {
 	public Gold(int x, int y) {
 		this.pos = new Point(x, y);
-		this.val = pickVal();
+		this.val = pickVal(5);
 		this.description="Gold";
 	}
 	
@@ -17,12 +17,6 @@ public class Gold extends Item {
 		this.pos = new Point(x, y);
 		this.val = pickVal(v);
 		this.description="Gold";
-	}
-	
-	private int pickVal() {
-		Random rnd = new Random();
-		
-		return rnd.nextInt(5)+1;
 	}
 
 	public Tile getTile() {

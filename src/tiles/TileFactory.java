@@ -17,6 +17,7 @@ public class TileFactory {
 	private TileWeapon tileWeapon = new TileWeapon();
 	private TileShield tileShield = new TileShield();
 	private TileBarrel tileBarrel = new TileBarrel();
+	private TilePotion tilePotion = new TilePotion();
 
 	
 	private TileFactory() {
@@ -42,4 +43,5 @@ public class TileFactory {
 	public TileBarrel createTileBarrel() { return tileBarrel; }
 	public TileWeapon createTileWeapon() { return tileWeapon; }
 	public TileShield createTileShield() { return tileShield; }
+	public TilePotion createTilePotion() { return tilePotion; }
 }

@@ -102,10 +102,16 @@ public class Player extends Mob {
 	
 	public void harm(int val) {
 		this.hp -= val;
-		setLooker(LookerFactory.getInstance().createLookerMob(pos.x, pos.y));
+		if(val>0) {
+			setLooker(LookerFactory.getInstance().createLookerMob(pos.x, pos.y));
+		} else {
+			setLooker(LookerFactory.getInstance().createLookerHealth(pos.x, pos.y));
+		}
 		if(this.hp<=0) {
 			this.hp=0;
 			murder();
+		} else if(this.hp>100) {
+			this.hp = 100;
 		}
 	}
 	

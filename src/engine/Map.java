@@ -4,23 +4,9 @@ import java.awt.Point;
 import java.util.Random;
 import java.util.Vector;
 
-import objects.Barrel;
-import objects.Boss;
-import objects.Gold;
-import objects.Item;
-import objects.LookerFactory;
-import objects.Monster;
-import objects.Player;
-import objects.Shield;
-import objects.Weapon;
+import objects.*;
 import rooms.*;
-import tiles.Tile;
-import tiles.TileCorpse;
-import tiles.TileFactory;
-import tiles.TileItem;
-import tiles.TileMonster;
-import tiles.TileStairsDown;
-import tiles.TileVoid;
+import tiles.*;
 
 public class Map {
 	private Tile[][] table;
@@ -411,9 +397,18 @@ public class Map {
 		if(i == null) { return; }
 		
 		if(i instanceof Gold) {
-			this.jerry.addGold(((Gold)i).getVal());
+			this.jerry.addGold(i.getVal());
 			removeItem(x, y);
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerGold(this.jerry.pos.x, this.jerry.pos.y));
+		} else if(i instanceof Potion) {
+			if(i.getVal()>=0) {
+				this.log.appendMessage("Drink Potion... Lost "+i.getVal()+" PV");
+			} else {
+				this.log.appendMessage("Drink Potion... Gained "+(i.getVal()*-1)+" PV");
+			}
+			this.jerry.harm(i.getVal());
+			this.jerry.setLooker(LookerFactory.getInstance().createLookerPotion(x, y, i.getVal()));
+			removeItem(x, y);
 		} else if(i instanceof Weapon) {
 			this.log.appendMessage("Found "+((Weapon)i));
 			this.jerry.setWeapon((Weapon)i);
@@ -441,6 +436,9 @@ public class Map {
 					}
 				}
 			} else if(content == 1) {
+				log.appendMessage("Open Barrel... Potion!");
+				items.addElement(new Potion(x, y));
+			} else if(content == 2) {
 				log.appendMessage("Open Barrel... Boom!");
 				this.jerry.harm(25);
 			} else {

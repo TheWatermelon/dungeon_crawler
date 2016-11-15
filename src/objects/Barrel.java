@@ -15,7 +15,7 @@ public class Barrel extends Item {
 	
 	public int open() {
 		Random rnd = new Random();
-		return rnd.nextInt(4);
+		return rnd.nextInt(5);
 		
 	}
 	
