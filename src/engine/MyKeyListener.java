@@ -48,9 +48,9 @@ public class MyKeyListener implements KeyListener {
 				this.map.getPlayer().repareShield();
 			} else if(ke.getKeyChar() == 'r') {
 				this.win.pickTheme();
-				this.map.recalculateTable();
+				//this.map.recalculateTable();
 				this.map.generateDungeon();
-				this.win.refreshTable();
+				//this.win.refreshTable();
 			}
 			// Refresh map on window
 			this.win.refresh();

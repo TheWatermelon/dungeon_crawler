@@ -463,7 +463,7 @@ public class Map {
 	private void levelUp() {
 		this.log.appendMessage("Going down...");
 		this.level++;
-		recalculateTable();
+		//recalculateTable();
 		generateDungeon();
 		this.win.refreshTable();
 		this.win.pickTheme();
@@ -474,7 +474,7 @@ public class Map {
 		this.level = 0;
 		this.jerry.reset();
 		this.log.clear();
-		recalculateTable();
+		//recalculateTable();
 		generateDungeon();
 		this.win.refreshTable();
 		this.win.firstPrint();

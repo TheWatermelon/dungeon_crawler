@@ -139,7 +139,7 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 		
 		this.setVisible(true);
 		
-		getContentPane().addHierarchyBoundsListener(this);
+		//getContentPane().addHierarchyBoundsListener(this);
 	}
 	
 	private void initStyles() {
@@ -318,9 +318,8 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 	
 	public void firstPrint() {
 		int pos=0;
-		
-		System.out.println(map.getWidth()+"x"+map.getHeight());
-		
+
+		refreshTable();
 		this.map.printDungeon();
 		
 		try {
@@ -400,14 +399,12 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 
 	@Override
 	public void ancestorMoved(HierarchyEvent e) {
-		System.out.println("moved");
 		
 	}
 
 	@Override
 	public void ancestorResized(HierarchyEvent e) {
 		map.recalculateTable();
-		System.out.println("New inner size : "+body.getWidth()+"x"+body.getHeight()+" => "+map.getWidth()+"x"+map.getHeight());
-		
+		//System.out.println("New inner size : "+body.getWidth()+"x"+body.getHeight()+" => "+map.getWidth()+"x"+map.getHeight());
 	}
 }
