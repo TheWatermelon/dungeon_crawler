@@ -24,5 +24,6 @@ public class LookerFactory {
 	public LookerEquip createLookerEquip(int x, int y) { lookerEquip.placeOn(x, y); return lookerEquip; }
 	public LookerGold createLookerGold(int x, int y) { lookerGold.placeOn(x, y); return lookerGold; }
 	public LookerHealth createLookerHealth(int x, int y) { lookerHealth.placeOn(x,  y); return lookerHealth; }
-	public LookerPotion createLookerPotion(int x, int y, int val) { /*lookerPotion.updateLook(val);*/ lookerPotion.placeOn(x, y); return lookerPotion; }
+	public LookerPotion createLookerPotion(int x, int y, int val) { lookerPotion.updateLook(val); lookerPotion.placeOn(x, y); return lookerPotion; }
+	public LookerBarrel createLookerBarrel(int x, int y) { return new LookerBarrel(x, y); }
 }

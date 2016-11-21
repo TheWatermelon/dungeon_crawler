@@ -1,6 +1,6 @@
 package objects;
 
-import java.awt.Point;
+import java.awt.*;
 
 public class Looker {
 	protected Point pos;

@@ -1,24 +1,12 @@
 package engine;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.util.Random;
+import java.awt.*;
+import java.util.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextPane;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.*;
+import javax.swing.text.*;
 
-import objects.LookerEquip;
-import objects.LookerGold;
-import objects.LookerHealth;
-import objects.LookerMob;
+import objects.*;
 import tiles.*;
 
 public class Window extends JFrame{
@@ -100,7 +88,7 @@ public class Window extends JFrame{
 		this.body.setBorder(BorderFactory.createLineBorder(Color.white));
 		this.body.setBackground(Color.black);
 		this.body.setForeground(Color.white);
-		this.body.setFont(new Font("Consolas", Font.PLAIN, 12));
+		this.body.setFont(new Font("Monospaced", Font.PLAIN, 12));
 		this.keyListener = new MyKeyListener(this.map, this);
 		this.body.addKeyListener(keyListener);
 		
@@ -300,6 +288,14 @@ public class Window extends JFrame{
 						color = yellow;
 					} else if(this.map.getPlayer().getLooker() instanceof LookerHealth) {
 						color = green;
+					} else if(this.map.getPlayer().getLooker() instanceof LookerBarrel) {
+						color = brown;
+					} else if(this.map.getPlayer().getLooker() instanceof LookerPotion) {
+						if(((LookerPotion)this.map.getPlayer().getLooker()).getVal()>0) {
+							color = green;
+						} else {
+							color = red;
+						}
 					}
 					sDoc.remove(pos-1,  1);
 					sDoc.insertString(pos-1, ""+this.map.getPlayer().getLooker().getLeft(), color);

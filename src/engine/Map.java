@@ -402,11 +402,12 @@ public class Map {
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerGold(this.jerry.pos.x, this.jerry.pos.y));
 		} else if(i instanceof Potion) {
 			if(i.getVal()>=0) {
-				this.log.appendMessage("Drink Potion... Lost "+i.getVal()+" PV");
+				this.log.appendMessage("Drink Potion... Gained "+i.getVal()+" PV");
+				this.jerry.heal(i.getVal());
 			} else {
-				this.log.appendMessage("Drink Potion... Gained "+(i.getVal()*-1)+" PV");
+				this.log.appendMessage("Drink Potion... Lost "+(i.getVal()*-1)+" PV");
+				this.jerry.harm(i.getVal());
 			}
-			this.jerry.harm(i.getVal());
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerPotion(x, y, i.getVal()));
 			removeItem(x, y);
 		} else if(i instanceof Weapon) {
@@ -421,6 +422,7 @@ public class Map {
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
 		} else if(i instanceof Barrel) {
 			int content=((Barrel)i).open();
+			this.jerry.setLooker(LookerFactory.getInstance().createLookerBarrel(this.jerry.pos.x, this.jerry.pos.y));
 			removeItem(x, y);
 			if(content == 0) {
 				if(rnd.nextInt(2)==0) {

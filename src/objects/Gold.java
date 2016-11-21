@@ -1,7 +1,6 @@
 package objects;
 
 import java.awt.Point;
-import java.util.Random;
 
 import tiles.Tile;
 import tiles.TileFactory;
