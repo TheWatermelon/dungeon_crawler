@@ -1,6 +1,7 @@
 package engine;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 
 import javax.swing.*;
@@ -9,7 +10,7 @@ import javax.swing.text.*;
 import objects.*;
 import tiles.*;
 
-public class Window extends JFrame{
+public class Window extends JFrame implements HierarchyBoundsListener {
 	private static final long serialVersionUID = 1L;
 	
 	private Map map;
@@ -57,9 +58,9 @@ public class Window extends JFrame{
 		super(title);
 		this.map = m;
 		this.tab = m.getTable();
-		this.setSize(800, 600);
+		this.setSize(820, 620);
 		this.setLocation(150, 100);
-		this.setResizable(false);
+		this.setResizable(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		this.global = new JPanel();
@@ -137,6 +138,8 @@ public class Window extends JFrame{
 		pickTheme();
 		
 		this.setVisible(true);
+		
+		getContentPane().addHierarchyBoundsListener(this);
 	}
 	
 	private void initStyles() {
@@ -316,6 +319,8 @@ public class Window extends JFrame{
 	public void firstPrint() {
 		int pos=0;
 		
+		System.out.println(map.getWidth()+"x"+map.getHeight());
+		
 		this.map.printDungeon();
 		
 		try {
@@ -341,6 +346,15 @@ public class Window extends JFrame{
 		} catch(BadLocationException e) {}
 		
 		//this.body.repaint();	
+	}
+	
+	public void refreshTable() {
+		this.tab = this.map.getTable();
+		try {
+			this.body.getDocument().remove(0, body.getDocument().getLength());
+		} catch(BadLocationException e) {
+			
+		}
 	}
 	
 	public void refresh() {
@@ -382,5 +396,18 @@ public class Window extends JFrame{
 			}
 			this.map.oldString=s;
 		} catch(BadLocationException e) {}
+	}
+
+	@Override
+	public void ancestorMoved(HierarchyEvent e) {
+		System.out.println("moved");
+		
+	}
+
+	@Override
+	public void ancestorResized(HierarchyEvent e) {
+		map.recalculateTable();
+		System.out.println("New inner size : "+body.getWidth()+"x"+body.getHeight()+" => "+map.getWidth()+"x"+map.getHeight());
+		
 	}
 }

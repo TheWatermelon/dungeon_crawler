@@ -18,7 +18,7 @@ public class LookerBarrel extends Looker {
 				this.right='`';
 				break;
 			case 1:
-				this.left='Â¨';
+				this.left='¨';
 				this.right='`';
 				break;
 			case 2:

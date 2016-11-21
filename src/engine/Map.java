@@ -18,10 +18,14 @@ public class Map {
 	private Player jerry;
 	private int level;
 	private Window win;
+	private int width;
+	private int height;
 	private Random rnd;
 	public String oldString;
 	
-	public Map(int height, int width) {
+	public Map(int width, int height) {
+		this.width = width;
+		this.height = height;
 		this.table = new Tile[height][width];
 		this.rooms = new Vector<Room>();
 		this.monsters = new Vector<Monster>();
@@ -36,8 +40,15 @@ public class Map {
 	
 	public Tile[][] getTable() { return this.table; }
 	
-	public int getHeight() { return this.table.length; }
-	public int getWidth() { return this.table[0].length; }
+	public void recalculateTable() {
+		this.width = (int)Math.floor(0.06 * win.getWidth())+5;
+		this.height = (int)Math.floor(0.05 * win.getHeight())-5;
+		this.table = new Tile[height][width];
+		this.fillRectangle(table, 0, 0, width-1, height-1, TileFactory.getInstance().createTileVoid());
+	}
+	
+	public int getHeight() { return this.height; }
+	public int getWidth() { return this.width; }
 	
 	public void fillRectangle(Tile[][] table, int x1, int y1, int x2, int y2, Tile t) {
 		if(x1 < 0 || y1 < 0 || x2 > table[0].length-1 || y2 > table.length-1) {
@@ -88,7 +99,7 @@ public class Map {
 	public void generateDungeon() {
 		Room room;
 		int roomIndex, height, width;
-		
+				
 		// Position joueur
 		this.jerry.placeOn(getWidth()/2, getHeight()/2);
 		
@@ -452,7 +463,9 @@ public class Map {
 	private void levelUp() {
 		this.log.appendMessage("Going down...");
 		this.level++;
+		recalculateTable();
 		generateDungeon();
+		this.win.refreshTable();
 		this.win.pickTheme();
 		this.win.firstPrint();
 	}
@@ -461,7 +474,9 @@ public class Map {
 		this.level = 0;
 		this.jerry.reset();
 		this.log.clear();
+		recalculateTable();
 		generateDungeon();
+		this.win.refreshTable();
 		this.win.firstPrint();
 		this.win.setLabel(generateMapInfo(), getPlayer().getAllInfo(), getLog());
 	}
