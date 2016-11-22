@@ -1,26 +1,27 @@
 package engine;
 
-import java.awt.Point;
-import java.util.Random;
-import java.util.Vector;
+import java.awt.*;
+import java.util.*;
 
 import objects.*;
 import rooms.*;
 import tiles.*;
 
 public class Map {
-	private Tile[][] table;
-	private Vector<Room> rooms;
-	private Vector<Monster> monsters;
-	private Vector<Item> items;
-	private MessageLog log;
-	private Point stairDown;
-	private Player jerry;
-	private int level;
-	private Window win;
-	private int width;
-	private int height;
-	private Random rnd;
+	protected static ArrayList<Map> LEVELS = new ArrayList<Map>();
+	protected Tile[][] table;
+	protected Vector<Room> rooms;
+	protected Vector<Monster> monsters;
+	protected Vector<Item> items;
+	protected MessageLog log;
+	protected Point stairUp;
+	protected Point stairDown;
+	protected Player jerry;
+	protected int level;
+	protected Window win;
+	protected int width;
+	protected int height;
+	protected Random rnd;
 	public String oldString;
 	
 	public Map(int width, int height) {
@@ -34,8 +35,10 @@ public class Map {
 		this.stairDown = new Point();
 		this.log = new MessageLog();
 		this.jerry = new Player(width/2, height/2, log);
+		this.stairUp = new Point(width/2, height/2);
 		this.jerry.setFloor(TileFactory.getInstance().createTileStone());
 		this.rnd = new Random();
+		LEVELS.add(this);
 	}
 	
 	public Tile[][] getTable() { return this.table; }
@@ -644,6 +647,9 @@ public class Map {
 		}
 		if(!(this.table[this.stairDown.y][this.stairDown.x] instanceof TileVoid) && !isMonster(this.stairDown.x, this.stairDown.y) && !(this.level%5==0 && this.level>0)) {
 			this.table[this.stairDown.y][this.stairDown.x] = TileFactory.getInstance().createTileStairsDown();
+		}
+		if(!(this.table[this.stairUp.y][this.stairUp.x] instanceof TileVoid) && !isMonster(this.stairUp.x, this.stairUp.y) && !(this.level%5==0 && this.level>0)) {
+			this.table[this.stairUp.y][this.stairUp.x] = TileFactory.getInstance().createTileStairsUp();
 		}
 		integrateMobs();
 		integrateItems();
