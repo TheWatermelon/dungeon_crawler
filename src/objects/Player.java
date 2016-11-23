@@ -244,8 +244,32 @@ public class Player extends Mob {
 		return this.monstersKilled;
 	}
 	
+	public String drawHealthBar() {
+		String s="[";
+		
+		for(int i=0; i<10; i++) {
+			if(i==3 && hp==100) {
+				s+="1";
+			} else if(i==4 && hp==100) {
+				s+="0";
+			} else if(i==4 && hp>9 && hp<100) {
+				s+=""+(hp/10);
+			} else if(i==5) {
+				s+=""+hp%10;
+			} else {
+				if(i<this.hp/10) {
+					s+="|";
+				} else {
+					s+=" ";
+				}
+			}
+		}
+		s+="]";
+		return s;
+	}
+	
 	public String getInfo() {
-		return "   HP : "+this.hp+"\t\n   Gold : "+this.gold+"\t\n"+"   Kills : "+this.monstersKilled;
+		return "   "+drawHealthBar()+"\n   Gold : "+this.gold+"\t\n"+"   Kills : "+this.monstersKilled;
 	}
 	
 	public String getAllInfo() {
@@ -257,7 +281,7 @@ public class Player extends Mob {
 		if(this.s.getVal()>0) {
 			shield=this.s+" +"+this.s.getVal()+" ("+this.s.getDurability()+"/"+this.s.getMaxDurability()+")";
 		}
-		return "   HP : "+this.hp+"\t"+weapon+"\n   Gold : "+this.gold+"\t"+shield+"\n"+"   Kills : "+this.monstersKilled;
+		return "   "+drawHealthBar()+"  "+weapon+"\n   Gold : "+this.gold+"  "+shield+"\n"+"   Kills : "+this.monstersKilled;
 	}
 	
 	public String getWeaponInfo() {

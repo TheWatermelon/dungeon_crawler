@@ -262,6 +262,8 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.darkGreen);
 			} else if(this.tab[i][j] instanceof TileStairsDown) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.orange);
+			} else if(this.tab[i][j] instanceof TileStairsUp) {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.orange);
 			} else if(this.tab[i][j] instanceof TileGold) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.yellow);
 			} else if(this.tab[i][j] instanceof TileItem) {

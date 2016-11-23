@@ -34,7 +34,7 @@ public class Map {
 		this.level = d.getLevel();
 		this.stairDown = new Point();
 		this.log = d.getLog();
-		this.jerry = new Player(width/2, height/2, log);
+		this.jerry = d.getPlayer();
 		this.stairUp = new Point(width/2, height/2);
 		this.jerry.setFloor(TileFactory.getInstance().createTileStone());
 		this.rnd = new Random();
@@ -469,29 +469,7 @@ public class Map {
 			}
 		}
 	}
-	/*
-	private void levelUp() {
-		this.log.appendMessage("Going down...");
-		this.level++;
-		//recalculateTable();
-		generateDungeon();
-		this.win.refreshTable();
-		this.win.pickTheme();
-		this.win.firstPrint();
-	}
-	*/
-	/*
-	public void newGame() {
-		this.level = 0;
-		this.jerry.reset();
-		this.log.clear();
-		//recalculateTable();
-		generateDungeon();
-		this.win.refreshTable();
-		this.win.firstPrint();
-		this.win.setLabel(generateMapInfo(), getPlayer().getAllInfo(), getLog());
-	}
-	*/
+	
 	private void checkPlayerPos(int x, int y) {
 		if(isStairsUp(x, y)) dungeon.levelUp();
 		else if(isStairsDown(x, y)) dungeon.levelDown();
@@ -571,6 +549,14 @@ public class Map {
 		} else {
 			playerIn(this.jerry.pos.x+1, this.jerry.pos.y);
 		}
+	}
+	
+	public void placePlayerStairsUp() {
+		this.jerry.placeOn(this.stairUp.x, this.stairUp.y);
+	}
+	
+	public void placePlayerStairsDown() {
+		this.jerry.placeOn(this.stairDown.x, this.stairDown.y);
 	}
 	
 	private void moveMonster(Monster m, int x, int y) {
@@ -657,7 +643,7 @@ public class Map {
 		if(!(this.table[this.stairDown.y][this.stairDown.x] instanceof TileVoid) && !isMonster(this.stairDown.x, this.stairDown.y) && !(this.level%5==0 && this.level>0)) {
 			this.table[this.stairDown.y][this.stairDown.x] = TileFactory.getInstance().createTileStairsDown();
 		}
-		if(!(this.table[this.stairUp.y][this.stairUp.x] instanceof TileVoid) && !isMonster(this.stairUp.x, this.stairUp.y) && !(this.level%5==0 && this.level>0)) {
+		if(!(this.table[this.stairUp.y][this.stairUp.x] instanceof TileVoid) && !isMonster(this.stairUp.x, this.stairUp.y)) {
 			this.table[this.stairUp.y][this.stairUp.x] = TileFactory.getInstance().createTileStairsUp();
 		}
 		integrateMobs();
@@ -694,13 +680,4 @@ public class Map {
 		}
 		System.out.println();
 	}
-	/*
-	public void printOnWindow() {
-		this.win = new Window("Dungeon Crawler", this);
-
-		this.win.setLabel(generateMapInfo(), getPlayer().getAllInfo(), getLog());
-		
-		this.win.firstPrint();
-	}
-	*/
 }
