@@ -54,10 +54,10 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 	private Style pink;
 	
 	
-	public Window(String title, Map m) {
+	public Window(String title, Dungeon d) {
 		super(title);
-		this.map = m;
-		this.tab = m.getTable();
+		this.map = d.getMap();
+		this.tab = d.getMap().getTable();
 		this.setSize(820, 620);
 		this.setLocation(150, 100);
 		this.setResizable(true);
@@ -90,7 +90,7 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 		this.body.setBackground(Color.black);
 		this.body.setForeground(Color.white);
 		this.body.setFont(new Font("Monospaced", Font.PLAIN, 12));
-		this.keyListener = new MyKeyListener(this.map, this);
+		this.keyListener = new MyKeyListener(d, d.getMap(), this);
 		this.body.addKeyListener(keyListener);
 		
 		this.leftPanel = new JPanel();
@@ -316,6 +316,41 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 		} catch(BadLocationException e) {}
 	}
 	
+	public Map getMap() { return map; }
+	
+	public void setMap(Map m) {
+		this.map = m;
+	}
+	
+	public void refreshListener() {
+		keyListener.refresh(this.map, this);
+	}
+	
+	public void refreshTable() {
+		this.tab = this.map.getTable();
+		try {
+			this.body.getDocument().remove(0, body.getDocument().getLength());
+		} catch(BadLocationException e) {
+			
+		}
+	}
+	
+	public void refresh() {
+		if(!this.map.isPlayerDead()) {
+			this.map.printDungeon();
+			if(this.map.oldString.equals("")) {
+				firstPrint();
+			} else {
+				printOnScreen();
+			}
+			setLabel(this.map.generateMapInfo(), this.map.getPlayer().getAllInfo(), this.map.getLog());
+		} else {
+			setLabel(this.map.getFinalScreen(), this.map.getPlayer().getAllInfo(), this.map.getLog());
+		}
+		refreshListener();
+		revalidate();
+	}
+	
 	public void firstPrint() {
 		int pos=0;
 
@@ -345,30 +380,6 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 		} catch(BadLocationException e) {}
 		
 		//this.body.repaint();	
-	}
-	
-	public void refreshTable() {
-		this.tab = this.map.getTable();
-		try {
-			this.body.getDocument().remove(0, body.getDocument().getLength());
-		} catch(BadLocationException e) {
-			
-		}
-	}
-	
-	public void refresh() {
-		if(!this.map.isPlayerDead()) {
-			this.map.printDungeon();
-			if(this.map.oldString.equals("")) {
-				firstPrint();
-			} else {
-				printOnScreen();
-			}
-			setLabel(this.map.generateMapInfo(), this.map.getPlayer().getAllInfo(), this.map.getLog());
-		} else {
-			setLabel(this.map.getFinalScreen(), this.map.getPlayer().getAllInfo(), this.map.getLog());
-		}
-		revalidate();
 	}
 	
 	public void printOnScreen() {
@@ -404,7 +415,7 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 
 	@Override
 	public void ancestorResized(HierarchyEvent e) {
-		map.recalculateTable();
+		//map.recalculateTable();
 		//System.out.println("New inner size : "+body.getWidth()+"x"+body.getHeight()+" => "+map.getWidth()+"x"+map.getHeight());
 	}
 }

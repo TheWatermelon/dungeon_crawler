@@ -4,13 +4,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class MyKeyListener implements KeyListener {
+	private Dungeon dungeon;
 	private Map map;
 	private Window win;
 	
 	public MyKeyListener() {
 	}
 	
-	public MyKeyListener(Map m, Window w) {
+	public MyKeyListener(Dungeon d, Map m, Window w) {
+		this.dungeon = d;
+		this.map = m;
+		this.win = w;
+	}
+	
+	public void refresh(Map m, Window w) {
 		this.map = m;
 		this.win = w;
 	}
@@ -56,7 +63,7 @@ public class MyKeyListener implements KeyListener {
 			this.win.refresh();
 		} else {
 			if(ke.getKeyChar()=='r') {
-				this.map.newGame();
+				this.dungeon.newGame();
 			}
 		}
 	}

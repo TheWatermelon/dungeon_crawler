@@ -8,7 +8,6 @@ import rooms.*;
 import tiles.*;
 
 public class Map {
-	protected static ArrayList<Map> LEVELS = new ArrayList<Map>();
 	protected Tile[][] table;
 	protected Vector<Room> rooms;
 	protected Vector<Monster> monsters;
@@ -18,38 +17,39 @@ public class Map {
 	protected Point stairDown;
 	protected Player jerry;
 	protected int level;
-	protected Window win;
+	protected Dungeon dungeon;
 	protected int width;
 	protected int height;
 	protected Random rnd;
 	public String oldString;
 	
-	public Map(int width, int height) {
+	public Map(int width, int height, Dungeon d) {
+		this.dungeon = d;
 		this.width = width;
 		this.height = height;
 		this.table = new Tile[height][width];
 		this.rooms = new Vector<Room>();
 		this.monsters = new Vector<Monster>();
 		this.items = new Vector<Item>();
-		this.level = 0;
+		this.level = d.getLevel();
 		this.stairDown = new Point();
-		this.log = new MessageLog();
+		this.log = d.getLog();
 		this.jerry = new Player(width/2, height/2, log);
 		this.stairUp = new Point(width/2, height/2);
 		this.jerry.setFloor(TileFactory.getInstance().createTileStone());
 		this.rnd = new Random();
-		LEVELS.add(this);
+		this.oldString="";
 	}
 	
 	public Tile[][] getTable() { return this.table; }
-	
+	/*
 	public void recalculateTable() {
 		this.width = (int)Math.floor(0.06 * win.getWidth())+5;
 		this.height = (int)Math.floor(0.05 * win.getHeight())-5;
 		this.table = new Tile[height][width];
 		this.fillRectangle(table, 0, 0, width-1, height-1, TileFactory.getInstance().createTileVoid());
 	}
-	
+	*/
 	public int getHeight() { return this.height; }
 	public int getWidth() { return this.width; }
 	
@@ -381,7 +381,14 @@ public class Map {
 	
 	public boolean isPlayerDead() { return this.jerry.isDead(); }
 	
-	private boolean isStairs(int x, int y) {
+	private boolean isStairsUp(int x, int y) {
+		if(this.table[y][x] instanceof TileStairsUp) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean isStairsDown(int x, int y) {
 		if(this.table[y][x] instanceof TileStairsDown) {
 			return true;
 		}
@@ -462,7 +469,7 @@ public class Map {
 			}
 		}
 	}
-	
+	/*
 	private void levelUp() {
 		this.log.appendMessage("Going down...");
 		this.level++;
@@ -472,7 +479,8 @@ public class Map {
 		this.win.pickTheme();
 		this.win.firstPrint();
 	}
-	
+	*/
+	/*
 	public void newGame() {
 		this.level = 0;
 		this.jerry.reset();
@@ -483,9 +491,10 @@ public class Map {
 		this.win.firstPrint();
 		this.win.setLabel(generateMapInfo(), getPlayer().getAllInfo(), getLog());
 	}
-	
+	*/
 	private void checkPlayerPos(int x, int y) {
-		if(isStairs(x, y)) levelUp();
+		if(isStairsUp(x, y)) dungeon.levelUp();
+		else if(isStairsDown(x, y)) dungeon.levelDown();
 		playerIn(x, y);
 	}
 	
@@ -685,7 +694,7 @@ public class Map {
 		}
 		System.out.println();
 	}
-	
+	/*
 	public void printOnWindow() {
 		this.win = new Window("Dungeon Crawler", this);
 
@@ -693,4 +702,5 @@ public class Map {
 		
 		this.win.firstPrint();
 	}
+	*/
 }
