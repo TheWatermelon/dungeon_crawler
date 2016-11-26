@@ -4,12 +4,8 @@ import java.awt.Point;
 import java.util.Random;
 import java.util.Vector;
 
-import objects.Barrel;
-import objects.Door;
-import objects.Gold;
-import objects.Item;
-import tiles.Tile;
-import tiles.TileFactory;
+import objects.item.*;
+import tiles.*;
 
 public class RectangleRoom extends Room {
 	private Vector<Point> additionalFloor;
@@ -48,7 +44,7 @@ public class RectangleRoom extends Room {
 		int placingChance = rnd.nextInt(3), floorChance;
 		
 		if(placingChance == 0) {
-			// Moss + 1 gold
+			// Moss + 1 gold + 1 holy fountain
 			for(int i=1; i<this.getHeight(); i++) {
 				for(int j=1; j<this.getWidth(); j++) {
 					floorChance = rnd.nextInt(100);
@@ -56,6 +52,7 @@ public class RectangleRoom extends Room {
 				}
 			}
 			v.add(new Gold(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y));
+			v.add(new Fountain(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y));
 		} else if(placingChance == 1) {
 			// Barrels (1 to 4)
 			int height=rnd.nextInt(getHeight()-2)+1+this.p1.y, width=rnd.nextInt(getWidth()-2)+1+this.p1.x, gapBarrel=rnd.nextInt(4);

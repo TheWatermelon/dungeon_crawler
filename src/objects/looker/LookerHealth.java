@@ -1,4 +1,4 @@
-package objects;
+package objects.looker;
 
 public class LookerHealth extends Looker {
 	public LookerHealth(int x, int y) {

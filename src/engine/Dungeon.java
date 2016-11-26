@@ -2,7 +2,7 @@ package engine;
 
 import java.util.*;
 
-import objects.Player;
+import objects.mob.Player;
 
 public class Dungeon {
 	protected ArrayList<Map> levels;

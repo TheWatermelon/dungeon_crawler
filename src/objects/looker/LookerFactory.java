@@ -1,4 +1,4 @@
-package objects;
+package objects.looker;
 
 public class LookerFactory {
 	private static LookerFactory instance;

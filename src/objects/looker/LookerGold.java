@@ -1,4 +1,4 @@
-package objects;
+package objects.looker;
 
 public class LookerGold extends Looker {
 	public LookerGold(int x, int y) {

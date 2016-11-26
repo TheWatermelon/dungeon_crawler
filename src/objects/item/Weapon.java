@@ -1,4 +1,4 @@
-package objects;
+package objects.item;
 
 import java.awt.Point;
 

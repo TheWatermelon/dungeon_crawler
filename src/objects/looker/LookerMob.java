@@ -1,4 +1,4 @@
-package objects;
+package objects.looker;
 
 public class LookerMob extends Looker {
 	public LookerMob(int x, int y) {

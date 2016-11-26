@@ -1,4 +1,4 @@
-package objects;
+package objects.looker;
 
 public class LookerPotion extends Looker {
 	protected int val;

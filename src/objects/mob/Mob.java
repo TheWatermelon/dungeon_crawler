@@ -1,4 +1,4 @@
-package objects;
+package objects.mob;
 
 import java.awt.Point;
 

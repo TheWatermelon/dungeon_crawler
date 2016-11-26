@@ -11,6 +11,7 @@ public class TileFactory {
 	private TileStone tileStone = new TileStone();
 	private TileMoss tileMoss = new TileMoss();
 	private TileGold tileGold = new TileGold();
+	private TileFountain tileFountain = new TileFountain();
 	private TilePlayer tilePlayer = new TilePlayer();
 	private TileStairsUp tileStairsUp = new TileStairsUp();
 	private TileStairsDown tileStairsDown = new TileStairsDown();
@@ -19,7 +20,6 @@ public class TileFactory {
 	private TileShield tileShield = new TileShield();
 	private TileBarrel tileBarrel = new TileBarrel();
 	private TilePotion tilePotion = new TilePotion();
-
 	
 	private TileFactory() {
 		// CRAP CONSTRUCTOR
@@ -37,6 +37,7 @@ public class TileFactory {
 	public TileStone createTileStone() { return tileStone; }
 	public TileMoss createTileMoss() { return tileMoss; }
 	public TileGold createTileGold() { return tileGold; }
+	public TileFountain createTileFountain() { return tileFountain; }
 	public TilePlayer createTilePlayer() { return tilePlayer; }
 	public TileStairsUp createTileStairsUp() { return tileStairsUp; }
 	public TileStairsDown createTileStairsDown() { return tileStairsDown; }

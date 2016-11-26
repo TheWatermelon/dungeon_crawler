@@ -1,4 +1,4 @@
-package objects;
+package rooms;
 
 import java.awt.Point;
 

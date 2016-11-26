@@ -5,8 +5,7 @@ import java.util.Vector;
 
 import tiles.Tile;
 import tiles.TileFactory;
-import objects.Door;
-import objects.Item;
+import objects.item.Item;
 
 public abstract class Room {
 	protected String description;

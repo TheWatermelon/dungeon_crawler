@@ -1,4 +1,4 @@
-package objects;
+package objects.looker;
 
 public class LookerEquip extends Looker {
 	public LookerEquip(int x, int y) {

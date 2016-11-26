@@ -3,7 +3,9 @@ package engine;
 import java.awt.*;
 import java.util.*;
 
-import objects.*;
+import objects.item.*;
+import objects.looker.LookerFactory;
+import objects.mob.*;
 import rooms.*;
 import tiles.*;
 
@@ -421,6 +423,21 @@ public class Map {
 			this.jerry.addGold(i.getVal());
 			removeItem(x, y);
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerGold(this.jerry.pos.x, this.jerry.pos.y));
+		} 
+		if(i instanceof Fountain) {
+			if(!jerry.isFullHealth()) {
+				if(i.getVal()-1>=0) {
+					log.appendMessage("Player stepped on holy fountain, HP restored!");
+					this.jerry.resetHealth();
+					this.jerry.setLooker(LookerFactory.getInstance().createLookerHealth(x, y));
+					// Player has used the fountain
+					i.setVal(i.getVal()-1);
+				}
+				if(i.getVal()==0){
+					log.appendMessage("The fountain dissapear...");
+					removeItem(x, y);
+				}
+			}
 		} else if(i instanceof Potion) {
 			if(i.getVal()>=0) {
 				this.log.appendMessage("Drink Potion... Gained "+i.getVal()+" PV");
@@ -460,7 +477,7 @@ public class Map {
 				}
 			} else if(content == 1) {
 				log.appendMessage("Open Barrel... Potion!");
-				items.addElement(new Potion(x, y));
+				items.add(new Potion(x, y));
 			} else if(content == 2) {
 				log.appendMessage("Open Barrel... Boom!");
 				this.jerry.harm(25);

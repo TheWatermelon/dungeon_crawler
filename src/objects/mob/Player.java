@@ -1,11 +1,16 @@
-package objects;
+package objects.mob;
 
 import java.awt.Point;
 import java.util.Random;
 
 import engine.MessageLog;
+import objects.item.Shield;
+import objects.item.Weapon;
+import objects.looker.Looker;
+import objects.looker.LookerFactory;
 
 public class Player extends Mob {
+	private int maxHealth;
 	private int gold;
 	private int monstersKilled;
 	private Weapon w;
@@ -14,7 +19,7 @@ public class Player extends Mob {
 	private Looker looker;
 	
 	public Player(int x, int y, MessageLog l) {
-		this.hp=100;
+		this.maxHealth=this.hp=100;
 		this.atk=5;
 		this.def=0;
 		this.vit=0;
@@ -102,8 +107,8 @@ public class Player extends Mob {
 	
 	public void heal(int val) {
 		this.hp += val;
-		if(this.hp>100) {
-			this.hp=100;
+		if(this.hp>this.maxHealth) {
+			resetHealth();
 		}
 	}
 	
@@ -135,13 +140,21 @@ public class Player extends Mob {
 		log.appendMessage("Gained "+amount+"G");
 	}
 	
+	public void resetHealth() {
+		this.hp = this.maxHealth;
+	}
+	
+	public boolean isFullHealth() {
+		return hp == maxHealth;
+	}
+	
 	public void restoreHealth() {
 		Random rnd = new Random();
 		if(this.hp<100) {
 			if(rnd.nextInt(5)==0) {
 				this.hp += rnd.nextInt(4)+1;
-				if(this.hp>=100) { 
-					this.hp = 100; 
+				if(this.hp>this.maxHealth) { 
+					resetHealth(); 
 					setLooker(LookerFactory.getInstance().createLookerHealth(pos.x, pos.y));
 				}
 			}
@@ -181,8 +194,8 @@ public class Player extends Mob {
 			this.w = weapon;
 		} else {
 			if(this.w.getDurability()<this.w.getMaxDurability()) {
-				this.w.durability += 2*weapon.getVal();
-				if(this.w.durability>this.w.maxDurability) {
+				this.w.setDurability(this.w.getDurability() + 2*weapon.getVal());
+				if(this.w.getDurability()>this.w.getMaxDurability()) {
 					this.w.resetDurability();
 				}
 			}
@@ -194,8 +207,8 @@ public class Player extends Mob {
 			this.s = shield;
 		} else {
 			if(this.s.getDurability()<this.s.getMaxDurability()) {
-				this.s.durability += 2*shield.getVal();
-				if(this.s.durability>this.s.maxDurability) {
+				this.s.setDurability(this.s.getDurability() + 2*shield.getVal());
+				if(this.s.getDurability()>this.s.getMaxDurability()) {
 					this.s.resetDurability();
 				}
 			}
@@ -203,27 +216,27 @@ public class Player extends Mob {
 	}
 	
 	public void repareWeapon() {
-		if(this.w.durability<this.w.maxDurability && this.w.getVal()>0) {
+		if(this.w.getDurability()<this.w.getMaxDurability() && this.w.getVal()>0) {
 			if(this.gold>=this.w.getVal()) {
 				this.gold -= this.w.getVal();
-				this.w.durability++;
+				this.w.setDurability(this.w.getDurability()+1);
 				log.appendMessage("Spent "+this.w.getVal()+" to repare "+this.w);
 			}
 		}
 	}
 	
 	public void repareShield() {
-		if(this.s.durability<this.s.maxDurability && this.s.getVal()>0) {
+		if(this.s.getDurability()<this.s.getMaxDurability() && this.s.getVal()>0) {
 			if(this.gold>=this.s.getVal()) {
 				this.gold -= this.s.getVal();
-				this.s.durability++;
+				this.s.setDurability(this.s.getDurability()+1);
 				log.appendMessage("Spent "+this.s.getVal()+" to repare "+this.s);
 			}
 		}
 	}
 	
 	public void reset() {
-		this.hp=100;
+		this.hp=this.maxHealth;
 		this.atk=5;
 		this.gold=0;
 		this.w=new Weapon();
@@ -247,17 +260,16 @@ public class Player extends Mob {
 	public String drawHealthBar() {
 		String s="[";
 		
-		for(int i=0; i<10; i++) {
-			if(i==3 && hp==100) {
-				s+="1";
-			} else if(i==4 && hp==100) {
-				s+="0";
-			} else if(i==4 && hp>9 && hp<100) {
-				s+=""+(hp/10);
-			} else if(i==5) {
-				s+=""+hp%10;
+		for(int i=0; i<20; i++) {
+			if(i==8 && hp==maxHealth) {	// Show life count on bar
+				s+=hp/10;
+				i++;
+			} else if(i==9 && hp>9 && hp<maxHealth) {
+				s+=(hp/10);
+			} else if(i==10) {
+				s+=hp%10;
 			} else {
-				if(i<this.hp/10) {
+				if(i<((int)20*hp/maxHealth)) {
 					s+="|";
 				} else {
 					s+=" ";
@@ -269,7 +281,7 @@ public class Player extends Mob {
 	}
 	
 	public String getInfo() {
-		return "   "+drawHealthBar()+"\n   Gold : "+this.gold+"\t\n"+"   Kills : "+this.monstersKilled;
+		return ""+drawHealthBar()+"\nGold : "+this.gold+"\n"+"Kills : "+this.monstersKilled;
 	}
 	
 	public String getAllInfo() {
@@ -281,7 +293,7 @@ public class Player extends Mob {
 		if(this.s.getVal()>0) {
 			shield=this.s+" +"+this.s.getVal()+" ("+this.s.getDurability()+"/"+this.s.getMaxDurability()+")";
 		}
-		return "   "+drawHealthBar()+"  "+weapon+"\n   Gold : "+this.gold+"  "+shield+"\n"+"   Kills : "+this.monstersKilled;
+		return "   "+drawHealthBar()+"  Gold : "+this.gold+"\n   "+weapon+"\n"+"   "+shield;
 	}
 	
 	public String getWeaponInfo() {

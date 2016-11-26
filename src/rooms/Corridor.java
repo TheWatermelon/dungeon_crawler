@@ -4,11 +4,10 @@ import java.awt.Point;
 import java.util.Random;
 import java.util.Vector;
 
-import objects.Door;
-import objects.Gold;
-import objects.Item;
-import objects.Shield;
-import objects.Weapon;
+import objects.item.Gold;
+import objects.item.Item;
+import objects.item.Shield;
+import objects.item.Weapon;
 import tiles.Tile;
 import tiles.TileFactory;
 

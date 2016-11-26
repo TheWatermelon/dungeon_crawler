@@ -7,7 +7,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-import objects.*;
+import objects.looker.*;
 import tiles.*;
 
 public class Window extends JFrame implements HierarchyBoundsListener {
@@ -101,14 +101,16 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 		
 		this.footPanel = new JPanel();
 		this.footPanel.setLayout(new BorderLayout());
-		
+		// HP, Gold, Kills, Weapon & Shield
 		this.foot = new JTextPane();
 		this.foot.setEditable(false);
 		this.foot.setFocusable(false);
 		this.foot.setBackground(Color.black);
 		this.foot.setForeground(Color.white);
+		StyledDocument doc0 = this.foot.getStyledDocument();
+		doc0.setParagraphAttributes(0, doc0.getLength(), center, false);
 		this.footPanel.add(this.foot, BorderLayout.WEST);
-
+		// Log
 		this.foot1 = new JTextPane();
 		this.foot1.setEditable(false);
 		this.foot1.setFocusable(false);
@@ -117,7 +119,7 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 		StyledDocument doc1 = this.foot1.getStyledDocument();
 		doc1.setParagraphAttributes(0, doc1.getLength(), center, false);
 		this.footPanel.add(this.foot1, BorderLayout.CENTER);
-		
+		// Commands
 		this.foot2 = new JTextPane();
 		this.foot2.setEditable(false);
 		this.foot2.setFocusable(false); 
@@ -266,8 +268,10 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.orange);
 			} else if(this.tab[i][j] instanceof TileGold) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.yellow);
+			} else if(this.tab[i][j] instanceof TileFountain) {
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.cyan);
 			} else if(this.tab[i][j] instanceof TileItem) {
-			 sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.pink);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.pink);
 			} else if(this.tab[i][j] instanceof TileBarrel) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.brown);
 			} else if(this.tab[i][j] instanceof TileMonster) {
