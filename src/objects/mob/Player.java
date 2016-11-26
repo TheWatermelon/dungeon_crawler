@@ -43,8 +43,6 @@ public class Player extends Mob {
 	public boolean fight(Monster m) {
 		String battleLog="";
 		
-		System.out.println(this.vit+" vs "+m.vit);
-		
 		// Fighting turns
 		if(this.vit!=0 && m.vit>=2*this.vit) {
 			// Monster is twice faster than player : it hits twice without being hit
