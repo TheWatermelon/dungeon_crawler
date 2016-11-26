@@ -14,7 +14,7 @@ public class Potion extends Item {
 	
 	protected int pickVal() {
 		Random rnd = new Random();
-		int val = pickVal(10);
+		int val = pickVal(25);
 		if(rnd.nextInt(2)==0) {
 			// Pas de chance, celle la va faire mal!
 			return val*-1;

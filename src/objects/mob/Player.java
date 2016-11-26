@@ -10,9 +10,9 @@ import objects.looker.Looker;
 import objects.looker.LookerFactory;
 
 public class Player extends Mob {
-	private int maxHealth;
 	private int gold;
 	private int monstersKilled;
+	private int potionEffect;
 	private Weapon w;
 	private Shield s;
 	private MessageLog log;
@@ -22,7 +22,7 @@ public class Player extends Mob {
 		this.maxHealth=this.hp=100;
 		this.atk=5;
 		this.def=0;
-		this.vit=0;
+		this.vit=this.potionEffect=0;
 		this.w = new Weapon();
 		this.s = new Shield();
 		this.gold=0;
@@ -43,7 +43,37 @@ public class Player extends Mob {
 	public boolean fight(Monster m) {
 		String battleLog="";
 		
-		if(this.vit<m.vit) {
+		System.out.println(this.vit+" vs "+m.vit);
+		
+		// Fighting turns
+		if(this.vit!=0 && m.vit>=2*this.vit) {
+			// Monster is twice faster than player : it hits twice without being hit
+			for(int i=0; i<2; i++) {
+				battleLog+=m.fightTurn(this);
+				if(this.hp <= 0) {
+					this.hp=0;
+					murder();
+					return false;
+				}
+				battleLog+=" ";
+			}
+			log.appendMessage(battleLog);
+		} else if(this.vit!=0 && this.vit>=2*m.vit) {
+			// Player is twice faster than monster : he hits twice without being hit
+			for(int i=0; i<2; i++) {
+				battleLog+=fightTurn(m);
+				if(m.hp <= 0) { 
+					m.murder(); 
+					this.monstersKilled++;
+					battleLog+=", "+m.description+" killed";
+					log.appendMessage(battleLog);
+					return true;
+				}
+				battleLog+=" ";
+			}
+			log.appendMessage(battleLog);
+		} else if(this.vit<m.vit) {
+			// Monster engage the fight
 			battleLog+=m.fightTurn(this);
 			if(this.hp <= 0) {
 				this.hp=0;
@@ -59,6 +89,7 @@ public class Player extends Mob {
 				return true;
 			}
 		} else {
+			// Player engage the fight
 			battleLog+=fightTurn(m);
 			if(m.hp <= 0) { 
 				m.murder(); 
@@ -140,10 +171,6 @@ public class Player extends Mob {
 		log.appendMessage("Gained "+amount+"G");
 	}
 	
-	public void resetHealth() {
-		this.hp = this.maxHealth;
-	}
-	
 	public boolean isFullHealth() {
 		return hp == maxHealth;
 	}
@@ -157,6 +184,25 @@ public class Player extends Mob {
 					resetHealth(); 
 					setLooker(LookerFactory.getInstance().createLookerHealth(pos.x, pos.y));
 				}
+			}
+		}
+	}
+	
+	public void setPotionEffect(int val) {
+		this.vit=val;
+		if(val<0) {
+			this.potionEffect=-1*val;
+		} else {
+			this.potionEffect=val;
+		}
+	}
+	
+	public void consumePotionEffect() {
+		if(potionEffect!=0) {
+			potionEffect--;
+			if(potionEffect==0) {
+				vit=0;
+				log.appendMessage("Potion effect vanished!");
 			}
 		}
 	}
@@ -257,35 +303,12 @@ public class Player extends Mob {
 		return this.monstersKilled;
 	}
 	
-	public String drawHealthBar() {
-		String s="[";
-		
-		for(int i=0; i<20; i++) {
-			if(i==8 && hp==maxHealth) {	// Show life count on bar
-				s+=hp/10;
-				i++;
-			} else if(i==9 && hp>9 && hp<maxHealth) {
-				s+=(hp/10);
-			} else if(i==10) {
-				s+=hp%10;
-			} else {
-				if(i<((int)20*hp/maxHealth)) {
-					s+="|";
-				} else {
-					s+=" ";
-				}
-			}
-		}
-		s+="]";
-		return s;
-	}
-	
 	public String getInfo() {
 		return ""+drawHealthBar()+"\nGold : "+this.gold+"\n"+"Kills : "+this.monstersKilled;
 	}
 	
 	public String getAllInfo() {
-		String weapon="\t", shield="\t";
+		String weapon="\t", shield="\t", vit=""+this.vit;
 		
 		if(this.w.getVal()>0) {
 			weapon=this.w+" +"+this.w.getVal()+" ("+this.w.getDurability()+"/"+this.w.getMaxDurability()+")";
@@ -293,7 +316,10 @@ public class Player extends Mob {
 		if(this.s.getVal()>0) {
 			shield=this.s+" +"+this.s.getVal()+" ("+this.s.getDurability()+"/"+this.s.getMaxDurability()+")";
 		}
-		return "   "+drawHealthBar()+"  Gold : "+this.gold+"\n   "+weapon+"\n"+"   "+shield;
+		if(potionEffect>0) {
+			vit+=" ("+potionEffect+")";
+		}
+		return "   "+drawHealthBar()+" G:"+this.gold+"  VIT:"+vit+"\n   "+weapon+"\n"+"   "+shield;
 	}
 	
 	public String getWeaponInfo() {

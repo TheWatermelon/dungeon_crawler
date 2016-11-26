@@ -18,6 +18,7 @@ public class Map {
 	protected Point stairUp;
 	protected Point stairDown;
 	protected Player jerry;
+	protected Boss boss;
 	protected int level;
 	protected Dungeon dungeon;
 	protected int width;
@@ -44,14 +45,6 @@ public class Map {
 	}
 	
 	public Tile[][] getTable() { return this.table; }
-	/*
-	public void recalculateTable() {
-		this.width = (int)Math.floor(0.06 * win.getWidth())+5;
-		this.height = (int)Math.floor(0.05 * win.getHeight())-5;
-		this.table = new Tile[height][width];
-		this.fillRectangle(table, 0, 0, width-1, height-1, TileFactory.getInstance().createTileVoid());
-	}
-	*/
 	public int getHeight() { return this.height; }
 	public int getWidth() { return this.width; }
 	
@@ -306,7 +299,8 @@ public class Map {
 				height = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
 			} while (((width==this.jerry.pos.x) && (height==this.jerry.pos.y)) && !isMonster(width, height));
 			monsterName = rnd.nextInt(26);
-			this.monsters.add(new Boss(width, height, this.level/5, Ressources.getCapitalLetterAt(monsterName), Ressources.getCapitalNameAt(monsterName)));
+			boss = new Boss(width, height, this.level/5, Ressources.getCapitalLetterAt(monsterName), Ressources.getCapitalNameAt(monsterName));
+			monsters.add(boss);
 		}
 	}
 	
@@ -384,17 +378,11 @@ public class Map {
 	public boolean isPlayerDead() { return this.jerry.isDead(); }
 	
 	private boolean isStairsUp(int x, int y) {
-		if(this.table[y][x] instanceof TileStairsUp) {
-			return true;
-		}
-		return false;
+		return this.table[y][x] instanceof TileStairsUp;
 	}
 	
 	private boolean isStairsDown(int x, int y) {
-		if(this.table[y][x] instanceof TileStairsDown) {
-			return true;
-		}
-		return false;
+		return this.table[y][x] instanceof TileStairsDown;
 	}
 	
 	private Item isItem(int x, int y) {
@@ -440,11 +428,11 @@ public class Map {
 			}
 		} else if(i instanceof Potion) {
 			if(i.getVal()>=0) {
-				this.log.appendMessage("Drink Potion... Gained "+i.getVal()+" PV");
-				this.jerry.heal(i.getVal());
+				this.log.appendMessage("Drink Potion... Fast effect "+i.getVal()+"!");
+				this.jerry.setPotionEffect(i.getVal());
 			} else {
-				this.log.appendMessage("Drink Potion... Lost "+(i.getVal()*-1)+" PV");
-				this.jerry.harm(i.getVal());
+				this.log.appendMessage("Drink Potion... Slow effect "+(i.getVal()*-1)+"!");
+				this.jerry.setPotionEffect(i.getVal());
 			}
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerPotion(x, y, i.getVal()));
 			removeItem(x, y);
@@ -489,7 +477,13 @@ public class Map {
 	
 	private void checkPlayerPos(int x, int y) {
 		if(isStairsUp(x, y)) dungeon.levelUp();
-		else if(isStairsDown(x, y)) dungeon.levelDown();
+		else if(isStairsDown(x, y)) {
+			// Patch when the boss is the stairs
+			if(this.dungeon.getLevel()%5==0 && this.dungeon.getLevel()>0) {
+				this.stairDown=new Point(x, y);
+			}
+			dungeon.levelDown();
+		}
 		playerIn(x, y);
 	}
 	
@@ -524,6 +518,7 @@ public class Map {
 		this.jerry.pos.y = y;
 		this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
 		this.jerry.restoreHealth();
+		this.jerry.consumePotionEffect();
 		checkPlayerPos(this.jerry.pos.x, this.jerry.pos.y);
 		moveAllMonsters();
 	}
@@ -668,7 +663,13 @@ public class Map {
 	}
 	
 	public String generateMapInfo() {
-		return "  "+rooms.get(playerIn(this.jerry.pos.x, this.jerry.pos.y)).toString()+" ("+this.jerry.getFloor()+") \t\n  Level "+this.level+"\t";
+		String info="";
+		if(this.dungeon.getLevel()%5==0 && this.dungeon.getLevel()>0 && this.boss!=null) {
+			info="  "+rooms.get(playerIn(this.jerry.pos.x, this.jerry.pos.y)).toString()+" ("+this.jerry.getFloor()+") \t\n  Level "+this.dungeon.getLevel()+" Boss "+this.boss.drawHealthBar()+"\t";
+		} else {
+			info="  "+rooms.get(playerIn(this.jerry.pos.x, this.jerry.pos.y)).toString()+" ("+this.jerry.getFloor()+") \t\n  Level "+this.level+"\t";
+		}
+		return info;
 	}
 	
 	public Player getPlayer() {

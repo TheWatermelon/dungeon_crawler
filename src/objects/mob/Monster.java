@@ -7,7 +7,7 @@ import tiles.TileFactory;
 
 public class Monster extends Mob {
 	public Monster(int x, int y, char s, String desc) {
-		this.hp = 20;
+		this.maxHealth=this.hp = 20;
 		this.atk = pickAtk();
 		this.def = pickDef();
 		this.vit = pickVit();
