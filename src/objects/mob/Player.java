@@ -37,6 +37,7 @@ public class Player extends Mob {
 	
 	public void murder() {
 		this.dead = true;
+		this.hp=0;
 		log.appendMessage("Dead! Press r to restart");
 	}
 	
@@ -49,7 +50,6 @@ public class Player extends Mob {
 			for(int i=0; i<2; i++) {
 				battleLog+=m.fightTurn(this);
 				if(this.hp <= 0) {
-					this.hp=0;
 					murder();
 					return false;
 				}
@@ -74,7 +74,6 @@ public class Player extends Mob {
 			// Monster engage the fight
 			battleLog+=m.fightTurn(this);
 			if(this.hp <= 0) {
-				this.hp=0;
 				murder();
 				return false;
 			}
@@ -99,7 +98,6 @@ public class Player extends Mob {
 			battleLog+=", "+m.fightTurn(this);
 			log.appendMessage(battleLog);
 			if(this.hp <= 0) {
-				this.hp=0;
 				murder();
 				return false;
 			}

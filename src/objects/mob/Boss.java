@@ -21,6 +21,7 @@ public class Boss extends Monster {
 	
 	public void murder() {
 		this.dead = true;
+		this.hp=0;
 		this.mobTile = TileFactory.getInstance().createTileStairsDown();
 	}
 }

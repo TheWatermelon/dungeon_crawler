@@ -332,8 +332,8 @@ public class Map {
 				if(this.monsters.get(i).isDead()) {
 					if(!(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] instanceof TileItem) 
 							&& !(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] instanceof TileStairsDown) 
-							&& !(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] instanceof TileMonster)
-							&& !(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] instanceof TileCorpse)) {
+							&& !(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] instanceof TileStairsUp) 
+							&& !(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] instanceof TileMonster)) {
 						this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x] = this.monsters.get(i).getMobTile();
 					}
 				} else {
@@ -347,6 +347,7 @@ public class Map {
 		for(int i=0; i<this.monsters.size(); i++) {
 			if(this.monsters.get(i) instanceof Boss) {
 				this.monsters.get(i).setFloor(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x]);
+				break;
 			}
 		}
 		// Player
