@@ -287,9 +287,12 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 	private void printLooker(int pos, int i, int j) {
 		Style color=defaut;
 		try {
-			if((i==this.map.getPlayer().getLooker().getY()) && (j==this.map.getPlayer().getLooker().getX()) && (this.map.getPlayer().getLooker().isVisible())) {
-				if(sDoc.getText(pos-1, 3).equals(" "+this.tab[i][j].getSymbol()+" ")) {
-					if(this.map.getPlayer().getLooker() instanceof LookerMob) {
+			// Player
+			if((this.map.getPlayer().getLooker().isVisible()) && (i==this.map.getPlayer().getLooker().getY()) && (j==this.map.getPlayer().getLooker().getX())) {
+				//if(sDoc.getText(pos-1, 3).equals(" "+this.tab[i][j].getSymbol()+" ")) {
+					if(this.map.getPlayer().getLooker() instanceof LookerMob
+							|| this.map.getPlayer().getLooker() instanceof LookerMiss
+							|| this.map.getPlayer().getLooker() instanceof LookerDamage) {
 						color = red;
 					} else if(this.map.getPlayer().getLooker() instanceof LookerEquip) {
 						color = pink;
@@ -310,8 +313,8 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 					sDoc.insertString(pos-1, ""+this.map.getPlayer().getLooker().getLeft(), color);
 					sDoc.remove(pos+1,  1);
 					sDoc.insertString(pos+1, ""+this.map.getPlayer().getLooker().getRight(), color);
-				}
-			} else if((i==this.map.getPlayer().getLooker().getY()) && (j==this.map.getPlayer().getLooker().getX()) && !(this.map.getPlayer().getLooker().isVisible())) {
+				//}
+			} else if(!(this.map.getPlayer().getLooker().isVisible()) && (i==this.map.getPlayer().getLooker().getY()) && (j==this.map.getPlayer().getLooker().getX())) {
 				if(!sDoc.getText(pos-1, 3).equals(" "+this.tab[i][j].getSymbol()+" ")) {
 					sDoc.remove(pos-1,  1);
 					sDoc.insertString(pos-1, " ", defaut);
@@ -319,6 +322,25 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 					sDoc.insertString(pos+1, " ", defaut);
 				}
 			}
+			// Monsters
+			/*
+			for(objects.mob.Monster m : this.map.getMonsters()) {
+				if((i==m.getLooker().getX()) && (j==m.getLooker().getY()) && (m.getLooker().isVisible())) {
+					color = red;
+					sDoc.remove(pos-1,  1);
+					sDoc.insertString(pos-1, ""+m.getLooker().getLeft(), color);
+					sDoc.remove(pos+1,  1);
+					sDoc.insertString(pos+1, ""+m.getLooker().getRight(), color);
+				} else if((i==m.getLooker().getX()) && (j==m.getLooker().getY()) && !(m.getLooker().isVisible())) {
+					if(!sDoc.getText(pos-1, 3).equals(" "+this.tab[i][j].getSymbol()+" ")) {
+						sDoc.remove(pos-1,  1);
+						sDoc.insertString(pos-1, ""+m.getLooker().getLeft(), defaut);
+						sDoc.remove(pos+1,  1);
+						sDoc.insertString(pos+1, ""+m.getLooker().getRight(), defaut);
+					}
+				}
+			}
+			*/
 		} catch(BadLocationException e) {}
 	}
 	

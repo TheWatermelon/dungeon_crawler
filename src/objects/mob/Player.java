@@ -16,7 +16,6 @@ public class Player extends Mob {
 	private Weapon w;
 	private Shield s;
 	private MessageLog log;
-	private Looker looker;
 	
 	public Player(int x, int y, MessageLog l) {
 		this.maxHealth=this.hp=100;
@@ -113,21 +112,25 @@ public class Player extends Mob {
 		
 		deg = rnd.nextInt(3);
 		if(deg==0) { 
-			battleLog+=description+" miss"; 
+			battleLog+=description+" miss";
+			setLooker(LookerFactory.getInstance().createLookerMiss(pos.x, pos.y));
 		} else if(deg==1) { 
 			dmg=(deg*this.getAtk())-m.getDef();
 			if(dmg<=0) {
 				battleLog+=m.description+" dodged"; 
+				setLooker(LookerFactory.getInstance().createLookerMiss(pos.x, pos.y));
 			} else {
 				m.hp -= dmg;
 				useWeapon();
 				battleLog+=description+" deals "+dmg+" to "+m.description; 
+				setLooker(LookerFactory.getInstance().createLookerDamage(pos.x, pos.y, dmg));
 			}
 		} else if(deg==2) {
 			dmg=deg*this.getAtk();
 			m.hp -= dmg;
 			useWeapon();
 			battleLog+=description+" deals !"+dmg+"! to "+m.description; 
+			setLooker(LookerFactory.getInstance().createLookerDamage(pos.x, pos.y, dmg));
 		}
 		return battleLog;
 	}
@@ -327,15 +330,5 @@ public class Player extends Mob {
 			res+="Shield +"+this.s.getVal()+" ("+this.s.getDurability()+"/"+this.s.getMaxDurability()+")  ";
 		}
 		return res;
-	}
-	
-	public void setLooker(Looker l) {
-		this.looker = l;
-		this.looker.show();
-	}
-	
-	public Looker getLooker() {
-		this.looker.placeOn(pos.x, pos.y);
-		return this.looker;
 	}
 }

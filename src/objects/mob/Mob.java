@@ -2,6 +2,7 @@ package objects.mob;
 
 import java.awt.Point;
 
+import objects.looker.Looker;
 import tiles.Tile;
 import tiles.TileGold;
 import tiles.TileMob;
@@ -10,6 +11,7 @@ public abstract class Mob {
 	public Point pos;
 	protected boolean dead;
 	protected char symbol;
+	protected Looker looker;
 	protected String description;
 	protected Tile floor;
 	protected Tile mobTile;
@@ -51,6 +53,16 @@ public abstract class Mob {
 	public final boolean isDead() { return this.dead; }
 	
 	public final char getSymbol() { return this.symbol; }
+
+	public final void setLooker(Looker l) {
+		this.looker = l;
+		this.looker.show();
+	}
+	
+	public final Looker getLooker() {
+		this.looker.placeOn(pos.x, pos.y);
+		return this.looker;
+	}
 	
 	public final String drawHealthBar() {
 		String s="[";

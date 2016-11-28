@@ -3,6 +3,7 @@ package objects.mob;
 import java.awt.Point;
 import java.util.Random;
 
+import objects.looker.LookerFactory;
 import tiles.TileFactory;
 
 public class Monster extends Mob {
@@ -13,6 +14,8 @@ public class Monster extends Mob {
 		this.vit = pickVit();
 		this.dead = false;
 		this.pos = new Point(x, y);
+		this.looker = LookerFactory.getInstance().createLookerMob(x, y);
+		this.looker.hide();
 		this.symbol = s;
 		this.description = desc;
 		this.floor = TileFactory.getInstance().createTileMonster(this.symbol);
@@ -47,9 +50,11 @@ public class Monster extends Mob {
 		deg = rnd.nextInt(3);
 		if(deg==0) { 
 			battleLog+=this.description+" miss"; 
+			//p.setLooker(LookerFactory.getInstance().createLookerMiss(p.pos.x, p.pos.y));
 		} else if(((deg*getAtk())-p.getDef())<=0) {
 			p.useShield();
 			battleLog+=p.description+" dodged"; 
+			//p.setLooker(LookerFactory.getInstance().createLookerMiss(p.pos.x, p.pos.y));
 		} else {
 			int dmg = (deg*getAtk())-p.getDef();
 			p.hp -= dmg;
@@ -59,6 +64,7 @@ public class Monster extends Mob {
 			} else if(deg==2) {
 				battleLog+=description+" deals !"+dmg+"! to "+p.description;
 			}
+			//p.setLooker(LookerFactory.getInstance().createLookerDamage(p.pos.x, p.pos.y, dmg));
 		}
 		return battleLog;
 	}
