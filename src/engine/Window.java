@@ -37,12 +37,13 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 	private Style defaut;
 	private Style white;
 	private Style yellow;
+	private Style darkYellow;
 	private Style orange;
 	private Style brown;
-	private Style green;
 	private Style lightGray;
 	private Style gray;
 	private Style darkGray;
+	private Style green;
 	private Style darkGreen;
 	private Style coolRed;
 	private Style red;
@@ -171,13 +172,16 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 		StyleConstants.setForeground(this.darkGreen, new Color(0x00, 0x33, 0x00));
 		
 		this.green = this.body.addStyle("green", darkGreen);
-		StyleConstants.setBold(this.green, true);
+		//StyleConstants.setBold(this.green, true);
 		StyleConstants.setForeground(this.green, new Color(0x00, 0x80, 0x00));
 		
 		this.yellow = this.body.addStyle("yellow", green);
 		StyleConstants.setForeground(this.yellow, Color.yellow);
 		
-		this.coolRed = this.body.addStyle("coolRed", yellow);
+		this.darkYellow = this.body.addStyle("darkYellow", yellow);
+		StyleConstants.setForeground(this.darkYellow, new Color(0xA9, 0x96, 0x2D));
+		
+		this.coolRed = this.body.addStyle("coolRed", darkYellow);
 		StyleConstants.setForeground(this.coolRed, new Color(0xEF, 0x3F, 0x23));
 		
 		this.darkRed = this.body.addStyle("darkRed", coolRed);
@@ -250,10 +254,25 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 		}
 	}
 	
+	private Style getPlayerColor() {
+		// darkRed, red, brown, orange, green
+		if(this.map.getPlayer().hp<20) {
+			return this.darkRed;
+		} else if(this.map.getPlayer().hp<40) {
+			return this.red;
+		} else if(this.map.getPlayer().hp<60) {
+			return this.darkYellow;
+		} else if(this.map.getPlayer().hp<80) {
+			return this.orange;
+		} else {
+			return this.green;
+		}
+	}
+	
 	private void printInColor(int pos, int i, int j) {
 		try {
 			if(this.tab[i][j] instanceof TilePlayer) {
-				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.green);
+				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), getPlayerColor());
 			} else if(this.tab[i][j] instanceof TileWall) {
 				sDoc.insertString(pos, ""+this.tab[i][j].getSymbol(), this.wall);
 			} else if(this.tab[i][j] instanceof TileDoor) {
@@ -422,7 +441,8 @@ public class Window extends JFrame implements HierarchyBoundsListener {
 				pos++;
 				for(int j=0; j<this.map.getWidth(); j++) {
 					s+=""+this.tab[i][j].getSymbol()+" ";
-					if(s.charAt(pos) != this.map.oldString.charAt(pos)) {
+					if(s.charAt(pos) != this.map.oldString.charAt(pos)
+							|| this.tab[i][j].getSymbol()=='@') {
 						sDoc.remove(pos, 1);
 						printInColor(pos, i, j);
 					}

@@ -10,7 +10,7 @@ public class LookerBarrel extends Looker {
 	
 	protected void setupLooker() {
 		Random rnd = new Random();
-		int val = rnd.nextInt(3);
+		int val = rnd.nextInt(5);
 		
 		switch(val) {
 			case 0:
@@ -18,12 +18,21 @@ public class LookerBarrel extends Looker {
 				this.right='`';
 				break;
 			case 1:
-				this.left='¨';
+				this.left='\"';
 				this.right='`';
 				break;
 			case 2:
 				this.left=',';
 				this.right='.';
+				break;
+			case 3:
+				this.left='\'';
+				this.right='^';
+				break;
+			case 4:
+				this.left='`';
+				this.right='^';
+				break;
 		}
 	}
 }
