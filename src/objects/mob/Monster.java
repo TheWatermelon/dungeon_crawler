@@ -45,7 +45,7 @@ public class Monster extends Mob {
 	
 	protected Effect pickEffect() {
 		Random rnd = new Random();
-		int effectChance = (new Random()).nextInt(3);
+		int effectChance = (new Random()).nextInt(4);
 		
 		if(rnd.nextInt(20)==0) {
 			if(effectChance==0) {
@@ -54,6 +54,8 @@ public class Monster extends Mob {
 				return new EffectSleep();
 			} else if(effectChance==2) {
 				return new EffectParalyze();
+			} else if(effectChance==3) {
+				return new EffectFire();
 			}
 		}
 		return new EffectNormal();

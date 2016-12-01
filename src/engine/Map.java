@@ -358,7 +358,10 @@ public class Map {
 	
 	private void integrateItems() {
 		for(int i=0; i<items.size(); i++) {
-			if(!isMonster(items.get(i).pos.x, items.get(i).pos.y) && !(this.table[items.get(i).pos.y][items.get(i).pos.x] instanceof TileVoid) && !(this.table[items.get(i).pos.y][items.get(i).pos.x] instanceof TileStairsDown)) {
+			if(!isMonster(items.get(i).pos.x, items.get(i).pos.y) && !(this.table[items.get(i).pos.y][items.get(i).pos.x] instanceof TileVoid) && 
+					!(this.table[items.get(i).pos.y][items.get(i).pos.x] instanceof TileStairsDown) &&
+					!(this.table[items.get(i).pos.y][items.get(i).pos.x] instanceof TileStairsUp) &&
+					!(this.table[items.get(i).pos.y][items.get(i).pos.x] instanceof TileFountain)) {
 				this.table[items.get(i).pos.y][items.get(i).pos.x] = items.get(i).getTile();
 			}
 		}
