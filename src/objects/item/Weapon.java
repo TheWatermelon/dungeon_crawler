@@ -23,7 +23,7 @@ public class Weapon extends Equipement {
 		this.val=pickVal(5);
 		this.maxDurability = val*10;
 		this.resetDurability();
-		this.effect = new EffectPoison();
+		this.effect = pickEffect();
 		this.description = this.effect.name()+" "+Ressources.getWeaponAt(val);
 	}
 	
