@@ -3,6 +3,7 @@ package engine;
 import java.awt.*;
 import java.util.*;
 
+import objects.effect.*;
 import objects.item.*;
 import objects.looker.LookerFactory;
 import objects.mob.*;
@@ -514,19 +515,19 @@ public class Map {
 	}
 		
 	private void movePlayer(int x, int y) {
-		this.table[this.jerry.pos.y][this.jerry.pos.x] = this.jerry.getFloor();
-		this.jerry.pos.x = x;
-		this.jerry.pos.y = y;
-		this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
-		this.jerry.restoreHealth();
-		this.jerry.consumePotionEffect();
-		checkPlayerPos(this.jerry.pos.x, this.jerry.pos.y);
+		if(this.jerry.getEffect().apply() && 
+				(this.jerry.getWeapon().getEffect() instanceof EffectSelf && this.jerry.getWeapon().getEffect().apply()) &&
+				(this.jerry.getShield().getEffect() instanceof EffectSelf && this.jerry.getShield().getEffect().apply())) {
+			this.table[this.jerry.pos.y][this.jerry.pos.x] = this.jerry.getFloor();
+			this.jerry.move(x,  y);
+			this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
+			checkPlayerPos(this.jerry.pos.x, this.jerry.pos.y);
+		}
 		moveAllMonsters();
 	}
 	
 	public void movePlayerUp() {
-		if(isWalkable(this.jerry.pos.x, this.jerry.pos.y-1) && 
-				this.jerry.getEffect().apply()) {
+		if(isWalkable(this.jerry.pos.x, this.jerry.pos.y-1)) {
 			movePlayer(this.jerry.pos.x, this.jerry.pos.y-1);
 		} else if(isMonster(this.jerry.pos.x, this.jerry.pos.y-1)){
 			checkMonster(this.jerry.pos.x, this.jerry.pos.y-1);
@@ -536,8 +537,7 @@ public class Map {
 	}
 	
 	public void movePlayerDown() {
-		if(isWalkable(this.jerry.pos.x, this.jerry.pos.y+1) && 
-				this.jerry.getEffect().apply()) {
+		if(isWalkable(this.jerry.pos.x, this.jerry.pos.y+1)) {
 			movePlayer(this.jerry.pos.x, this.jerry.pos.y+1);
 		} else if(isMonster(this.jerry.pos.x, this.jerry.pos.y+1)){
 			checkMonster(this.jerry.pos.x, this.jerry.pos.y+1);
@@ -547,8 +547,7 @@ public class Map {
 	}
 	
 	public void movePlayerLeft() {
-		if(isWalkable(this.jerry.pos.x-1, this.jerry.pos.y) && 
-				this.jerry.getEffect().apply()) {
+		if(isWalkable(this.jerry.pos.x-1, this.jerry.pos.y)) {
 			movePlayer(this.jerry.pos.x-1, this.jerry.pos.y);
 		} else if(isMonster(this.jerry.pos.x-1, this.jerry.pos.y)){
 			checkMonster(this.jerry.pos.x-1, this.jerry.pos.y);
@@ -558,8 +557,7 @@ public class Map {
 	}
 	
 	public void movePlayerRight() {
-		if(isWalkable(this.jerry.pos.x+1, this.jerry.pos.y) && 
-				this.jerry.getEffect().apply()) {
+		if(isWalkable(this.jerry.pos.x+1, this.jerry.pos.y)) {
 			movePlayer(this.jerry.pos.x+1, this.jerry.pos.y);
 		} else if(isMonster(this.jerry.pos.x+1, this.jerry.pos.y)){
 			checkMonster(this.jerry.pos.x+1, this.jerry.pos.y);

@@ -2,7 +2,7 @@ package objects.effect;
 
 import objects.mob.Mob;
 
-public class EffectSleep extends Effect {
+public class EffectSleep extends EffectOther {
 	public EffectSleep() { super("ZzZ"); maxDuration=5; }
 	
 	public String name() { return "Sleep"; }

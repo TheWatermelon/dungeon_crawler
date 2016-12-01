@@ -4,18 +4,21 @@ import java.util.Random;
 
 import objects.mob.Mob;
 
-public class EffectParalyze extends Effect {
+public class EffectParalyze extends EffectOther {
 	public EffectParalyze() { super("PAR"); maxDuration=10; }
-	
+
+	@Override
 	public String name() { return "Paralyze"; }
-	
+
+	@Override
 	public void start(Mob m) { 
 		this.duration=this.maxDuration; 
 		this.affected=m; 
 		m.setEffect(this); 
 		m.getLog().appendMessage(m+" is paralyzed!");
 	}
-	
+
+	@Override
 	public boolean apply() {
 		if(duration>0) {
 			duration--;

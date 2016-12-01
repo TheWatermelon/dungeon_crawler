@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.Random;
 
 import engine.MessageLog;
-import objects.effect.EffectNormal;
+import objects.effect.*;
 import objects.item.*;
 import objects.looker.*;
 
@@ -119,7 +119,8 @@ public class Player extends Mob {
 				} else {
 					m.hp -= dmg;
 					battleLog+=description+" deals "+dmg+" to "+m.description;
-					this.w.getEffect().start(m);
+					if(w.getEffect() instanceof EffectOther) { this.w.getEffect().start(m); }
+					else if(w.getEffect() instanceof EffectSelf) { this.w.getEffect().apply(); }
 					useWeapon();
 					setLooker(LookerFactory.getInstance().createLookerDamage(pos.x, pos.y, dmg));
 				}
@@ -127,13 +128,20 @@ public class Player extends Mob {
 				dmg=deg*this.getAtk();
 				m.hp -= dmg;
 				battleLog+=description+" deals !"+dmg+"! to "+m.description; 
-				this.w.getEffect().start(m);
+				if(w.getEffect() instanceof EffectOther) { this.w.getEffect().start(m); }
+				else if(w.getEffect() instanceof EffectSelf) { this.w.getEffect().apply(); }
 				useWeapon();
 				setLooker(LookerFactory.getInstance().createLookerDamage(pos.x, pos.y, dmg));
 			}
 		}		
 		
 		return battleLog;
+	}
+	
+	public void move(int x, int y) {
+		pos = new Point(x, y);
+		restoreHealth();
+		consumePotionEffect();
 	}
 	
 	public void cure() {
@@ -244,6 +252,7 @@ public class Player extends Mob {
 	public void setWeapon(Weapon weapon) {
 		if(this.w.getVal() <= weapon.getVal()) {
 			this.w = weapon;
+			if(this.w.getEffect() instanceof EffectSelf) { this.w.getEffect().start(this); }
 		} else {
 			if(this.w.getDurability()<this.w.getMaxDurability()) {
 				this.w.setDurability(this.w.getDurability() + 2*weapon.getVal());
@@ -257,6 +266,7 @@ public class Player extends Mob {
 	public void setShield(Shield shield) {
 		if(this.s.getVal() <= shield.getVal()) {
 			this.s = shield;
+			if(this.s.getEffect() instanceof EffectSelf) { this.s.getEffect().start(this); }
 		} else {
 			if(this.s.getDurability()<this.s.getMaxDurability()) {
 				this.s.setDurability(this.s.getDurability() + 2*shield.getVal());
@@ -297,17 +307,15 @@ public class Player extends Mob {
 		this.dead=false;
 	}
 	
-	public int getAtk() {
-		return this.atk+this.w.getVal();
-	}
+	public int getAtk() { return this.atk+this.w.getVal(); }
 	
-	public int getDef() {
-		return this.def+this.s.getVal();
-	}
+	public int getDef() { return this.def+this.s.getVal(); }
 	
-	public int getKills() {
-		return this.monstersKilled;
-	}
+	public int getKills() {	return this.monstersKilled; }
+	
+	public Weapon getWeapon() { return this.w; }
+	
+	public Shield getShield() { return this.s; }
 	
 	public String getInfo() {
 		return ""+drawHealthBar()+"\nGold : "+this.gold+"\n"+"Kills : "+this.monstersKilled;

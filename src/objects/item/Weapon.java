@@ -33,7 +33,7 @@ public class Weapon extends Equipement {
 	
 	public Effect pickEffect() {
 		Random rnd = new Random();
-		int effectChance=rnd.nextInt(10);
+		int effectChance=rnd.nextInt(15);
 		
 		if(effectChance==0) {
 			return new EffectPoison();
@@ -41,6 +41,10 @@ public class Weapon extends Equipement {
 			return new EffectSleep();
 		} else if(effectChance==2) {
 			return new EffectParalyze();
+		} else if(effectChance==3) {
+			return new EffectWeak();
+		} else if(effectChance==4) {
+			return new EffectHeavy();
 		}
 		return new EffectNormal();
 	}

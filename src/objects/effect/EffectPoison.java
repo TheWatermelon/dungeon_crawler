@@ -2,11 +2,13 @@ package objects.effect;
 
 import objects.mob.Mob;
 
-public class EffectPoison extends Effect {
-	public EffectPoison() { super("PSN"); maxDuration=10; }
+public class EffectPoison extends EffectOther {
+	public EffectPoison() { super("PSN"); maxDuration=25; }
 	
+	@Override
 	public String name() { return "Poison"; }
 	
+	@Override
 	public void start(Mob m) { 
 		this.duration=this.maxDuration; 
 		this.affected=m; 
@@ -14,6 +16,7 @@ public class EffectPoison extends Effect {
 		m.getLog().appendMessage(m+" is poisoned!");
 	}
 	
+	@Override
 	public boolean apply() {
 		if(duration>0) {
 			affected.hp-=1;

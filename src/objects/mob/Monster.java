@@ -77,7 +77,7 @@ public class Monster extends Mob {
 		Random rnd = new Random();
 		int deg;
 		
-		if(effect.apply()) {
+		if(effect.apply() && p.getShield().getEffect().apply()) {
 			deg = rnd.nextInt(3);
 			if(deg==0) { 
 				battleLog+=this.description+" miss"; 
@@ -88,7 +88,7 @@ public class Monster extends Mob {
 				int dmg = (deg*getAtk())-p.getDef();
 				p.hp -= dmg;
 				p.useShield();
-				effectSpreader.start(p);
+				if(rnd.nextInt(3)==0) {	effectSpreader.start(p); }
 				if(deg==1) {
 					battleLog+=description+" deals "+dmg+" to "+p.description;
 				} else if(deg==2) {
