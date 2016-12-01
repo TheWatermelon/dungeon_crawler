@@ -285,7 +285,7 @@ public class Map {
 				} while (((width==this.jerry.pos.x) && (height==this.jerry.pos.y)) && !isMonster(width, height));
 
 				monsterName = rnd.nextInt(26);
-				this.monsters.add(new Monster(width, height, Ressources.getLetterAt(monsterName), Ressources.getNameAt(monsterName)));
+				this.monsters.add(new Monster(width, height, Ressources.getLetterAt(monsterName), Ressources.getNameAt(monsterName), this.log));
 			}
 		}
 		// BOSS
@@ -300,7 +300,7 @@ public class Map {
 				height = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
 			} while (((width==this.jerry.pos.x) && (height==this.jerry.pos.y)) && !isMonster(width, height));
 			monsterName = rnd.nextInt(26);
-			boss = new Boss(width, height, this.level/5, Ressources.getCapitalLetterAt(monsterName), Ressources.getCapitalNameAt(monsterName));
+			boss = new Boss(width, height, this.level/5, Ressources.getCapitalLetterAt(monsterName), Ressources.getCapitalNameAt(monsterName), this.log);
 			monsters.add(boss);
 		}
 	}
@@ -417,14 +417,13 @@ public class Map {
 		if(i instanceof Fountain) {
 			if(!jerry.isFullHealth()) {
 				if(i.getVal()-1>=0) {
-					log.appendMessage("Player stepped on holy fountain, HP restored!");
-					this.jerry.resetHealth();
+					this.jerry.cure();
 					this.jerry.setLooker(LookerFactory.getInstance().createLookerHealth(x, y));
 					// Player has used the fountain
 					i.setVal(i.getVal()-1);
 				}
 				if(i.getVal()==0){
-					log.appendMessage("The fountain dissapear...");
+					log.appendMessage("The fountain disappear...");
 					removeItem(x, y);
 				}
 			}
@@ -521,13 +520,13 @@ public class Map {
 		this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
 		this.jerry.restoreHealth();
 		this.jerry.consumePotionEffect();
-		//this.jerry.getLooker().hide();
 		checkPlayerPos(this.jerry.pos.x, this.jerry.pos.y);
 		moveAllMonsters();
 	}
 	
 	public void movePlayerUp() {
-		if(isWalkable(this.jerry.pos.x, this.jerry.pos.y-1)) {
+		if(isWalkable(this.jerry.pos.x, this.jerry.pos.y-1) && 
+				this.jerry.getEffect().apply()) {
 			movePlayer(this.jerry.pos.x, this.jerry.pos.y-1);
 		} else if(isMonster(this.jerry.pos.x, this.jerry.pos.y-1)){
 			checkMonster(this.jerry.pos.x, this.jerry.pos.y-1);
@@ -537,7 +536,8 @@ public class Map {
 	}
 	
 	public void movePlayerDown() {
-		if(isWalkable(this.jerry.pos.x, this.jerry.pos.y+1)) {
+		if(isWalkable(this.jerry.pos.x, this.jerry.pos.y+1) && 
+				this.jerry.getEffect().apply()) {
 			movePlayer(this.jerry.pos.x, this.jerry.pos.y+1);
 		} else if(isMonster(this.jerry.pos.x, this.jerry.pos.y+1)){
 			checkMonster(this.jerry.pos.x, this.jerry.pos.y+1);
@@ -547,7 +547,8 @@ public class Map {
 	}
 	
 	public void movePlayerLeft() {
-		if(isWalkable(this.jerry.pos.x-1, this.jerry.pos.y)) {
+		if(isWalkable(this.jerry.pos.x-1, this.jerry.pos.y) && 
+				this.jerry.getEffect().apply()) {
 			movePlayer(this.jerry.pos.x-1, this.jerry.pos.y);
 		} else if(isMonster(this.jerry.pos.x-1, this.jerry.pos.y)){
 			checkMonster(this.jerry.pos.x-1, this.jerry.pos.y);
@@ -557,7 +558,8 @@ public class Map {
 	}
 	
 	public void movePlayerRight() {
-		if(isWalkable(this.jerry.pos.x+1, this.jerry.pos.y)) {
+		if(isWalkable(this.jerry.pos.x+1, this.jerry.pos.y) && 
+				this.jerry.getEffect().apply()) {
 			movePlayer(this.jerry.pos.x+1, this.jerry.pos.y);
 		} else if(isMonster(this.jerry.pos.x+1, this.jerry.pos.y)){
 			checkMonster(this.jerry.pos.x+1, this.jerry.pos.y);
@@ -577,15 +579,12 @@ public class Map {
 	private void moveMonster(Monster m, int x, int y) {
 		m.pos.x = x;
 		m.pos.y = y;
-		m.getLooker().hide();
+		//m.getLooker().hide();
 	}
 	
 	private void moveAllMonsters() {
-		Monster m;
-		
-		for(int i=0; i<this.monsters.size(); i++) {
-			m=this.monsters.get(i);
-			if(!m.isDead() && rnd.nextInt(10)>1 && isVisible(m.pos.x, m.pos.y)) {
+		for(Monster m : this.monsters) {
+			if(!m.isDead() && rnd.nextInt(10)>1 && isVisible(m.pos.x, m.pos.y) && m.getEffect().apply()) {
 				if(this.jerry.pos.y<m.pos.y) {
 					// NORTH
 					if(isWalkable(m.pos.x, m.pos.y-1)) {

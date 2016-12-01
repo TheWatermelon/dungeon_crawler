@@ -4,10 +4,9 @@ import java.awt.Point;
 import java.util.Random;
 
 import engine.MessageLog;
-import objects.item.Shield;
-import objects.item.Weapon;
-import objects.looker.Looker;
-import objects.looker.LookerFactory;
+import objects.effect.EffectNormal;
+import objects.item.*;
+import objects.looker.*;
 
 public class Player extends Mob {
 	private int gold;
@@ -15,7 +14,6 @@ public class Player extends Mob {
 	private int potionEffect;
 	private Weapon w;
 	private Shield s;
-	private MessageLog log;
 	
 	public Player(int x, int y, MessageLog l) {
 		this.maxHealth=this.hp=100;
@@ -32,6 +30,7 @@ public class Player extends Mob {
 		this.log = l;
 		this.symbol = '@';
 		this.description = "Player";
+		this.effect = new EffectNormal();
 	}
 	
 	public void murder() {
@@ -62,7 +61,6 @@ public class Player extends Mob {
 				if(m.hp <= 0) { 
 					m.murder(); 
 					this.monstersKilled++;
-					battleLog+=", "+m.description+" killed";
 					log.appendMessage(battleLog);
 					return true;
 				}
@@ -81,7 +79,6 @@ public class Player extends Mob {
 			if(m.hp <= 0) { 
 				m.murder(); 
 				this.monstersKilled++;
-				log.appendMessage(m.description+" killed");
 				return true;
 			}
 		} else {
@@ -90,7 +87,6 @@ public class Player extends Mob {
 			if(m.hp <= 0) { 
 				m.murder(); 
 				this.monstersKilled++;
-				battleLog+=", "+m.description+" killed";
 				log.appendMessage(battleLog);
 				return true;
 			}
@@ -110,29 +106,40 @@ public class Player extends Mob {
 		Random rnd = new Random();
 		int deg, dmg;
 		
-		deg = rnd.nextInt(3);
-		if(deg==0) { 
-			battleLog+=description+" miss";
-			setLooker(LookerFactory.getInstance().createLookerMiss(pos.x, pos.y));
-		} else if(deg==1) { 
-			dmg=(deg*this.getAtk())-m.getDef();
-			if(dmg<=0) {
-				battleLog+=m.description+" dodged"; 
+		if(effect.apply()) {
+			deg = rnd.nextInt(3);
+			if(deg==0) { 
+				battleLog+=description+" miss";
 				setLooker(LookerFactory.getInstance().createLookerMiss(pos.x, pos.y));
-			} else {
+			} else if(deg==1) { 
+				dmg=(deg*this.getAtk())-m.getDef();
+				if(dmg<=0) {
+					battleLog+=m.description+" dodged"; 
+					setLooker(LookerFactory.getInstance().createLookerMiss(pos.x, pos.y));
+				} else {
+					m.hp -= dmg;
+					battleLog+=description+" deals "+dmg+" to "+m.description;
+					this.w.getEffect().start(m);
+					useWeapon();
+					setLooker(LookerFactory.getInstance().createLookerDamage(pos.x, pos.y, dmg));
+				}
+			} else if(deg==2) {
+				dmg=deg*this.getAtk();
 				m.hp -= dmg;
+				battleLog+=description+" deals !"+dmg+"! to "+m.description; 
+				this.w.getEffect().start(m);
 				useWeapon();
-				battleLog+=description+" deals "+dmg+" to "+m.description; 
 				setLooker(LookerFactory.getInstance().createLookerDamage(pos.x, pos.y, dmg));
 			}
-		} else if(deg==2) {
-			dmg=deg*this.getAtk();
-			m.hp -= dmg;
-			useWeapon();
-			battleLog+=description+" deals !"+dmg+"! to "+m.description; 
-			setLooker(LookerFactory.getInstance().createLookerDamage(pos.x, pos.y, dmg));
-		}
+		}		
+		
 		return battleLog;
+	}
+	
+	public void cure() {
+		resetHealth();
+		effect = new EffectNormal();
+		log.appendMessage(description+" is cured!");
 	}
 	
 	public void heal(int val) {
@@ -318,7 +325,7 @@ public class Player extends Mob {
 		if(potionEffect>0) {
 			vit+=" ("+potionEffect+")";
 		}
-		return "   "+drawHealthBar()+" G:"+this.gold+"  VIT:"+vit+"\n   "+weapon+"\n"+"   "+shield;
+		return "   "+drawHealthBar()+" "+this.effect+" G:"+this.gold+"  VIT:"+vit+"\n   "+weapon+"\n"+"   "+shield;
 	}
 	
 	public String getWeaponInfo() {

@@ -1,7 +1,9 @@
 package objects.item;
 
 import java.awt.Point;
+import java.util.Random;
 
+import objects.effect.*;
 import tiles.Tile;
 import tiles.TileFactory;
 import engine.Ressources;
@@ -13,6 +15,7 @@ public class Weapon extends Equipement {
 		this.maxDurability = -1;
 		this.resetDurability();
 		this.description = Ressources.getWeaponAt(0);
+		this.effect = new EffectNormal();
 	}
 	
 	public Weapon(int x, int y) {
@@ -20,10 +23,25 @@ public class Weapon extends Equipement {
 		this.val=pickVal(5);
 		this.maxDurability = val*10;
 		this.resetDurability();
-		this.description = Ressources.getWeaponAt(val);
+		this.effect = new EffectPoison();
+		this.description = this.effect.name()+" "+Ressources.getWeaponAt(val);
 	}
 	
 	public Tile getTile() {
 		return TileFactory.getInstance().createTileWeapon();
+	}
+	
+	public Effect pickEffect() {
+		Random rnd = new Random();
+		int effectChance=rnd.nextInt(10);
+		
+		if(effectChance==0) {
+			return new EffectPoison();
+		} else if(effectChance==1) {
+			return new EffectSleep();
+		} else if(effectChance==2) {
+			return new EffectParalyze();
+		}
+		return new EffectNormal();
 	}
 }

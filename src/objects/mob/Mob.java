@@ -2,6 +2,8 @@ package objects.mob;
 
 import java.awt.Point;
 
+import engine.MessageLog;
+import objects.effect.Effect;
 import objects.looker.Looker;
 import tiles.Tile;
 import tiles.TileGold;
@@ -15,17 +17,22 @@ public abstract class Mob {
 	protected String description;
 	protected Tile floor;
 	protected Tile mobTile;
+	protected MessageLog log;
 	
 	public int hp;
 	public int maxHealth;
 	public int atk;
 	public int def;
 	public int vit;
+	public Effect effect;
 
 	public abstract void murder();
 
 	public abstract int getAtk();
 	public abstract int getDef();
+	
+	public final Effect getEffect() { return this.effect; }
+	public final void setEffect(Effect val) { this.effect = val; }
 	
 	public final void resetHealth() {
 		this.hp = this.maxHealth;
@@ -53,6 +60,8 @@ public abstract class Mob {
 	public final boolean isDead() { return this.dead; }
 	
 	public final char getSymbol() { return this.symbol; }
+		
+	public final MessageLog getLog() { return this.log; }
 
 	public final void setLooker(Looker l) {
 		this.looker = l;
@@ -68,7 +77,7 @@ public abstract class Mob {
 		String s="[";
 		
 		for(int i=0; i<20; i++) {
-			if(i==8 && hp==maxHealth) {	// Show life count on bar
+			if(i==8 && hp>99) {	// Show life count on bar
 				s+=hp/10;
 				i++;
 			} else if(i==9 && hp>9 && hp<maxHealth) {
