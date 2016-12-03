@@ -41,7 +41,7 @@ public class RectangleRoom extends Room {
 	
 	public void parsingFloor(Vector<Item> v) {
 		Random rnd = new Random();
-		int placingChance = rnd.nextInt(3), floorChance;
+		int placingChance = rnd.nextInt(6), floorChance;
 		
 		if(placingChance == 0) {
 			// Moss + 1 gold + 1 holy fountain
@@ -53,7 +53,7 @@ public class RectangleRoom extends Room {
 			}
 			v.add(new Gold(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y));
 			v.add(new Fountain(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y));
-		} else if(placingChance == 1) {
+		} else if(placingChance<4) {
 			// Barrels (1 to 4)
 			int height=rnd.nextInt(getHeight()-2)+1+this.p1.y, width=rnd.nextInt(getWidth()-2)+1+this.p1.x, gapBarrel=rnd.nextInt(4);
 			floorChance = rnd.nextInt(4)+1;

@@ -1,9 +1,9 @@
 package objects.looker;
 
 public class LookerDamage extends Looker {
-	public LookerDamage(int x, int y, int val) {
+	public LookerDamage(int x, int y) {
 		super(x, y);
-		this.left = (new String(""+val/10)).charAt(0);
-		this.right = (new String(""+val%10)).charAt(0);
+		this.left='(';
+		this.right=')';
 	}
 }

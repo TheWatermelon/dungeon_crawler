@@ -2,7 +2,7 @@ package objects.effect;
 
 import objects.mob.*;
 
-public class EffectWeak extends EffectSelf {
+public class EffectWeak extends EffectEquipement {
 	public EffectWeak() { super("WEK");	}
 
 	@Override

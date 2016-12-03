@@ -3,7 +3,6 @@ package engine;
 import java.awt.*;
 import java.util.*;
 
-import objects.effect.*;
 import objects.item.*;
 import objects.looker.LookerFactory;
 import objects.mob.*;
@@ -392,7 +391,7 @@ public class Map {
 	}
 	
 	private Item isItem(int x, int y) {
-		for(int i=0; i<items.size(); i++) {
+		for(int i=items.size()-1; i>=0; i--) {
 			if(x==items.get(i).pos.x && y==items.get(i).pos.y) {
 				return items.get(i);
 			}
@@ -412,12 +411,12 @@ public class Map {
 		Item i = isItem(x, y);
 		
 		if(i == null) { return; }
-		
+		 
 		if(i instanceof Gold) {
 			this.jerry.addGold(i.getVal());
 			removeItem(x, y);
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerGold(this.jerry.pos.x, this.jerry.pos.y));
-		} 
+		}
 		if(i instanceof Fountain) {
 			if(!jerry.isFullHealth()) {
 				if(i.getVal()-1>=0) {
@@ -431,27 +430,7 @@ public class Map {
 					removeItem(x, y);
 				}
 			}
-		} else if(i instanceof Potion) {
-			if(i.getVal()>=0) {
-				this.log.appendMessage("Drink Potion... Fast effect "+i.getVal()+"!");
-				this.jerry.setPotionEffect(i.getVal());
-			} else {
-				this.log.appendMessage("Drink Potion... Slow effect "+(i.getVal()*-1)+"!");
-				this.jerry.setPotionEffect(i.getVal());
-			}
-			this.jerry.setLooker(LookerFactory.getInstance().createLookerPotion(x, y, i.getVal()));
-			removeItem(x, y);
-		} else if(i instanceof Weapon) {
-			this.log.appendMessage("Found "+((Weapon)i));
-			this.jerry.setWeapon((Weapon)i);
-			removeItem(x, y);
-			this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
-		} else if(i instanceof Shield) {
-			this.log.appendMessage("Found "+((Shield)i));
-			this.jerry.setShield(((Shield)i));
-			removeItem(x, y);
-			this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
-		} else if(i instanceof Barrel) {
+		}  else if(i instanceof Barrel) {
 			int content=((Barrel)i).open();
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerBarrel(this.jerry.pos.x, this.jerry.pos.y));
 			removeItem(x, y);
@@ -468,16 +447,46 @@ public class Map {
 						items.add(new Shield(x, y));
 					}
 				}
-			} else if(content == 1) {
+			} /*else if(content == 1) {
 				log.appendMessage("Open Barrel... Potion!");
 				items.add(new Potion(x, y));
-			} else if(content == 2) {
+			}*/ else if(content == 1) {
 				log.appendMessage("Open Barrel... Boom!");
 				this.jerry.harm(25);
 			} else {
 				log.appendMessage("Open Barrel... Nothing!");
 			}
 		}
+	}
+	
+	public void checkPickableItem(int x, int y) {
+		Item i = isItem(x, y);
+		
+		if(i == null) { return; }
+		/*
+		if(i instanceof Potion) {
+			if(i.getVal()>=0) {
+				this.log.appendMessage("Drink Potion... Fast effect "+i.getVal()+"!");
+				this.jerry.setPotionEffect(i.getVal());
+			} else {
+				this.log.appendMessage("Drink Potion... Slow effect "+(i.getVal()*-1)+"!");
+				this.jerry.setPotionEffect(i.getVal());
+			}
+			this.jerry.setLooker(LookerFactory.getInstance().createLookerPotion(x, y, i.getVal()));
+		}
+		*/
+		if(i instanceof Weapon) {
+			this.log.appendMessage("Took "+((Weapon)i));
+			this.jerry.setWeapon((Weapon)i);
+			this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
+		} else if(i instanceof Shield) {
+			this.log.appendMessage("Took "+((Shield)i));
+			this.jerry.setShield(((Shield)i));
+			this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
+		}
+		
+		removeItem(x, y);
+		this.jerry.setFloor(TileFactory.getInstance().createTileStone());
 	}
 	
 	private void checkPlayerPos(int x, int y) {
@@ -494,7 +503,9 @@ public class Map {
 	
 	private void checkMonster(int x, int y) {
 		boolean monsterKilled;
+		String battleLog="";
 		for(int i=0; i<this.monsters.size(); i++) {
+			// The player attacks the monster he is facing
 			if(((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y) && !this.monsters.get(i).isDead())) {
 				monsterKilled=this.jerry.fight(this.monsters.get(i));
 				if(monsterKilled && !(monsters.get(i) instanceof Boss)) {
@@ -503,9 +514,39 @@ public class Map {
 						this.items.add(new Gold(monsters.get(i).pos.x, monsters.get(i).pos.y, 5+this.level));
 					}
 				}
-				//this.jerry.setLooker(LookerFactory.getInstance().createLookerMob(this.jerry.pos.x, this.jerry.pos.y));
+			}
+			// Check if another monster is facing the player
+			String tmp=monsterAttack(monsters.get(i));
+			if(!tmp.equals("")) { battleLog+=(!battleLog.equals(""))?(", "+tmp):tmp; }
+		}
+		if(!battleLog.equals("")) { log.appendMessage(battleLog); }
+	}
+	
+	private String monsterAttack(Monster m) {	
+		String battleLog="";
+		int x = jerry.pos.x, y = jerry.pos.y;
+		int[][] dir = new int[4][2];
+		// NORTH
+		dir[0][0]=0; dir[0][1]=-1;
+		// EAST
+		dir[1][0]=1; dir[1][1]=0;
+		// SOUTH
+		dir[2][0]=0; dir[2][1]=1;
+		// WEST
+		dir[3][0]=-1; dir[3][1]=0;
+				
+		// If the monster is surrounding the player then it attacks
+		for(int i=0; i<dir.length; i++) {
+			if((dir[i][0]+x == m.pos.x) && (dir[i][1]+y == m.pos.y) && !m.isDead()) {
+				battleLog=m.fightTurn(jerry);
+				if(jerry.hp<=0) {
+					jerry.murder();
+					return battleLog;
+				}
+				break;
 			}
 		}
+		return battleLog;
 	}
 	
 	private boolean isMonster(int x, int y) {
@@ -518,9 +559,7 @@ public class Map {
 	}
 		
 	private void movePlayer(int x, int y) {
-		if(this.jerry.getEffect().apply() && 
-				(this.jerry.getWeapon().getEffect() instanceof EffectSelf && this.jerry.getWeapon().getEffect().apply()) &&
-				(this.jerry.getShield().getEffect() instanceof EffectSelf && this.jerry.getShield().getEffect().apply())) {
+		if(this.jerry.getEffect().apply() && this.jerry.applyOnWalkEffect()) {
 			this.table[this.jerry.pos.y][this.jerry.pos.x] = this.jerry.getFloor();
 			this.jerry.move(x,  y);
 			this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
@@ -659,11 +698,12 @@ public class Map {
 		if(!(this.table[this.stairDown.y][this.stairDown.x] instanceof TileVoid) && !isMonster(this.stairDown.x, this.stairDown.y) && !(this.level%5==0 && this.level>0)) {
 			this.table[this.stairDown.y][this.stairDown.x] = TileFactory.getInstance().createTileStairsDown();
 		}
-		if(!(this.table[this.stairUp.y][this.stairUp.x] instanceof TileVoid) && !isMonster(this.stairUp.x, this.stairUp.y)) {
+		if(!(this.table[this.stairUp.y][this.stairUp.x] instanceof TileVoid) && !isMonster(this.stairUp.x, this.stairUp.y) && this.level>0) {
 			this.table[this.stairUp.y][this.stairUp.x] = TileFactory.getInstance().createTileStairsUp();
 		}
 		integrateMobs();
 		integrateItems();
+		integratePlayer();
 	}
 	
 	public String generateMapInfo() {

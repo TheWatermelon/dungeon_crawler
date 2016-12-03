@@ -23,7 +23,7 @@ public class Corridor extends Room {
 	
 	public void parsingFloor(Vector<Item> v) {
 		Random rnd = new Random();
-		int parsingChance = rnd.nextInt(5), floorType = rnd.nextInt(3), height=0, width=0;
+		int parsingChance = rnd.nextInt(4), floorType = rnd.nextInt(3), height=0, width=0;
 		
 		if(parsingChance==0) {
 			if(getHeight()==2) {

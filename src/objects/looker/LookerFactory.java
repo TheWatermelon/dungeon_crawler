@@ -3,7 +3,7 @@ package objects.looker;
 public class LookerFactory {
 	private static LookerFactory instance;
 	
-	private static LookerMob lookerMob = new LookerMob(0, 0);
+	private static LookerDamage lookerDamage = new LookerDamage(0, 0);
 	private static LookerMiss lookerMiss = new LookerMiss(0, 0);
 	private static LookerEquip lookerEquip = new LookerEquip(0, 0);
 	private static LookerGold lookerGold = new LookerGold(0, 0);
@@ -21,9 +21,9 @@ public class LookerFactory {
 		return instance;
 	}
 	
-	public LookerMob createLookerMob(int x, int y) { lookerMob.placeOn(x, y); return lookerMob; }
+	public LookerMob createLookerMob(int x, int y, int val) { return new LookerMob(x, y, val); }
 	public LookerMiss createLookerMiss(int x, int y) { lookerMiss.placeOn(x, y); return lookerMiss; }
-	public LookerDamage createLookerDamage(int x, int y, int val) { return new LookerDamage(x, y, val); }
+	public LookerDamage createLookerDamage(int x, int y) { lookerDamage.placeOn(x, y); return lookerDamage; }
 	public LookerEquip createLookerEquip(int x, int y) { lookerEquip.placeOn(x, y); return lookerEquip; }
 	public LookerGold createLookerGold(int x, int y) { lookerGold.placeOn(x, y); return lookerGold; }
 	public LookerHealth createLookerHealth(int x, int y) { lookerHealth.placeOn(x,  y); return lookerHealth; }

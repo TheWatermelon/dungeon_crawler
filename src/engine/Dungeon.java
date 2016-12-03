@@ -16,7 +16,7 @@ public class Dungeon {
 		levels = new ArrayList<Map>();
 		currentLevel = 0;
 		player = new Player(27, 13, log);
-		levels.add(new Map(54, 26, this));
+		levels.add(new Map(54, 29, this));
 		win = new Window("Dungeon Crawler", this);
 	}
 	
@@ -37,9 +37,12 @@ public class Dungeon {
 		if(currentLevel-1>=0) {
 			log.appendMessage("Going up...");
 			currentLevel--;
+			if(currentLevel%5==0 && currentLevel!=0) { 
+				win.getDungeonPanel().pickTheme();
+				win.getDungeonPanel().hideLight(); 
+			} else { win.getDungeonPanel().showLight(); }
 			levels.get(currentLevel).placePlayerStairsDown();
 			win.setMap(levels.get(currentLevel));
-			win.firstPrint();
 			win.refresh();
 		} else {
 			log.appendMessage("There is no escape !");
@@ -47,12 +50,16 @@ public class Dungeon {
 	}
 	
 	public void levelDown() {
+		
 		if(currentLevel+1<levels.size()) {
 			log.appendMessage("Going down...");
 			currentLevel++;
+			if(currentLevel%5==0 && currentLevel!=0) { 
+				win.getDungeonPanel().pickTheme();
+				win.getDungeonPanel().hideLight(); 
+			} else { win.getDungeonPanel().showLight(); }
 			levels.get(currentLevel).placePlayerStairsUp();
 			win.setMap(levels.get(currentLevel));
-			win.firstPrint();
 			win.refresh();
 		} else {
 			newLevel();
@@ -61,9 +68,12 @@ public class Dungeon {
 	
 	public void newLevel() {
 		currentLevel++;
-		levels.add(new Map(54, 26, this));
+		levels.add(new Map(54, 29, this));
 		if(currentLevel%5==0) {
-			win.pickTheme();
+			win.getDungeonPanel().pickTheme();
+			win.getDungeonPanel().hideLight();
+		} else {
+			win.getDungeonPanel().showLight();
 		}
 		start();
 	}

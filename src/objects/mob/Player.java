@@ -42,20 +42,12 @@ public class Player extends Mob {
 	public boolean fight(Monster m) {
 		String battleLog="";
 		
-		// Fighting turns
-		if(this.vit!=0 && m.vit>=2*this.vit) {
-			// Monster is twice faster than player : it hits twice without being hit
-			for(int i=0; i<2; i++) {
-				battleLog+=m.fightTurn(this);
-				if(this.hp <= 0) {
-					murder();
-					return false;
-				}
-				battleLog+=" ";
-			}
-			log.appendMessage(battleLog);
-		} else if(this.vit!=0 && this.vit>=2*m.vit) {
-			// Player is twice faster than monster : he hits twice without being hit
+		if(!effect.apply()) { return false; }
+		
+		/* RESERVED FOR FUTURE USE */
+		/*
+		if(this.vit!=0 && this.vit>=2*m.vit) {
+			// Player is twice faster than monster : he hits twice
 			for(int i=0; i<2; i++) {
 				battleLog+=fightTurn(m);
 				if(m.hp <= 0) { 
@@ -66,38 +58,19 @@ public class Player extends Mob {
 				}
 				battleLog+=" ";
 			}
+		} 
+		*/
+		
+		// Player attacks once
+		battleLog+=fightTurn(m);
+		if(m.hp <= 0) { 
+			m.murder(); 
+			this.monstersKilled++;
 			log.appendMessage(battleLog);
-		} else if(this.vit<m.vit) {
-			// Monster engage the fight
-			battleLog+=m.fightTurn(this);
-			if(this.hp <= 0) {
-				murder();
-				return false;
-			}
-			battleLog+=", "+fightTurn(m);
-			log.appendMessage(battleLog);
-			if(m.hp <= 0) { 
-				m.murder(); 
-				this.monstersKilled++;
-				return true;
-			}
-		} else {
-			// Player engage the fight
-			battleLog+=fightTurn(m);
-			if(m.hp <= 0) { 
-				m.murder(); 
-				this.monstersKilled++;
-				log.appendMessage(battleLog);
-				return true;
-			}
-			battleLog+=", "+m.fightTurn(this);
-			log.appendMessage(battleLog);
-			if(this.hp <= 0) {
-				murder();
-				return false;
-			}
+			return true;
 		}
-
+		
+		if(!battleLog.equals("")) { log.appendMessage(battleLog); }
 		return false;
 	}
 	
@@ -106,34 +79,34 @@ public class Player extends Mob {
 		Random rnd = new Random();
 		int deg, dmg;
 		
-		if(effect.apply()) {
-			deg = rnd.nextInt(3);
-			if(deg==0) { 
-				battleLog+=description+" miss";
+		deg = rnd.nextInt(3);
+		if(deg==0) { 
+			battleLog+=description+" miss ";
+			setLooker(LookerFactory.getInstance().createLookerMiss(pos.x, pos.y));
+		} else if(deg==1) { 
+			dmg=(deg*this.getAtk())-m.getDef();
+			if(dmg<=0) {
+				battleLog+=m.description+" dodged "; 
 				setLooker(LookerFactory.getInstance().createLookerMiss(pos.x, pos.y));
-			} else if(deg==1) { 
-				dmg=(deg*this.getAtk())-m.getDef();
-				if(dmg<=0) {
-					battleLog+=m.description+" dodged"; 
-					setLooker(LookerFactory.getInstance().createLookerMiss(pos.x, pos.y));
-				} else {
-					m.hp -= dmg;
-					battleLog+=description+" deals "+dmg+" to "+m.description;
-					if(w.getEffect() instanceof EffectOther) { this.w.getEffect().start(m); }
-					else if(w.getEffect() instanceof EffectSelf) { this.w.getEffect().apply(); }
-					useWeapon();
-					setLooker(LookerFactory.getInstance().createLookerDamage(pos.x, pos.y, dmg));
-				}
-			} else if(deg==2) {
-				dmg=deg*this.getAtk();
+			} else {
 				m.hp -= dmg;
-				battleLog+=description+" deals !"+dmg+"! to "+m.description; 
+				battleLog+=description+" deals "+dmg+" to "+m.description+" ";
 				if(w.getEffect() instanceof EffectOther) { this.w.getEffect().start(m); }
 				else if(w.getEffect() instanceof EffectSelf) { this.w.getEffect().apply(); }
+				else if(w.getEffect() instanceof EffectEquipement) { this.w.getEffect().apply(); }
 				useWeapon();
-				setLooker(LookerFactory.getInstance().createLookerDamage(pos.x, pos.y, dmg));
+				setLooker(LookerFactory.getInstance().createLookerMob(pos.x, pos.y, dmg));
 			}
-		}		
+		} else if(deg==2) {
+			dmg=deg*this.getAtk();
+			m.hp -= dmg;
+			battleLog+=description+" deals !"+dmg+"! to "+m.description+" "; 
+			if(w.getEffect() instanceof EffectOther) { this.w.getEffect().start(m); }
+			else if(w.getEffect() instanceof EffectSelf) { this.w.getEffect().apply(); }
+			else if(w.getEffect() instanceof EffectEquipement) { this.w.getEffect().apply(); }
+			useWeapon();
+			setLooker(LookerFactory.getInstance().createLookerMob(pos.x, pos.y, dmg));
+		}
 		
 		return battleLog;
 	}
@@ -159,7 +132,7 @@ public class Player extends Mob {
 	
 	public void harm(int val) {
 		this.hp -= val;
-		setLooker(LookerFactory.getInstance().createLookerMob(pos.x, pos.y));
+		setLooker(LookerFactory.getInstance().createLookerDamage(pos.x, pos.y));
 		if(this.hp<=0) {
 			this.hp=0;
 			murder();
@@ -253,6 +226,7 @@ public class Player extends Mob {
 		if(this.w.getVal() <= weapon.getVal()) {
 			this.w = weapon;
 			if(this.w.getEffect() instanceof EffectSelf) { this.w.getEffect().start(this); }
+			if(this.w.getEffect() instanceof EffectEquipement) { this.w.getEffect().start(this); }
 		} else {
 			if(this.w.getDurability()<this.w.getMaxDurability()) {
 				this.w.setDurability(this.w.getDurability() + 2*weapon.getVal());
@@ -267,6 +241,7 @@ public class Player extends Mob {
 		if(this.s.getVal() <= shield.getVal()) {
 			this.s = shield;
 			if(this.s.getEffect() instanceof EffectSelf) { this.s.getEffect().start(this); }
+			if(this.s.getEffect() instanceof EffectEquipement) { this.s.getEffect().start(this); }
 		} else {
 			if(this.s.getDurability()<this.s.getMaxDurability()) {
 				this.s.setDurability(this.s.getDurability() + 2*shield.getVal());
@@ -297,12 +272,30 @@ public class Player extends Mob {
 		}
 	}
 	
+	public boolean applyOnWalkEffect() {
+		boolean ret=true;
+		if(w.getEffect() instanceof EffectSelf) {
+			ret=w.getEffect().apply();
+		}
+		if(s.getEffect() instanceof EffectSelf) {
+			if(!ret) {
+				s.getEffect().apply();
+				return ret;
+			} else {
+				ret=s.getEffect().apply();
+			}
+		}
+		return ret;
+	}
+	
 	public void reset() {
 		this.hp=this.maxHealth;
 		this.atk=5;
 		this.gold=0;
 		this.w=new Weapon();
 		this.s=new Shield();
+		this.effect=new EffectNormal();
+		this.looker.hide();
 		this.monstersKilled=0;
 		this.dead=false;
 	}
@@ -322,7 +315,7 @@ public class Player extends Mob {
 	}
 	
 	public String getAllInfo() {
-		String weapon="\t", shield="\t", vit=""+this.vit;
+		String weapon="\t", shield="\t"/*, vit=""+this.vit*/;
 		
 		if(this.w.getVal()>0) {
 			weapon=this.w+" +"+this.w.getVal()+" ("+this.w.getDurability()+"/"+this.w.getMaxDurability()+")";
@@ -330,10 +323,12 @@ public class Player extends Mob {
 		if(this.s.getVal()>0) {
 			shield=this.s+" +"+this.s.getVal()+" ("+this.s.getDurability()+"/"+this.s.getMaxDurability()+")";
 		}
+		/*
 		if(potionEffect>0) {
 			vit+=" ("+potionEffect+")";
 		}
-		return "   "+drawHealthBar()+" "+this.effect+" G:"+this.gold+"  VIT:"+vit+"\n   "+weapon+"\n"+"   "+shield;
+		*/
+		return "   "+drawHealthBar()+" "+this.effect+" G:"+this.gold+/*"  VIT:"+vit+*/"\n   "+weapon+"\n"+"   "+shield;
 	}
 	
 	public String getWeaponInfo() {

@@ -31,7 +31,7 @@ public class Shield extends Equipement {
 	
 	protected Effect pickEffect() {
 		Random rnd = new Random();
-		int effectChance=rnd.nextInt(7);
+		int effectChance=rnd.nextInt(8);
 		
 		if(effectChance<2) {
 			return new EffectWeak();
@@ -39,6 +39,8 @@ public class Shield extends Equipement {
 			return new EffectHeal();
 		} else if(effectChance==3) {
 			return new EffectHeavy();
+		} else if(effectChance==4) {
+			return new EffectStrong();
 		}
 		return new EffectNormal();
 	}

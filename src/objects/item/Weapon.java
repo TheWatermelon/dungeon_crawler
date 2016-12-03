@@ -47,6 +47,8 @@ public class Weapon extends Equipement {
 			return new EffectHeavy();
 		} else if(effectChance==5) {
 			return new EffectFire();
+		} else if(effectChance==6) {
+			return new EffectStrong();
 		}
 		return new EffectNormal();
 	}

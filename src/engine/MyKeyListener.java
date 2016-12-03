@@ -35,29 +35,24 @@ public class MyKeyListener implements KeyListener {
 		if(!this.map.isPlayerDead()) {
 			if(ke.getKeyChar() == 'z') {
 				this.map.getPlayer().getLooker().hide();
-				this.win.printOnScreen();
 				this.map.movePlayerUp();
 			} else if(ke.getKeyChar() == 's') {
 				this.map.getPlayer().getLooker().hide();
-				this.win.printOnScreen();
 				this.map.movePlayerDown();
 			} else if(ke.getKeyChar() == 'q') {
 				this.map.getPlayer().getLooker().hide();
-				this.win.printOnScreen();
 				this.map.movePlayerLeft();
 			} else if(ke.getKeyChar() == 'd') {
 				this.map.getPlayer().getLooker().hide();
-				this.win.printOnScreen();
 				this.map.movePlayerRight();
 			} else if(ke.getKeyChar() == 'a') {
 				this.map.getPlayer().repareWeapon();
 			} else if(ke.getKeyChar() == 'e') {
 				this.map.getPlayer().repareShield();
+			} else if(ke.getKeyChar() == 'f') {
+				this.map.checkPickableItem(map.getPlayer().pos.x, map.getPlayer().pos.y);
 			} else if(ke.getKeyChar() == 'r') {
-				this.win.pickTheme();
-				//this.map.recalculateTable();
 				this.map.generateDungeon();
-				//this.win.refreshTable();
 			}
 			// Refresh map on window
 			this.win.refresh();

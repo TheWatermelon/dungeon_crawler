@@ -80,7 +80,7 @@ public abstract class Mob {
 			if(i==8 && hp>99) {	// Show life count on bar
 				s+=hp/10;
 				i++;
-			} else if(i==9 && hp>9 && hp<maxHealth) {
+			} else if(i==9 && hp>9 && hp<100) {
 				s+=(hp/10);
 			} else if(i==10) {
 				s+=hp%10;

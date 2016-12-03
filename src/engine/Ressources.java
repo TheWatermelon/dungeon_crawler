@@ -57,4 +57,24 @@ public class Ressources {
 	public static String getShieldAt(int index) {
 		return shieldName[index];
 	}
+	
+	public static int[][] drawCircle(int size) {
+		int[][] matrix = new int[size][size];
+
+		double midPoint=(matrix.length-1)/2.0;
+		
+		for(int j=0; j<matrix.length; j++) {
+			int[] row = new int[matrix.length];
+			double yy = j - midPoint;
+			for(int i=0; i<row.length; i++) {
+				double xx = i - midPoint;
+				if(Math.sqrt(xx*xx+yy*yy)<=midPoint) {
+					row[i]=1;
+				}
+			}
+			matrix[j]=row;
+		}
+		
+		return matrix;
+	}
 }

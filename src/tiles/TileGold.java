@@ -6,6 +6,7 @@ public class TileGold extends TileItem {
 		this.description = "Gold";
 	}
 	
+	@Override
 	public char getSymbol() {
 		return '*';
 	}
