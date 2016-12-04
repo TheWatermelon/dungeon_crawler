@@ -7,6 +7,6 @@ public class TileBarrel extends Tile {
 	}
 	
 	public char getSymbol() {
-		return '0';
+		return 0xD4;
 	}
 }

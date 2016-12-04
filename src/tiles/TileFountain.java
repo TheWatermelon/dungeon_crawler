@@ -7,6 +7,6 @@ public class TileFountain extends Tile {
 	}
 	
 	public char getSymbol() {
-		return '~';
+		return 0xB1;
 	}
 }
