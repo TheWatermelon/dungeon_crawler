@@ -288,6 +288,11 @@ public class Player extends Mob {
 		return ret;
 	}
 	
+	public void idleLooker() {
+		this.looker = LookerFactory.getInstance().createLookerEquipement(pos.x, pos.y, this);
+		this.looker.show();
+	}
+	
 	public void reset() {
 		this.hp=this.maxHealth;
 		this.atk=5;

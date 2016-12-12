@@ -108,7 +108,8 @@ public class DungeonPanel extends JPanel {
 				l instanceof LookerMiss ||
 				l instanceof LookerDamage) {
 			g.setColor(red);
-		} else if(l instanceof LookerEquip) {
+		} else if(l instanceof LookerEquip ||
+				l instanceof LookerEquipement) {
 			g.setColor(lightGray);
 		} else if(l instanceof LookerGold) {
 			g.setColor(yellow);

@@ -34,16 +34,16 @@ public class MyKeyListener implements KeyListener {
 	public void keyTyped(KeyEvent ke) {
 		if(!this.map.isPlayerDead()) {
 			if(ke.getKeyChar() == 'z') {
-				this.map.getPlayer().getLooker().hide();
+				this.map.getPlayer().idleLooker();
 				this.map.movePlayerUp();
 			} else if(ke.getKeyChar() == 's') {
-				this.map.getPlayer().getLooker().hide();
+				this.map.getPlayer().idleLooker();
 				this.map.movePlayerDown();
 			} else if(ke.getKeyChar() == 'q') {
-				this.map.getPlayer().getLooker().hide();
+				this.map.getPlayer().idleLooker();
 				this.map.movePlayerLeft();
 			} else if(ke.getKeyChar() == 'd') {
-				this.map.getPlayer().getLooker().hide();
+				this.map.getPlayer().idleLooker();
 				this.map.movePlayerRight();
 			} else if(ke.getKeyChar() == 'a') {
 				this.map.getPlayer().repareWeapon();
