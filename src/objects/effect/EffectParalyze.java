@@ -1,7 +1,9 @@
 package objects.effect;
 
+import java.awt.Color;
 import java.util.Random;
 
+import engine.Resources;
 import objects.mob.Mob;
 
 public class EffectParalyze extends EffectOther {
@@ -10,6 +12,9 @@ public class EffectParalyze extends EffectOther {
 	@Override
 	public String name() { return "Paralyze"; }
 
+	@Override
+	public Color getColor() { return Resources.yellow; }
+	
 	@Override
 	public void start(Mob m) { 
 		this.duration=this.maxDuration; 

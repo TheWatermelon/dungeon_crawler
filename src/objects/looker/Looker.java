@@ -2,7 +2,7 @@ package objects.looker;
 
 import java.awt.*;
 
-public class Looker {
+public abstract class Looker {
 	protected Point pos;
 	protected char left;
 	protected char right;
@@ -32,4 +32,8 @@ public class Looker {
 	public int getY() { return this.pos.y; }
 	public char getLeft() { return this.left; }
 	public char getRight() { return this.right; }
+	
+	public abstract Color getColor();
+	public Color getLeftColor() { return getColor(); }
+	public Color getRightColor() { return getColor(); }
 }

@@ -1,7 +1,9 @@
 package objects.effect;
 
+import java.awt.Color;
 import java.util.Random;
 
+import engine.Resources;
 import objects.mob.Mob;
 
 public class EffectHeavy extends EffectSelf {
@@ -9,6 +11,9 @@ public class EffectHeavy extends EffectSelf {
 
 	@Override
 	public String name() { return "Heavy"; }
+	
+	@Override
+	public Color getColor() { return Resources.lightGray; }
 
 	@Override
 	public void start(Mob m) { 

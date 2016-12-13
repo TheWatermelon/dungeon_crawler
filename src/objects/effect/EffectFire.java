@@ -1,5 +1,8 @@
 package objects.effect;
 
+import java.awt.Color;
+
+import engine.Resources;
 import objects.mob.Mob;
 
 public class EffectFire extends EffectOther {
@@ -7,6 +10,9 @@ public class EffectFire extends EffectOther {
 
 	@Override
 	public String name() { return "Fire"; }
+	
+	@Override
+	public Color getColor() { return Resources.coolRed; }
 
 	@Override
 	public void start(Mob m) {

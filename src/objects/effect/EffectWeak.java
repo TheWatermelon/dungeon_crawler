@@ -1,5 +1,8 @@
 package objects.effect;
 
+import java.awt.Color;
+
+import engine.Resources;
 import objects.mob.*;
 
 public class EffectWeak extends EffectEquipement {
@@ -7,6 +10,9 @@ public class EffectWeak extends EffectEquipement {
 
 	@Override
 	public String name() { return "Weak"; }
+
+	@Override
+	public Color getColor() { return Resources.lightGray; }
 
 	@Override
 	public void start(Mob m) {

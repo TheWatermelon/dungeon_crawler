@@ -2,10 +2,8 @@ package engine;
 
 import java.awt.*;
 import java.util.Random;
-
 import javax.swing.*;
 
-import objects.looker.*;
 import tiles.*;
 
 public class DungeonPanel extends JPanel {
@@ -16,25 +14,6 @@ public class DungeonPanel extends JPanel {
 	protected boolean isLight;
 
 	protected Color[] basicColors;
-	protected Color white = Color.WHITE;
-	protected Color yellow = Color.YELLOW;
-	protected Color darkYellow = new Color(0xA9, 0x96, 0x2D);
-	protected Color orange = Color.ORANGE;
-	protected Color brown = new Color(0xA5, 0x68, 0x2A);
-	protected Color lightGray = Color.GRAY;
-	protected Color gray = new Color(0x60, 0x60, 0x60);
-	protected Color darkGray = new Color(0x30, 0x30, 0x30);
-	protected Color darkerGray = new Color(0x15, 0x15, 0x15);
-	protected Color green = new Color(0x00, 0x80, 0x00);
-	protected Color darkGreen = new Color(0x00, 0x33, 0x00);
-	protected Color coolRed = new Color(0xEF, 0x3F, 0x23);
-	protected Color red = Color.RED;
-	protected Color darkRed = new Color(0x7F, 0x00, 0x00);
-	protected Color blue = Color.BLUE;
-	protected Color darkBlue = new Color(0x00, 0x00, 0x7F);
-	protected Color cyan = Color.CYAN;
-	protected Color magenta = Color.MAGENTA;
-	protected Color pink = Color.PINK;
 	// Theme colors
 	protected Color wall;
 	
@@ -42,20 +21,20 @@ public class DungeonPanel extends JPanel {
 		super();
 		setBorder(BorderFactory.createLineBorder(Color.white));
 		this.win = w;
-		this.light = Ressources.drawCircle(9);
+		this.light = Resources.drawCircle(9);
 		this.isLight=true;
 		
 		this.basicColors = new Color[10];
-		this.basicColors[0] = this.lightGray;
-		this.basicColors[1] = this.white;
-		this.basicColors[2] = this.brown;
-		this.basicColors[3] = this.orange;
-		this.basicColors[4] = this.red;
-		this.basicColors[5] = this.pink;
-		this.basicColors[6] = this.magenta;
-		this.basicColors[7] = this.blue;
-		this.basicColors[8] = this.cyan;
-		this.basicColors[9] = this.green;
+		this.basicColors[0] = Resources.lightGray;
+		this.basicColors[1] = Resources.white;
+		this.basicColors[2] = Resources.brown;
+		this.basicColors[3] = Resources.orange;
+		this.basicColors[4] = Resources.red;
+		this.basicColors[5] = Resources.pink;
+		this.basicColors[6] = Resources.magenta;
+		this.basicColors[7] = Resources.blue;
+		this.basicColors[8] = Resources.cyan;
+		this.basicColors[9] = Resources.green;
 		
 		pickTheme();
 	}
@@ -68,61 +47,36 @@ public class DungeonPanel extends JPanel {
 	}
 	
 	public void prepareColor(Graphics g, Tile[][] t, int i, int j) {
-		if(!isLight(i, j)) { g.setColor(darkerGray); return; }
+		if(!isLight(i, j)) { g.setColor(Resources.darkerGray); return; }
 		
 		if(t[i][j] instanceof TilePlayer) {
 			g.setColor(getPlayerColor());
 		} else if(t[i][j] instanceof TileWall){
 			g.setColor(wall);
 		} else if(t[i][j] instanceof TileDoor){
-			g.setColor(brown);
+			g.setColor(Resources.brown);
 		} else if(t[i][j] instanceof TileStone){
-			g.setColor(darkGray);
+			g.setColor(Resources.darkGray);
 		} else if(t[i][j] instanceof TileMoss){
-			g.setColor(darkGreen);
+			g.setColor(Resources.darkGreen);
 		} else if(t[i][j] instanceof TileStairsDown){
-			g.setColor(orange);
+			g.setColor(Resources.orange);
 		} else if(t[i][j] instanceof TileStairsUp){
-			g.setColor(orange);
+			g.setColor(Resources.orange);
 		} else if(t[i][j] instanceof TileGold){
-			g.setColor(yellow);
+			g.setColor(Resources.yellow);
 		} else if(t[i][j] instanceof TileFountain){
-			g.setColor(cyan);
+			g.setColor(Resources.cyan);
 		} else if(t[i][j] instanceof TileItem){
-			g.setColor(lightGray);
+			g.setColor(Resources.lightGray);
 		} else if(t[i][j] instanceof TileBarrel){
-			g.setColor(brown);
+			g.setColor(Resources.brown);
 		} else if(t[i][j] instanceof TileMob){
-			g.setColor(coolRed);
+			g.setColor(Resources.coolRed);
 		} else if(t[i][j] instanceof TileCorpse){
-			g.setColor(gray);
+			g.setColor(Resources.gray);
 		} else {
-			g.setColor(white);
-		}
-	}
-	
-	public void prepareLookerColor(Graphics g) {
-		Looker l = win.getMap().getPlayer().getLooker();
-		
-		if(l instanceof LookerMob ||
-				l instanceof LookerMiss ||
-				l instanceof LookerDamage) {
-			g.setColor(red);
-		} else if(l instanceof LookerEquip ||
-				l instanceof LookerEquipement) {
-			g.setColor(lightGray);
-		} else if(l instanceof LookerGold) {
-			g.setColor(yellow);
-		} else if(l instanceof LookerHealth) {
-			g.setColor(green);
-		} else if(l instanceof LookerBarrel) {
-			g.setColor(brown);
-		} else if(l instanceof LookerPotion) {
-			if(((LookerPotion) l).getVal()>0) {
-				g.setColor(green);
-			} else {
-				g.setColor(red);
-			}
+			g.setColor(Resources.white);
 		}
 	}
 	
@@ -147,7 +101,7 @@ public class DungeonPanel extends JPanel {
 		} else if(hp<90) {
 			return new Color(0x66, 0xFF, 0x00);
 		} else {
-			return green;
+			return Resources.green;
 		}
 	}
 	
@@ -160,14 +114,15 @@ public class DungeonPanel extends JPanel {
 			g.drawChars(looker, 0, 1, offsetX-6, offsetY);
 			g.drawChars(looker, 1, 1, offsetX+6, offsetY);
 		} else {
-			prepareLookerColor(g);
 			looker[0]=win.getMap().getPlayer().getLooker().getLeft();
-			looker[1]=win.getMap().getPlayer().getLooker().getRight();
+			g.setColor(win.getMap().getPlayer().getLooker().getLeftColor());
 			g.drawChars(looker, 0, 1, offsetX-6, offsetY);
+			looker[1]=win.getMap().getPlayer().getLooker().getRight();
+			g.setColor(win.getMap().getPlayer().getLooker().getRightColor());
 			g.drawChars(looker, 1, 1, offsetX+6, offsetY);
 		}
 		// Mise a jour de la bordure du cadre de jeu
-		setBorder(BorderFactory.createLineBorder(g.getColor()==Color.BLACK?Color.WHITE:g.getColor()));
+		setBorder(BorderFactory.createLineBorder(g.getColor()==Color.BLACK?Resources.lightGray:g.getColor()));
 	}
 	
 	public boolean isLight(int i, int j) {

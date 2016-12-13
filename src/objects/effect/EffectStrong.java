@@ -1,7 +1,9 @@
 package objects.effect;
 
+import java.awt.Color;
 import java.util.Random;
 
+import engine.Resources;
 import objects.mob.*;
 
 public class EffectStrong extends EffectEquipement {
@@ -11,6 +13,9 @@ public class EffectStrong extends EffectEquipement {
 	public void start(Mob m) {
 		affected=m;
 	}
+	
+	@Override
+	public Color getColor() { return Resources.lightGray; }
 	
 	@Override
 	public boolean apply() {

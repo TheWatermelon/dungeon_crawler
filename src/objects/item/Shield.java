@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.Random;
 
 import tiles.*;
-import engine.Ressources;
+import engine.Resources;
 import objects.effect.*;
 
 public class Shield extends Equipement {	
@@ -12,7 +12,7 @@ public class Shield extends Equipement {
 		this.val=0;
 		this.maxDurability = -1;
 		this.resetDurability();
-		this.description = Ressources.getShieldAt(0);
+		this.description = Resources.getShieldAt(0);
 		this.effect = new EffectNormal();
 	}
 	
@@ -22,7 +22,7 @@ public class Shield extends Equipement {
 		this.maxDurability = val*10;
 		this.resetDurability();
 		this.effect = pickEffect();
-		this.description = this.effect.name()+" "+Ressources.getShieldAt(val);
+		this.description = this.effect.name()+" "+Resources.getShieldAt(val);
 	}
 	
 	public Tile getTile() {

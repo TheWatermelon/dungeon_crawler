@@ -11,7 +11,7 @@ public class LookerFactory {
 	private static LookerGold lookerGold = new LookerGold(0, 0);
 	private static LookerHealth lookerHealth = new LookerHealth(0, 0);
 	private static LookerPotion lookerPotion = new LookerPotion(0, 0);
-	private static LookerEquipement lookerEquipement = new LookerEquipement(0, 0);
+	private static LookerStuff lookerStuff = new LookerStuff(0, 0);
 	
 	private LookerFactory() {
 		
@@ -32,5 +32,5 @@ public class LookerFactory {
 	public LookerHealth createLookerHealth(int x, int y) { lookerHealth.placeOn(x,  y); return lookerHealth; }
 	public LookerPotion createLookerPotion(int x, int y, int val) { lookerPotion.updateLook(val); lookerPotion.placeOn(x, y); return lookerPotion; }
 	public LookerBarrel createLookerBarrel(int x, int y) { return new LookerBarrel(x, y); }
-	public LookerEquipement createLookerEquipement(int x, int y, Player p) { lookerEquipement.placeOn(x, y); lookerEquipement.refresh(p); return lookerEquipement; }
+	public LookerStuff createLookerStuff(int x, int y, Player p) { lookerStuff.placeOn(x, y); lookerStuff.refresh(p); return lookerStuff; }
 }

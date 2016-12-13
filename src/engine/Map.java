@@ -285,7 +285,7 @@ public class Map {
 				} while (((width==this.jerry.pos.x) && (height==this.jerry.pos.y)) && !isMonster(width, height));
 
 				monsterName = rnd.nextInt(26);
-				this.monsters.add(new Monster(width, height, Ressources.getLetterAt(monsterName), Ressources.getNameAt(monsterName), this.log));
+				this.monsters.add(new Monster(width, height, Resources.getLetterAt(monsterName), Resources.getNameAt(monsterName), this.log));
 			}
 		}
 		// BOSS
@@ -300,7 +300,7 @@ public class Map {
 				height = rnd.nextInt(room.getHeight()-1)+1+room.p1.y;
 			} while (((width==this.jerry.pos.x) && (height==this.jerry.pos.y)) && !isMonster(width, height));
 			monsterName = rnd.nextInt(26);
-			boss = new Boss(width, height, this.level/5, Ressources.getCapitalLetterAt(monsterName), Ressources.getCapitalNameAt(monsterName), this.log);
+			boss = new Boss(width, height, this.level/5, Resources.getCapitalLetterAt(monsterName), Resources.getCapitalNameAt(monsterName), this.log);
 			monsters.add(boss);
 		}
 	}

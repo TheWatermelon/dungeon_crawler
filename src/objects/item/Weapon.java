@@ -6,7 +6,7 @@ import java.util.Random;
 import objects.effect.*;
 import tiles.Tile;
 import tiles.TileFactory;
-import engine.Ressources;
+import engine.Resources;
 
 public class Weapon extends Equipement {
 	
@@ -14,7 +14,7 @@ public class Weapon extends Equipement {
 		this.val=0;
 		this.maxDurability = -1;
 		this.resetDurability();
-		this.description = Ressources.getWeaponAt(0);
+		this.description = Resources.getWeaponAt(0);
 		this.effect = new EffectNormal();
 	}
 	
@@ -24,7 +24,7 @@ public class Weapon extends Equipement {
 		this.maxDurability = val*10;
 		this.resetDurability();
 		this.effect = pickEffect();
-		this.description = this.effect.name()+" "+Ressources.getWeaponAt(val);
+		this.description = this.effect.name()+" "+Resources.getWeaponAt(val);
 	}
 	
 	public Tile getTile() {

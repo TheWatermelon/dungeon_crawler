@@ -26,7 +26,7 @@ public class Player extends Mob {
 		this.monstersKilled=0;
 		this.dead = false;
 		this.pos = new Point(x, y);
-		this.looker = new Looker(x, y);
+		this.looker = new LookerStuff(x, y);
 		this.log = l;
 		this.symbol = '@';
 		this.description = "Player";
@@ -115,6 +115,7 @@ public class Player extends Mob {
 		pos = new Point(x, y);
 		restoreHealth();
 		consumePotionEffect();
+		stuffLooker();
 	}
 	
 	public void cure() {
@@ -288,8 +289,8 @@ public class Player extends Mob {
 		return ret;
 	}
 	
-	public void idleLooker() {
-		this.looker = LookerFactory.getInstance().createLookerEquipement(pos.x, pos.y, this);
+	public void stuffLooker() {
+		this.looker = LookerFactory.getInstance().createLookerStuff(pos.x, pos.y, this);
 		this.looker.show();
 	}
 	

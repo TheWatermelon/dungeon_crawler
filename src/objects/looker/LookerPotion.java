@@ -1,5 +1,9 @@
 package objects.looker;
 
+import java.awt.Color;
+
+import engine.Resources;
+
 public class LookerPotion extends Looker {
 	protected int val;
 	
@@ -8,6 +12,9 @@ public class LookerPotion extends Looker {
 		this.left='!';
 		this.right='?';
 	}
+
+	@Override
+	public Color getColor() { return (val>0)?Resources.green:Resources.coolRed; }
 	
 	public void updateLook(int val) {
 		this.val = val;

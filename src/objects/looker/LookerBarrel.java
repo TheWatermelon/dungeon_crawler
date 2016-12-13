@@ -1,12 +1,18 @@
 package objects.looker;
 
+import java.awt.Color;
 import java.util.*;
+
+import engine.Resources;
 
 public class LookerBarrel extends Looker {
 	public LookerBarrel(int x, int y) {
 		super(x, y);
 		setupLooker();
 	}
+	
+	@Override
+	public Color getColor() { return Resources.brown; }
 	
 	protected void setupLooker() {
 		Random rnd = new Random();

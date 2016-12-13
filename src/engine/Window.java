@@ -1,22 +1,27 @@
 package engine;
 
 import java.awt.*;
+import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.text.*;
+
+import engine.menus.*;
 
 public class Window extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private Map map;
+	private Dungeon d;
 	
-	private MyKeyListener keyListener;
+	private KeyListener keyListener;
 	
 	private JPanel global;
 	private JPanel headPanel;
 	private JPanel footPanel;
 	private JPanel leftPanel;
 	private JPanel rightPanel;
+	private JPanel pauseMenu;
 	private JTextPane head;
 	private JTextPane foot;
 	private JTextPane foot1;
@@ -26,15 +31,18 @@ public class Window extends JFrame {
 	
 	public Window(String title, Dungeon d) {
 		super(title);
+		this.d = d;
 		this.map = d.getMap();
 		this.setSize(820, 620);
 		this.setLocation(150, 100);
 		this.setResizable(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		this.keyListener = new MyKeyListener(d, d.getMap(), this);
+		this.keyListener = new DungeonKeyListener(d, d.getMap(), this);
 		this.dungeon = new DungeonPanel(this);
 		addKeyListener(keyListener);
+		
+		this.pauseMenu = new PauseMenu(this);
 		
 		this.global = new JPanel();
 		this.global.setLayout(new BorderLayout());
@@ -137,8 +145,30 @@ public class Window extends JFrame {
 	
 	public DungeonPanel getDungeonPanel() { return dungeon; }
 	
+	public void showDungeon() {
+		this.global.remove(pauseMenu);
+		this.global.add(dungeon, BorderLayout.CENTER);
+		removeKeyListener(keyListener);
+		keyListener = new DungeonKeyListener(d, map, this);
+		addKeyListener(keyListener);
+		refresh();
+		repaint();
+	}
+	
+	public void showPauseMenu() {
+		this.global.remove(dungeon);
+		this.global.add(pauseMenu, BorderLayout.CENTER);
+		this.head.setText("PAUSE\nMENU");
+		removeKeyListener(keyListener);
+		keyListener = new MenuKeyListener((engine.menus.Menu)pauseMenu);
+		addKeyListener(keyListener);
+		repaint();
+	}
+	
 	public void refreshListener() {
-		keyListener.refresh(this.map, this);
+		if(keyListener instanceof DungeonKeyListener) {
+			((DungeonKeyListener)keyListener).refresh(this.map, this);
+		}
 	}
 	
 	public void refresh() {
