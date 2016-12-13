@@ -15,13 +15,13 @@ public class MenuKeyListener implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
             menu.selectFocusedItem();
-        } else if(e.getKeyChar() == 'z' ||
+        } else if(e.getKeyChar() == Resources.Commands.Up.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_UP) {
 			menu.decFocusedItem();
-		} else if(e.getKeyChar() == 's' ||
+		} else if(e.getKeyChar() == Resources.Commands.Down.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_DOWN) {
 			menu.incFocusedItem();
-		} else if(e.getKeyChar() == 'p') {
+		} else if(e.getKeyChar() == Resources.Commands.Pause.getKey()) {
 			menu.setFocusedItem(0);
 			menu.selectFocusedItem();
 		}

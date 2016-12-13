@@ -22,6 +22,7 @@ public class Window extends JFrame {
 	private JPanel leftPanel;
 	private JPanel rightPanel;
 	private JPanel pauseMenu;
+	private JPanel optionsMenu;
 	private JTextPane head;
 	private JTextPane foot;
 	private JTextPane foot1;
@@ -43,6 +44,7 @@ public class Window extends JFrame {
 		addKeyListener(keyListener);
 		
 		this.pauseMenu = new PauseMenu(this);
+		this.optionsMenu = new OptionsMenu(this);
 		
 		this.global = new JPanel();
 		this.global.setLayout(new BorderLayout());
@@ -157,10 +159,21 @@ public class Window extends JFrame {
 	
 	public void showPauseMenu() {
 		this.global.remove(dungeon);
+		this.global.remove(optionsMenu);
 		this.global.add(pauseMenu, BorderLayout.CENTER);
 		this.head.setText("PAUSE\nMENU");
 		removeKeyListener(keyListener);
 		keyListener = new MenuKeyListener((engine.menus.Menu)pauseMenu);
+		addKeyListener(keyListener);
+		repaint();
+	}
+	
+	public void showOptionsMenu() {
+		this.global.remove(pauseMenu);
+		this.global.add(optionsMenu, BorderLayout.CENTER);
+		this.head.setText("OPTIONS\nMENU");
+		removeKeyListener(keyListener);
+		keyListener = new MenuKeyListener((engine.menus.Menu)optionsMenu);
 		addKeyListener(keyListener);
 		repaint();
 	}

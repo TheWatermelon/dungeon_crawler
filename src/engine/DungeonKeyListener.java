@@ -23,86 +23,51 @@ public class DungeonKeyListener implements KeyListener {
 	}
 
 	// French version (AZERTY keyboard)
+	@Override
 	public void keyPressed(KeyEvent e) {
 		if(!this.map.isPlayerDead()) {
-			if(e.getKeyChar() == 'z' ||
+			if(e.getKeyChar() == Resources.Commands.Up.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_UP) {
 				this.map.movePlayerUp();
-			} else if(e.getKeyChar() == 's' ||
+			} else if(e.getKeyChar() == Resources.Commands.Down.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_DOWN) {
 				this.map.movePlayerDown();
-			} else if(e.getKeyChar() == 'q' ||
+			} else if(e.getKeyChar() == Resources.Commands.Left.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_LEFT) {
 				this.map.movePlayerLeft();
-			} else if(e.getKeyChar() == 'd' ||
+			} else if(e.getKeyChar() == Resources.Commands.Right.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				this.map.movePlayerRight();
-			} else if(e.getKeyChar() == 'a') {
+			} else if(e.getKeyChar() == Resources.Commands.RepareWeapon.getKey()) {
 				this.map.getPlayer().repareWeapon();
-			} else if(e.getKeyChar() == 'e') {
+			} else if(e.getKeyChar() == Resources.Commands.RepareShield.getKey()) {
 				this.map.getPlayer().repareShield();
-			} else if(e.getKeyChar() == 'f' ||
+			} else if(e.getKeyChar() == Resources.Commands.Take.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_ENTER) {
 				this.map.checkPickableItem(map.getPlayer().pos.x, map.getPlayer().pos.y);
-			} else if(e.getKeyChar() == 'r') {
+			} else if(e.getKeyChar() == Resources.Commands.Restart.getKey()) {
 				this.map.generateDungeon();
-			} else if(e.getKeyChar() == 'p') {
+			} else if(e.getKeyChar() == Resources.Commands.Pause.getKey()) {
 				this.win.showPauseMenu();
 				return;
 			}
 			// Refresh map on window
 			this.win.refresh();
 		} else {
-			if(e.getKeyChar()=='r') {
+			if(e.getKeyChar() == Resources.Commands.Restart.getKey()) {
 				this.dungeon.newGame();
-			} else if(e.getKeyChar() == 'p') {
+			} else if(e.getKeyChar() == Resources.Commands.Pause.getKey()) {
 				this.win.showPauseMenu();
 			}
 		}
 	}
 
+	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 	}
 
+	@Override
 	public void keyTyped(KeyEvent ke) {
 	}
-	
-	// Canadian version (QWERTY keyboard)
-	/*
-	public void keyTyped(KeyEvent ke) {
-		if(!this.map.isPlayerDead()) {
-			if(ke.getKeyChar() == 'w') {
-				this.map.getPlayer().getLooker().hide();
-				this.win.printOnScreen();
-				this.map.movePlayerUp();
-			} else if(ke.getKeyChar() == 's') {
-				this.map.getPlayer().getLooker().hide();
-				this.win.printOnScreen();
-				this.map.movePlayerDown();
-			} else if(ke.getKeyChar() == 'a') {
-				this.map.getPlayer().getLooker().hide();
-				this.win.printOnScreen();
-				this.map.movePlayerLeft();
-			} else if(ke.getKeyChar() == 'd') {
-				this.map.getPlayer().getLooker().hide();
-				this.win.printOnScreen();
-				this.map.movePlayerRight();
-			} else if(ke.getKeyChar() == 'q') {
-				this.map.getPlayer().repareWeapon();
-			} else if(ke.getKeyChar() == 'e') {
-				this.map.getPlayer().repareShield();
-			} else if(ke.getKeyChar() == 'r') {
-				this.win.pickTheme();
-				this.map.generateDungeon();
-			}
-			// Refresh map on window
-			this.win.refresh();
-		} else {
-			if(ke.getKeyChar()=='r') {
-				this.map.newGame();
-			}
-		}
-	}
-	*/
 }

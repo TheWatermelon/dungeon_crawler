@@ -10,8 +10,6 @@ import engine.Window;
 public class PauseMenu extends Menu {
 	private static final long serialVersionUID = 1L;
 	
-	protected String[] items;
-
 	public PauseMenu(Window w) { 
 		super(w); 
 		initPanel();
@@ -21,7 +19,7 @@ public class PauseMenu extends Menu {
 		if(focusedItem==0) {
 			win.showDungeon();
 		} else if(focusedItem==1) {
-			
+			win.showOptionsMenu();
 		} else {
 			System.exit(0);
 		}

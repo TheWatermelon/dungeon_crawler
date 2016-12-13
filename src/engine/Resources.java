@@ -34,6 +34,29 @@ public class Resources {
 	public static Color magenta = Color.MAGENTA;
 	public static Color pink = Color.PINK;
 	
+	public Color theme = gray;
+	
+	public int difficulty=0;
+	
+	public enum Commands {
+		Up('z'),
+		Down('s'),
+		Left('q'),
+		Right('d'),
+		Take('f'),
+		RepareWeapon('a'),
+		RepareShield('e'),
+		Pause('p'),
+		Restart('r');
+		
+		private Commands(char s) { key = s; }
+		
+		public char getKey() { return key; }
+		public void setKey(char k) { key = k; }
+		
+		private char key;
+	};
+	
 	private Resources() {
 		
 	}

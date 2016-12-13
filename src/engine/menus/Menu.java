@@ -8,6 +8,7 @@ public abstract class Menu extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	protected Window win;
+	protected String[] items;
 	protected int focusedItem;
 	
 	public Menu(Window win) { 
@@ -16,8 +17,8 @@ public abstract class Menu extends JPanel {
 	}
 	
 	public void setFocusedItem(int val) { this.focusedItem = val; }
-	public void incFocusedItem() { focusedItem++; }
-	public void decFocusedItem() { focusedItem--; }
+	public void incFocusedItem() { if(focusedItem+1!=items.length) {focusedItem++; } }
+	public void decFocusedItem() { if(focusedItem-1!=-1) {focusedItem--; } }
 	public abstract void selectFocusedItem();
 	
 	protected abstract void initPanel();

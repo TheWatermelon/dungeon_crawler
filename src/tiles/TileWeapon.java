@@ -9,7 +9,8 @@ public class TileWeapon extends TileItem {
 	
 	@Override
 	public char getSymbol() {
-		return 0x87;
+		//return 0x86;
+		return '\\';
 	}
 
 }

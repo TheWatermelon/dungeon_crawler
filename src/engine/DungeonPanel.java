@@ -42,8 +42,9 @@ public class DungeonPanel extends JPanel {
 	public void showLight() { isLight=true; }
 	public void hideLight() { isLight=false; }
 	
-	public void pickTheme() {
+	public Color pickTheme() {
 		this.wall = basicColors[(new Random()).nextInt(basicColors.length)];
+		return this.wall;
 	}
 	
 	public void prepareColor(Graphics g, Tile[][] t, int i, int j) {
