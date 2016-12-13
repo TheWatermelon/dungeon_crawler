@@ -26,6 +26,7 @@ public class OptionsMenu extends Menu {
 		} else if(focusedItem == 2) {
 			Resources.getInstance().theme = win.getDungeonPanel().pickTheme();
 		} else {
+		focusedItem=0;
 			win.showPauseMenu();
 		}
 		repaint();
@@ -55,7 +56,7 @@ public class OptionsMenu extends Menu {
 		else if(Resources.getInstance().difficulty==1) { difficulty="Normal"; }
 		else if(Resources.getInstance().difficulty==2) { difficulty="Hard"; }
 		items[1] = "Difficulty : "+difficulty;
-		
+		// colored square after text instead of color code
 		items[2] = "Theme : ("+
 				Resources.getInstance().theme.getRed()+","+
 				Resources.getInstance().theme.getGreen()+","+

@@ -17,8 +17,14 @@ public abstract class Menu extends JPanel {
 	}
 	
 	public void setFocusedItem(int val) { this.focusedItem = val; }
-	public void incFocusedItem() { if(focusedItem+1!=items.length) {focusedItem++; } }
-	public void decFocusedItem() { if(focusedItem-1!=-1) {focusedItem--; } }
+	public void incFocusedItem() { 
+	focusedItem++; 
+	if(focusedItem==items.length) { focusedItem=0; } 
+	}
+	public void decFocusedItem() {
+	focusedItem--; 
+	if(focusedItem==-1) { focusedItem=items.length-1; } 
+	}
 	public abstract void selectFocusedItem();
 	
 	protected abstract void initPanel();
