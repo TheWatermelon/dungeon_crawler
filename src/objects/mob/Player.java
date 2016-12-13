@@ -1,9 +1,11 @@
 package objects.mob;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.util.Random;
 
 import engine.MessageLog;
+import engine.Resources;
 import objects.effect.*;
 import objects.item.*;
 import objects.looker.*;
@@ -304,6 +306,30 @@ public class Player extends Mob {
 		this.looker.hide();
 		this.monstersKilled=0;
 		this.dead=false;
+	}
+	
+	public Color getColor() {
+		if(hp<10) {
+			return new Color(0xAA, 0x00, 0x00);
+		} else if(hp<20) {
+			return new Color(0xDD, 0x00, 0x00);
+		} else if(hp<30) {
+			return new Color(0xFF, 0x33, 0x00);
+		} else if(hp<40) {
+			return new Color(0xFF, 0x66, 0x00);
+		} else if(hp<50) {
+			return new Color(0xFF, 0xAA, 0x00);
+		} else if(hp<60) {
+			return new Color(0xFF, 0xFF, 0x00);
+		} else if(hp<70) {
+			return new Color(0xDD, 0xFF, 0x00);
+		} else if(hp<80) {
+			return new Color(0xAA, 0xFF, 0x00);
+		} else if(hp<90) {
+			return new Color(0x66, 0xFF, 0x00);
+		} else {
+			return Resources.green;
+		}
 	}
 	
 	public int getAtk() { return this.atk+this.w.getVal(); }

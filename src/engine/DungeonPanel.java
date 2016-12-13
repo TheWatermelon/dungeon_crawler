@@ -36,7 +36,7 @@ public class DungeonPanel extends JPanel {
 		this.basicColors[8] = Resources.cyan;
 		this.basicColors[9] = Resources.green;
 		
-		pickTheme();
+		Resources.getInstance().theme = pickTheme();
 	}
 	
 	public void showLight() { isLight=true; }
@@ -51,7 +51,7 @@ public class DungeonPanel extends JPanel {
 		if(!isLight(i, j)) { g.setColor(Resources.darkerGray); return; }
 		
 		if(t[i][j] instanceof TilePlayer) {
-			g.setColor(getPlayerColor());
+			g.setColor(win.getMap().getPlayer().getColor());
 		} else if(t[i][j] instanceof TileWall){
 			g.setColor(wall);
 		} else if(t[i][j] instanceof TileDoor){
@@ -81,30 +81,7 @@ public class DungeonPanel extends JPanel {
 		}
 	}
 	
-	public Color getPlayerColor() {
-		int hp = win.getMap().getPlayer().hp;
-		if(hp<10) {
-			return new Color(0xAA, 0x00, 0x00);
-		} else if(hp<20) {
-			return new Color(0xDD, 0x00, 0x00);
-		} else if(hp<30) {
-			return new Color(0xFF, 0x33, 0x00);
-		} else if(hp<40) {
-			return new Color(0xFF, 0x66, 0x00);
-		} else if(hp<50) {
-			return new Color(0xFF, 0xAA, 0x00);
-		} else if(hp<60) {
-			return new Color(0xFF, 0xFF, 0x00);
-		} else if(hp<70) {
-			return new Color(0xDD, 0xFF, 0x00);
-		} else if(hp<80) {
-			return new Color(0xAA, 0xFF, 0x00);
-		} else if(hp<90) {
-			return new Color(0x66, 0xFF, 0x00);
-		} else {
-			return Resources.green;
-		}
-	}
+	
 	
 	public void printLooker(Graphics g, int offsetX, int offsetY) {
 		char[] looker = new char[2];

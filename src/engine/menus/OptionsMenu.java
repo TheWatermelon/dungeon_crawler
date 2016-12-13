@@ -26,8 +26,12 @@ public class OptionsMenu extends Menu {
 		} else if(focusedItem == 2) {
 			Resources.getInstance().theme = win.getDungeonPanel().pickTheme();
 		} else {
-		focusedItem=0;
-			win.showPauseMenu();
+			focusedItem=0;
+			if(win.isMainMenu()) {
+				win.showMainMenu();
+			} else {
+				win.showPauseMenu();
+			}
 		}
 		repaint();
 	}
@@ -45,7 +49,7 @@ public class OptionsMenu extends Menu {
 		else if(Resources.getInstance().difficulty==2) { difficulty="Hard"; }
 		items[1] = "Difficulty : "+difficulty;
 		
-		items[2] = "Theme : "+Resources.getInstance().theme.toString();
+		items[2] = "Theme : ";
 		
 		items[3] = "Back";
 	} 
@@ -56,12 +60,7 @@ public class OptionsMenu extends Menu {
 		else if(Resources.getInstance().difficulty==1) { difficulty="Normal"; }
 		else if(Resources.getInstance().difficulty==2) { difficulty="Hard"; }
 		items[1] = "Difficulty : "+difficulty;
-		// colored square after text instead of color code
-		items[2] = "Theme : ("+
-				Resources.getInstance().theme.getRed()+","+
-				Resources.getInstance().theme.getGreen()+","+
-				Resources.getInstance().theme.getBlue()+
-				")";
+		items[2] = "Theme : ";
 	}
 
 	@Override
@@ -74,19 +73,17 @@ public class OptionsMenu extends Menu {
 		
 		refresh();
 		
+		g.drawString("Options", getWidth()/2-45, getHeight()/2-87);
+		
 		int offsetY=getHeight()/2-37;
 		for(int i=0; i<items.length; i++) {
-			if(i == focusedItem) {
-				char[] c = new char[1];
-				c[0]='>';
-				g.setColor(Resources.orange);
-				g.drawChars(c, 0, 1, getWidth()/2-85, offsetY);
-			} else {
-				g.setColor(Resources.white);
-			}
-			g.drawString(items[i], getWidth()/2-65, offsetY);
+			if(i == focusedItem) { g.setColor(Resources.orange); } 
+			else { g.setColor(Resources.white); }
+			int offsetX = items[i].length()*13/2;
+			g.drawString(items[i], getWidth()/2-offsetX, offsetY);
 			offsetY+=25;
 		}
-		
+		g.setColor(Resources.getInstance().theme);
+		g.fillRect(getWidth()/2+60, getHeight()/2-3, 20, 20);
 	}
 }

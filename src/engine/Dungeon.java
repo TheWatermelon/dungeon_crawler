@@ -79,6 +79,7 @@ public class Dungeon {
 	}
 	
 	public void newGame() {
+		log = new MessageLog();
 		levels.clear();
 		currentLevel=0;
 		player.reset();

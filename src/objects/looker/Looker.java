@@ -11,8 +11,8 @@ public abstract class Looker {
 	public Looker(int x, int y) {
 		this.pos = new Point(x, y);
 		this.show = false;
-		this.left='{';
-		this.right='}';
+		this.left=' ';
+		this.right=' ';
 	}
 	
 	public void placeOn(int x, int y) {

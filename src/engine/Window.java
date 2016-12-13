@@ -21,6 +21,7 @@ public class Window extends JFrame {
 	private JPanel footPanel;
 	private JPanel leftPanel;
 	private JPanel rightPanel;
+	private JPanel mainMenu;
 	private JPanel pauseMenu;
 	private JPanel optionsMenu;
 	private JTextPane head;
@@ -29,6 +30,8 @@ public class Window extends JFrame {
 	private JTextPane foot2;
 	private DungeonPanel dungeon;
 	
+	private JPanel focusedPanel;
+	private boolean isMainMenu;
 	
 	public Window(String title, Dungeon d) {
 		super(title);
@@ -43,6 +46,7 @@ public class Window extends JFrame {
 		this.dungeon = new DungeonPanel(this);
 		addKeyListener(keyListener);
 		
+		this.mainMenu = new MainMenu(this);
 		this.pauseMenu = new PauseMenu(this);
 		this.optionsMenu = new OptionsMenu(this);
 		
@@ -100,14 +104,16 @@ public class Window extends JFrame {
 		this.foot2.setForeground(Color.white);
 		this.foot2.setText("Z,Q,S,D: Move player\nRepare we(A)pon, shi(E)ld   \nF: Take item");
 		this.footPanel.add(this.foot2, BorderLayout.EAST);
-		
+		// Global panel
 		this.global.add(this.headPanel, BorderLayout.NORTH);
-		//this.global.add(this.body, BorderLayout.CENTER);
 		this.global.add(this.dungeon, BorderLayout.CENTER);
 		this.global.add(this.leftPanel, BorderLayout.WEST);
 		this.global.add(this.rightPanel, BorderLayout.EAST);
 		this.global.add(this.footPanel, BorderLayout.SOUTH);
 		this.add(this.global);
+		focusedPanel = global;
+		
+		showMainMenu();
 		
 		this.setVisible(true);
 	}
@@ -146,35 +152,54 @@ public class Window extends JFrame {
 	}
 	
 	public DungeonPanel getDungeonPanel() { return dungeon; }
+	public Dungeon getDungeon() { return d; }
+	
+	public boolean isMainMenu() { return isMainMenu; }
+	
+	public void showMainMenu() {
+		isMainMenu=true;
+		remove(focusedPanel);
+		add(mainMenu);
+		focusedPanel = mainMenu;
+		removeKeyListener(keyListener);
+		keyListener = new MenuKeyListener((engine.menus.Menu)mainMenu);
+		addKeyListener(keyListener);
+		revalidate();
+		repaint();
+	}
 	
 	public void showDungeon() {
-		this.global.remove(pauseMenu);
-		this.global.add(dungeon, BorderLayout.CENTER);
+		isMainMenu=false;
+		remove(focusedPanel);
+		add(global);
+		focusedPanel = global;
 		removeKeyListener(keyListener);
 		keyListener = new DungeonKeyListener(d, map, this);
 		addKeyListener(keyListener);
 		refresh();
+		revalidate();
 		repaint();
 	}
 	
 	public void showPauseMenu() {
-		this.global.remove(dungeon);
-		this.global.remove(optionsMenu);
-		this.global.add(pauseMenu, BorderLayout.CENTER);
-		this.head.setText("PAUSE\nMENU");
+		remove(focusedPanel);
+		add(pauseMenu);
+		focusedPanel = pauseMenu;
 		removeKeyListener(keyListener);
 		keyListener = new MenuKeyListener((engine.menus.Menu)pauseMenu);
 		addKeyListener(keyListener);
+		revalidate();
 		repaint();
 	}
 	
 	public void showOptionsMenu() {
-		this.global.remove(pauseMenu);
-		this.global.add(optionsMenu, BorderLayout.CENTER);
-		this.head.setText("OPTIONS\nMENU");
+		remove(focusedPanel);
+		add(optionsMenu);
+		focusedPanel = optionsMenu;
 		removeKeyListener(keyListener);
 		keyListener = new MenuKeyListener((engine.menus.Menu)optionsMenu);
 		addKeyListener(keyListener);
+		revalidate();
 		repaint();
 	}
 	
