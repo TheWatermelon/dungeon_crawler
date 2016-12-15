@@ -1,5 +1,7 @@
 package tiles;
 
+import java.awt.Color;
+
 public abstract class Tile {
 	protected String description;
 	protected boolean walkable;
@@ -8,4 +10,5 @@ public abstract class Tile {
 	public final String toString() { return this.description; }
 	
 	public abstract char getSymbol();
+	public abstract Color getColor();
 }

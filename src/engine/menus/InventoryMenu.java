@@ -20,9 +20,9 @@ public class InventoryMenu extends Menu {
 		initPanel();
 	}
 	
-	public void destroyItem() {
+	public void dropItem() {
 		if(focusedItem<inv.getSize()) {
-			inv.removeItem(inv.get(focusedItem));
+			inv.dropItem(inv.get(focusedItem));
 			initPanel();
 		}
 	}
@@ -66,9 +66,12 @@ public class InventoryMenu extends Menu {
 		
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
-		String name = win.getMap().getPlayer().toString(), healthBar = win.getMap().getPlayer().drawHealthBar();
-		g.drawString(name, getWidth()/2-(name.length()*13/2), 80);
-		g.drawString(healthBar, getWidth()/2-(healthBar.length()*12/2), 100);
+		String name = win.getMap().getPlayer().toString(), 
+				healthBar = win.getMap().getPlayer().drawHealthBar(),
+				stuff = win.getMap().getPlayer().getWeaponInfo();
+		g.drawString(name, getWidth()/2-(name.length()*13/2), 60);
+		g.drawString(healthBar, getWidth()/2-(healthBar.length()*12/2), 80);
+		g.drawString(stuff, getWidth()/2-(stuff.length()*12/2), 100);
 
 		g.setFont(new Font("Monospaced", Font.PLAIN, 50));
 		g.setColor(win.getMap().getPlayer().getLooker().getLeftColor());

@@ -1,5 +1,9 @@
 package tiles;
 
+import java.awt.Color;
+
+import engine.Resources;
+
 public class TileShield extends TileItem {
 	public TileShield() {
 		this.walkable=true;
@@ -9,5 +13,10 @@ public class TileShield extends TileItem {
 	@Override
 	public char getSymbol() {
 		return ']';
+	}
+	
+	@Override
+	public Color getColor() {
+		return Resources.lightGray;
 	}
 }

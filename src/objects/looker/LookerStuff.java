@@ -23,13 +23,13 @@ public class LookerStuff extends Looker {
 	public void refresh(Player p) {
 		if(p.getWeapon().getDurability()>0) {
 			this.left = p.getWeapon().getTile().getSymbol();
-			this.leftColor = p.getWeapon().getEffect().getColor();
+			this.leftColor = p.getWeapon().getColor();
 		} else {
 			this.left = ' ';
 		}
 		if(p.getShield().getDurability()>0) {
 			this.right = p.getShield().getTile().getSymbol();
-			this.rightColor = p.getShield().getEffect().getColor();
+			this.rightColor = p.getShield().getColor();
 		} else {
 			this.right = ' ';
 		}

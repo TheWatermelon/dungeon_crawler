@@ -16,10 +16,10 @@ public class InventoryMenuKeyListener extends MenuKeyListener {
             menu.selectFocusedItem();
         } else if(e.getKeyChar() == Resources.Commands.Left.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_LEFT) {
-        	((InventoryMenu)menu).destroyItem();
+        	((InventoryMenu)menu).dropItem();
 		} else if(e.getKeyChar() == Resources.Commands.Right.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_RIGHT) {
-        	((InventoryMenu)menu).destroyItem();
+        	((InventoryMenu)menu).dropItem();
 		} else if(e.getKeyChar() == Resources.Commands.Up.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_UP) {
 			menu.decFocusedItem();

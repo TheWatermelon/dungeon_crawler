@@ -1,5 +1,6 @@
 package objects.item;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.util.Random;
 
@@ -23,6 +24,27 @@ public class Shield extends Equipement {
 		this.resetDurability();
 		this.effect = pickEffect();
 		this.description = this.effect.name()+" "+Resources.getShieldAt(val);
+	}
+	
+	public Color getColor() {
+		if(!(effect instanceof EffectNormal)) {
+			return effect.getColor();
+		}
+		
+		switch(val) {
+			case 1:
+				return Resources.brown;
+			case 2:
+				return Resources.orange;
+			case 3:
+				return Resources.lightGray;
+			case 4:
+				return Resources.gray;
+			case 5:
+				return Resources.cyan;
+			default:
+				return Resources.lightGray;
+		}
 	}
 	
 	public Tile getTile() {

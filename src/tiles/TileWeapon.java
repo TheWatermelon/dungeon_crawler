@@ -1,7 +1,10 @@
 package tiles;
 
-public class TileWeapon extends TileItem {
+import java.awt.Color;
 
+import engine.Resources;
+
+public class TileWeapon extends TileItem {
 	public TileWeapon() {
 		this.walkable=true;
 		this.description="Weapon";
@@ -12,5 +15,9 @@ public class TileWeapon extends TileItem {
 		//return 0x86;
 		return '\\';
 	}
-
+	
+	@Override
+	public Color getColor() {
+		return Resources.lightGray;
+	}
 }

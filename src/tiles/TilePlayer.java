@@ -1,5 +1,9 @@
 package tiles;
 
+import java.awt.Color;
+
+import engine.Resources;
+
 public class TilePlayer extends TileMob {
 	public TilePlayer() {
 		this.walkable = false;
@@ -9,6 +13,11 @@ public class TilePlayer extends TileMob {
 	@Override
 	public char getSymbol() {
 		return '@';
+	}
+
+	@Override
+	public Color getColor() {
+		return Resources.green;
 	}
 
 }

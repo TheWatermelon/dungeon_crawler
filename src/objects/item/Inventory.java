@@ -38,6 +38,10 @@ public class Inventory {
 	
 	public void removeItem(Item i) {
 		content.remove(i);
+	}
+	
+	public void dropItem(Item i) {
+		content.remove(i);
 		i.pos.x=player.pos.x;
 		i.pos.y=player.pos.y;
 		player.getDungeon().getMap().getItems().add(i);

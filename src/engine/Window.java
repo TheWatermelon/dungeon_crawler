@@ -106,8 +106,14 @@ public class Window extends JFrame {
 		this.foot2.setFocusable(false); 
 		this.foot2.setBackground(Color.black);
 		this.foot2.setForeground(Color.white);
-		this.foot2.setText("Z,Q,S,D: Move player\nRepare we(A)pon, shi(E)ld   \nF: Take item");
-		//this.footPanel.add(this.foot2, BorderLayout.EAST);
+		this.foot2.setText(Resources.Commands.Up.getKey()+","+
+						Resources.Commands.Down.getKey()+","+
+						Resources.Commands.Left.getKey()+","+
+						Resources.Commands.Right.getKey()+","+
+						": Move "+getMap().getPlayer()+"   \n"+
+						Resources.Commands.Inventory.getKey()+": Inventory\n"+
+						Resources.Commands.Pause.getKey()+": Pause");
+		this.footPanel.add(this.foot2, BorderLayout.EAST);
 		// Global panel
 		this.global.add(this.headPanel, BorderLayout.NORTH);
 		this.global.add(this.dungeon, BorderLayout.CENTER);

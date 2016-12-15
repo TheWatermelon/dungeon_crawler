@@ -61,35 +61,10 @@ public class DungeonPanel extends JPanel {
 	
 	public void prepareColor(Graphics g, Tile[][] t, int i, int j) {
 		if(!isLight(i, j)) { g.setColor(Resources.darkerGray); return; }
-		
 		if(t[i][j] instanceof TilePlayer) {
 			g.setColor(win.getMap().getPlayer().getColor());
-		} else if(t[i][j] instanceof TileWall){
-			g.setColor(wall);
-		} else if(t[i][j] instanceof TileDoor){
-			g.setColor(Resources.brown);
-		} else if(t[i][j] instanceof TileStone){
-			g.setColor(Resources.darkGray);
-		} else if(t[i][j] instanceof TileMoss){
-			g.setColor(Resources.darkGreen);
-		} else if(t[i][j] instanceof TileStairsDown){
-			g.setColor(Resources.orange);
-		} else if(t[i][j] instanceof TileStairsUp){
-			g.setColor(Resources.orange);
-		} else if(t[i][j] instanceof TileGold){
-			g.setColor(Resources.yellow);
-		} else if(t[i][j] instanceof TileFountain){
-			g.setColor(Resources.cyan);
-		} else if(t[i][j] instanceof TileItem){
-			g.setColor(Resources.lightGray);
-		} else if(t[i][j] instanceof TileBarrel){
-			g.setColor(Resources.brown);
-		} else if(t[i][j] instanceof TileMob){
-			g.setColor(Resources.coolRed);
-		} else if(t[i][j] instanceof TileCorpse){
-			g.setColor(Resources.gray);
 		} else {
-			g.setColor(Resources.white);
+			g.setColor(t[i][j].getColor());
 		}
 	}
 	
@@ -108,9 +83,10 @@ public class DungeonPanel extends JPanel {
 			looker[1]=win.getMap().getPlayer().getLooker().getRight();
 			g.setColor(win.getMap().getPlayer().getLooker().getRightColor());
 			g.drawChars(looker, 1, 1, offsetX+6, offsetY);
+			g.setColor(Color.BLACK);
 		}
 		// Mise a jour de la bordure du cadre de jeu
-		Color newBorderColor = (g.getColor()==Color.BLACK)?Resources.lightGray:g.getColor();
+		Color newBorderColor = (g.getColor()==Color.BLACK)?Resources.white:g.getColor();
 		if(borderColor!=newBorderColor)
 		{ setBorder(BorderFactory.createLineBorder(newBorderColor)); borderColor = newBorderColor; }
 	}

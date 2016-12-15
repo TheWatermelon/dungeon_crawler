@@ -8,16 +8,27 @@ import objects.item.*;
 import tiles.*;
 
 public class RectangleRoom extends Room {
-	private Vector<Point> additionalFloor;
+	private Vector<Point> moss;
+	private Vector<Point> dirt;
 	
 	public RectangleRoom(int x1, int y1, int x2, int y2, String s) {
 		this.description = s;
 		this.p1 = new Point(x1, y1);
 		this.p2 = new Point(x2, y2);
 		this.door = new Vector<Door>();
-		this.additionalFloor = new Vector<Point>();
+		this.moss = new Vector<Point>();
+		this.dirt = new Vector<Point>();
 		this.floor = TileFactory.getInstance().createTileStone();
 		this.show = false;
+	}
+	
+	public void checkMoss(int x, int y, Vector<Item> v) {
+		Point toCheck = new Point(x, y);
+		if(moss.contains(toCheck)) {
+			Point cutMoss = moss.remove(moss.indexOf(toCheck));
+			dirt.add(cutMoss);
+			if((new Random()).nextInt(20)==0) { v.addElement(new Gold(x, y)); }
+		}
 	}
 
 	public void print(Tile[][] tab) {
@@ -34,8 +45,11 @@ public class RectangleRoom extends Room {
 	}
 	
 	private void printAdditionalFloor(Tile[][] tab) {
-		for(int i=0; i<this.additionalFloor.size(); i++) {
-			tab[this.additionalFloor.get(i).y][this.additionalFloor.get(i).x] = TileFactory.getInstance().createTileMoss();
+		for(int i=0; i<this.moss.size(); i++) {
+			tab[this.moss.get(i).y][this.moss.get(i).x] = TileFactory.getInstance().createTileMoss();
+		}
+		for(int i=0; i<this.dirt.size(); i++) {
+			tab[this.dirt.get(i).y][this.dirt.get(i).x] = TileFactory.getInstance().createTileDirt();
 		}
 	}
 	
@@ -44,16 +58,20 @@ public class RectangleRoom extends Room {
 		int placingChance = rnd.nextInt(6), floorChance;
 		
 		if(placingChance == 0) {
-			// Moss + 1 gold + 1 holy fountain
+			// 1 gold + 1 holy fountain
+			v.add(new Gold(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y));
+			v.add(new Fountain(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y));
+		}
+		if(placingChance<4) {
+			// Moss
 			for(int i=1; i<this.getHeight(); i++) {
 				for(int j=1; j<this.getWidth(); j++) {
 					floorChance = rnd.nextInt(100);
-					if(floorChance<20) this.additionalFloor.add(new Point(this.p1.x+j,this.p1.y+i));
+					if(floorChance<20) this.moss.add(new Point(this.p1.x+j,this.p1.y+i));
 				}
 			}
-			v.add(new Gold(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y));
-			v.add(new Fountain(rnd.nextInt(this.getWidth()-1)+1+this.p1.x, rnd.nextInt(this.getHeight()-1)+1+this.p1.y));
-		} else if(placingChance<4) {
+		}
+		if(placingChance>2) {
 			// Barrels (1 to 4)
 			int height=rnd.nextInt(getHeight()-2)+1+this.p1.y, width=rnd.nextInt(getWidth()-2)+1+this.p1.x, gapBarrel=rnd.nextInt(4);
 			floorChance = rnd.nextInt(4)+1;

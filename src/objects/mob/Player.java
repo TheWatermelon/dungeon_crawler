@@ -346,10 +346,10 @@ public class Player extends Mob {
 	public String getWeaponInfo() {
 		String res="";
 		if(this.w.getVal()>0) {
-			res+="Weapon +"+this.w.getVal()+" ("+this.w.getDurability()+"/"+this.w.getMaxDurability()+")  \n";
+			res+=this.w+" ("+this.w.getDurability()+"/"+this.w.getMaxDurability()+") ";
 		}
 		if(this.s.getVal()>0) {
-			res+="Shield +"+this.s.getVal()+" ("+this.s.getDurability()+"/"+this.s.getMaxDurability()+")  ";
+			res+=this.s+" ("+this.s.getDurability()+"/"+this.s.getMaxDurability()+")";
 		}
 		return res;
 	}

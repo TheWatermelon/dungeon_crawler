@@ -1,5 +1,9 @@
 package tiles;
 
+import java.awt.Color;
+
+import engine.Resources;
+
 public class TilePotion extends Tile {
 	public TilePotion() {
 		this.walkable = true;
@@ -9,6 +13,11 @@ public class TilePotion extends Tile {
 	@Override
 	public char getSymbol() {
 		return '&';
+	}
+
+	@Override
+	public Color getColor() {
+		return Resources.red;
 	}
 
 }

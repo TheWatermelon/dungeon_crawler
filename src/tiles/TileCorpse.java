@@ -1,5 +1,9 @@
 package tiles;
 
+import java.awt.Color;
+
+import engine.Resources;
+
 public class TileCorpse extends Tile {
 	public TileCorpse() {
 		this.description = "Corpse";
@@ -14,6 +18,11 @@ public class TileCorpse extends Tile {
 	@Override
 	public char getSymbol() {
 		return '%';
+	}
+
+	@Override
+	public Color getColor() {
+		return Resources.darkGray;
 	}
 
 }

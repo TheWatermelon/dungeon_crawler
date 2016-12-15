@@ -373,8 +373,9 @@ public class Map extends Observable {
 			if(x >= this.rooms.get(i).p1.x && x <= this.rooms.get(i).p2.x 
 					&& y >= this.rooms.get(i).p1.y && y <= this.rooms.get(i).p2.y) {
 				room=rooms.get(i);
-				this.rooms.get(i).isDoor(x, y);
+				room.isDoor(x, y);
 				checkItem(x, y);
+				if(room instanceof RectangleRoom) { ((RectangleRoom)room).checkMoss(x, y, items); }
 			}
 		}
 		return room;

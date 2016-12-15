@@ -1,5 +1,9 @@
 package tiles;
 
+import java.awt.Color;
+
+import engine.Resources;
+
 public class TileDoor extends Tile {
 	private boolean opened;
 	
@@ -21,11 +25,17 @@ public class TileDoor extends Tile {
 		return this.opened;
 	}
 	
+	@Override
 	public char getSymbol() {
 		if(this.opened) {
 			return ':';
 		} else {
 			return '+';
 		}
+	}
+
+	@Override
+	public Color getColor() {
+		return Resources.brown;
 	}
 }
