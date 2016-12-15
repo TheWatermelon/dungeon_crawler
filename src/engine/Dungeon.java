@@ -14,7 +14,7 @@ public class Dungeon {
 	public Dungeon() {
 		log = new MessageLog();
 		levels = new ArrayList<Map>();
-		player = new Player(27, 13, log);
+		player = new Player(27, 13, log, this);
 		levels.add(new Map(54, 26, this));
 		win = new Window("Dungeon Crawler", this);
 		win.setVisible(true);

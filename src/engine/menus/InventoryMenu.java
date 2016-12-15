@@ -19,6 +19,13 @@ public class InventoryMenu extends Menu {
 		items = new String[inv.getMaxSize()+1];
 		initPanel();
 	}
+	
+	public void destroyItem() {
+		if(focusedItem<inv.getSize()) {
+			inv.removeItem(inv.get(focusedItem));
+			initPanel();
+		}
+	}
 
 	@Override
 	public void selectFocusedItem() {
@@ -71,5 +78,13 @@ public class InventoryMenu extends Menu {
 			g.drawString(items[i], getWidth()/2-offsetX, offsetY);
 			offsetY+=25;
 		}
+		
+		String commands=Resources.Commands.Up.getKey()+": Up, "+
+						Resources.Commands.Down.getKey()+": Down, "+
+						Resources.Commands.Take.getKey()+": Use/Equip, "+
+						Resources.Commands.Left.getKey()+"/"+
+						Resources.Commands.Right.getKey()+": Drop";
+		g.setColor(Resources.white);
+		g.drawString(commands, getWidth()/2-(commands.length()*13/2), getHeight()-30);
 	}
 }

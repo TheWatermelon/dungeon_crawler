@@ -34,9 +34,9 @@ public class Resources {
 	public static Color magenta = Color.MAGENTA;
 	public static Color pink = Color.PINK;
 	
-	public Color theme = gray;
+	public Color theme = lightGray;
 	
-	public int difficulty=0;
+	public int difficulty=1;
 	
 	public enum Commands {
 		Up('z'),

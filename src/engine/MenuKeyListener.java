@@ -5,7 +5,7 @@ import java.awt.event.*;
 import engine.menus.*;
 
 public class MenuKeyListener implements KeyListener {
-	private Menu menu;
+	protected Menu menu;
 	
 	public MenuKeyListener(Menu m) {
 		this.menu = m;
@@ -13,7 +13,8 @@ public class MenuKeyListener implements KeyListener {
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+		if(e.getKeyChar() == Resources.Commands.Take.getKey() ||
+				e.getKeyCode() == KeyEvent.VK_ENTER) {
             menu.selectFocusedItem();
         } else if(e.getKeyChar() == Resources.Commands.Up.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_UP) {

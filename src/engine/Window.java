@@ -189,7 +189,7 @@ public class Window extends JFrame {
 		add(inventoryMenu);
 		focusedPanel = inventoryMenu;
 		removeKeyListener(keyListener);
-		keyListener = new MenuKeyListener((engine.menus.Menu)inventoryMenu);
+		keyListener = new InventoryMenuKeyListener((engine.menus.Menu)inventoryMenu);
 		addKeyListener(keyListener);
 		revalidate();
 		repaint();

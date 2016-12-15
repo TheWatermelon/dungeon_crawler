@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.Random;
 
+import engine.Dungeon;
 import engine.MessageLog;
 import engine.Resources;
 import objects.effect.*;
@@ -17,8 +18,9 @@ public class Player extends Mob {
 	private int potionEffect;
 	private Weapon w;
 	private Shield s;
+	private Dungeon dungeon;
 	
-	public Player(int x, int y, MessageLog l) {
+	public Player(int x, int y, MessageLog l, Dungeon d) {
 		this.maxHealth=this.hp=100;
 		this.atk=5;
 		this.def=0;
@@ -35,6 +37,7 @@ public class Player extends Mob {
 		this.description = "Player";
 		this.effect = new EffectNormal();
 		this.inventory = new Inventory(5, l, this);
+		this.dungeon=d;
 	}
 	
 	public void murder() {
@@ -319,6 +322,8 @@ public class Player extends Mob {
 	public Shield getShield() { return this.s; }
 	
 	public Inventory getInventory() { return this.inventory; }
+	
+	public Dungeon getDungeon() { return this.dungeon; }
 	
 	public String getInfo() {
 		return ""+drawHealthBar()+"\nGold : "+this.gold+"\n"+"Kills : "+this.monstersKilled;

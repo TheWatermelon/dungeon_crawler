@@ -38,7 +38,10 @@ public class Inventory {
 	
 	public void removeItem(Item i) {
 		content.remove(i);
-		log.appendMessage(i.description+" removed from Inventory");
+		i.pos.x=player.pos.x;
+		i.pos.y=player.pos.y;
+		player.getDungeon().getMap().getItems().add(i);
+		log.appendMessage(i.description+" dropped !");
 	}
 	
 	public void use(Item i) {

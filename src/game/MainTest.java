@@ -6,7 +6,7 @@ import engine.*;
 
 public class MainTest {
 	public static void main(String[] args) {
-		Player p = new Player(0, 0, new MessageLog());
+		Player p = new Player(0, 0, new MessageLog(), null);
 		System.out.println(p.drawHealthBar());
 		for(int i=0; i<20; i++) {
 			p.harm(5);

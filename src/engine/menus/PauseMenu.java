@@ -17,8 +17,10 @@ public class PauseMenu extends Menu {
 		if(focusedItem==0) {
 			win.showDungeon();
 		} else if(focusedItem==1) {
+			focusedItem=0;
 			win.showOptionsMenu();
 		} else {
+			focusedItem=0;
 			win.showMainMenu();
 		}
 	}
@@ -58,5 +60,10 @@ public class PauseMenu extends Menu {
 			offsetY+=25;
 		}
 		
+		String commands=Resources.Commands.Up.getKey()+": Up, "+
+				Resources.Commands.Down.getKey()+": Down, "+
+				Resources.Commands.Take.getKey()+": Select";
+		g.setColor(Resources.white);
+		g.drawString(commands, getWidth()/2-(commands.length()*13/2), getHeight()-30);
 	}
 }

@@ -82,5 +82,11 @@ public class OptionsMenu extends Menu {
 		}
 		g.setColor(Resources.getInstance().theme);
 		g.fillRect(getWidth()/2+60, getHeight()/2-3, 20, 20);
+		
+		String commands=Resources.Commands.Up.getKey()+": Up, "+
+				Resources.Commands.Down.getKey()+": Down, "+
+				Resources.Commands.Take.getKey()+": Select";
+		g.setColor(Resources.white);
+		g.drawString(commands, getWidth()/2-(commands.length()*13/2), getHeight()-30);
 	}
 }

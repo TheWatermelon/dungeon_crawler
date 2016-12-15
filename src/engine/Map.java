@@ -48,6 +48,7 @@ public class Map extends Observable {
 	public int getHeight() { return this.height; }
 	public int getWidth() { return this.width; }
 	public Vector<Monster> getMonsters() { return monsters; }
+	public Vector<Item> getItems() { return items; }
 	
 	public void fillRectangle(Tile[][] table, int x1, int y1, int x2, int y2, Tile t) {
 		if(x1 < 0 || y1 < 0 || x2 > table[0].length-1 || y2 > table.length-1) {
@@ -463,7 +464,7 @@ public class Map extends Observable {
 		if(i instanceof Weapon ||
 				i instanceof Shield) {
 			if(this.jerry.getInventory().addItem(i)) {
-				removeItem(x, y);	
+				items.remove(i);	
 				this.jerry.setFloor(TileFactory.getInstance().createTileStone());
 				this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
 			}
@@ -605,6 +606,7 @@ public class Map extends Observable {
 	}
 	
 	private void moveAllMonsters() {
+		String battleLog="";
 		for(Monster m : this.monsters) {
 			if(!m.isDead() && rnd.nextInt(10)>1 && isVisible(m.pos.x, m.pos.y) && m.getEffect().apply()) {
 				if(this.jerry.pos.y<m.pos.y) {
@@ -669,7 +671,10 @@ public class Map extends Observable {
 					}
 				}
 			}
+			String tmp=monsterAttack(m);
+			if(!tmp.equals("")) { battleLog+=(!battleLog.equals(""))?(", "+tmp):tmp; }
 		}
+		if(!battleLog.equals("")) { log.appendMessage(battleLog); }
 	}
 	
 	public void printDungeon() {

@@ -32,6 +32,7 @@ public class CommandsMenu extends Menu implements Observer {
 			items[focusedItem] = items[focusedItem].substring(0, items[focusedItem].length()-1);
 			items[focusedItem]+=">"+key+"<";
 		} else {
+			focusedItem=0;
 			win.showOptionsMenu();
 		}
 	}
@@ -78,5 +79,11 @@ public class CommandsMenu extends Menu implements Observer {
 			g.drawString(items[i], getWidth()/2-offsetX, offsetY);
 			offsetY+=25;
 		}
+		
+		String commands=Resources.Commands.Up.getKey()+": Up, "+
+				Resources.Commands.Down.getKey()+": Down, "+
+				Resources.Commands.Take.getKey()+": Change";
+		g.setColor(Resources.white);
+		g.drawString(commands, getWidth()/2-(commands.length()*13/2), getHeight()-30);
 	}
 }
