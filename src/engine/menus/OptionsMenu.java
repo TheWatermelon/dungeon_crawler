@@ -11,6 +11,8 @@ public class OptionsMenu extends Menu {
 	
 	public OptionsMenu(Window win) {
 		super(win);
+		focusedItem=0;
+		items = new String[5];
 		initPanel();
 	}
 
@@ -18,10 +20,12 @@ public class OptionsMenu extends Menu {
 	@Override
 	public void selectFocusedItem() {
 		if(focusedItem == 0) {
+			win.getMap().getPlayer().changeName();
+		} else if(focusedItem == 1) {
 			win.showCommandsMenu();
-		} else if(focusedItem == 1) {	// Cycle difficulty
+		} else if(focusedItem == 2) {	// Cycle difficulty
 			Resources.getInstance().difficulty=(Resources.getInstance().difficulty+1)%3;
-		} else if(focusedItem == 2) {
+		} else if(focusedItem == 3) {
 			Resources.getInstance().theme = win.getDungeonPanel().pickTheme();
 		} else {
 			focusedItem=0;
@@ -36,29 +40,19 @@ public class OptionsMenu extends Menu {
 
 	@Override
 	protected void initPanel() {
-		focusedItem=0;
-		items = new String[4];
+		items[0] = "Name : "+win.getMap().getPlayer();
 		
-		items[0] = "Commands";
+		items[1] = "Commands";
 		
 		String difficulty="";
 		if(Resources.getInstance().difficulty==0) { difficulty="Easy"; }
 		else if(Resources.getInstance().difficulty==1) { difficulty="Normal"; }
 		else if(Resources.getInstance().difficulty==2) { difficulty="Hard"; }
-		items[1] = "Difficulty : "+difficulty;
+		items[2] = "Difficulty : "+difficulty;
 		
-		items[2] = "Theme : ";
+		items[3] = "Theme : ";
 		
-		items[3] = "Back";
-	} 
-	
-	protected void refresh() {
-		String difficulty="";
-		if(Resources.getInstance().difficulty==0) { difficulty="Easy"; }
-		else if(Resources.getInstance().difficulty==1) { difficulty="Normal"; }
-		else if(Resources.getInstance().difficulty==2) { difficulty="Hard"; }
-		items[1] = "Difficulty : "+difficulty;
-		items[2] = "Theme : ";
+		items[4] = "Back";
 	}
 
 	@Override
@@ -68,7 +62,7 @@ public class OptionsMenu extends Menu {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		
-		refresh();
+		initPanel();
 		
 		g.drawString("Options", getWidth()/2-45, getHeight()/2-87);
 		
@@ -81,7 +75,7 @@ public class OptionsMenu extends Menu {
 			offsetY+=25;
 		}
 		g.setColor(Resources.getInstance().theme);
-		g.fillRect(getWidth()/2+60, getHeight()/2-3, 20, 20);
+		g.fillRect(getWidth()/2+60, getHeight()/2+22, 20, 20);
 		
 		String commands=Resources.Commands.Up.getKey()+": Up, "+
 				Resources.Commands.Down.getKey()+": Down, "+

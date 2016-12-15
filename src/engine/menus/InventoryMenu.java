@@ -63,6 +63,21 @@ public class InventoryMenu extends Menu {
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
+		
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
+		String name = win.getMap().getPlayer().toString(), healthBar = win.getMap().getPlayer().drawHealthBar();
+		g.drawString(name, getWidth()/2-(name.length()*13/2), 80);
+		g.drawString(healthBar, getWidth()/2-(healthBar.length()*12/2), 100);
+
+		g.setFont(new Font("Monospaced", Font.PLAIN, 50));
+		g.setColor(win.getMap().getPlayer().getLooker().getLeftColor());
+		g.drawString(""+win.getMap().getPlayer().getLooker().getLeft(), getWidth()/2-45, 150);
+		g.setColor(win.getMap().getPlayer().getColor());
+		g.drawString(""+win.getMap().getPlayer().getSymbol(), getWidth()/2-15, 150);
+		g.setColor(win.getMap().getPlayer().getLooker().getRightColor());
+		g.drawString(""+win.getMap().getPlayer().getLooker().getRight(), getWidth()/2+15, 150);
+		
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		

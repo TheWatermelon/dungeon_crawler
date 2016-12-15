@@ -34,7 +34,7 @@ public class Player extends Mob {
 		this.looker = new LookerStuff(x, y);
 		this.log = l;
 		this.symbol = '@';
-		this.description = "Player";
+		this.description = Resources.generatePlayerName();
 		this.effect = new EffectNormal();
 		this.inventory = new Inventory(5, l, this);
 		this.dungeon=d;
@@ -273,6 +273,8 @@ public class Player extends Mob {
 		this.looker = LookerFactory.getInstance().createLookerStuff(pos.x, pos.y, this);
 		this.looker.show();
 	}
+	
+	public void changeName() { this.description = Resources.generatePlayerName(); }
 	
 	public void reset() {
 		this.hp=this.maxHealth;
