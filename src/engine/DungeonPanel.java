@@ -12,6 +12,12 @@ public class DungeonPanel extends JPanel {
 	protected Window win;
 	protected int[][] light;
 	protected boolean isLight;
+	
+	// Indicators to check whether to refresh the table
+	protected boolean dirty;
+	protected String table;
+	protected Color borderColor;
+	
 
 	protected Color[] basicColors;
 	// Theme colors
@@ -23,6 +29,10 @@ public class DungeonPanel extends JPanel {
 		this.win = w;
 		this.light = Resources.drawCircle(9);
 		this.isLight=true;
+		
+		this.dirty=true;
+		this.table="";
+		this.borderColor = Resources.lightGray;
 		
 		this.basicColors = new Color[10];
 		this.basicColors[0] = Resources.lightGray;
@@ -38,6 +48,8 @@ public class DungeonPanel extends JPanel {
 		
 		Resources.getInstance().theme = pickTheme();
 	}
+	
+	public void setDirty(boolean val) { dirty = val; }
 	
 	public void showLight() { isLight=true; }
 	public void hideLight() { isLight=false; }
@@ -81,8 +93,6 @@ public class DungeonPanel extends JPanel {
 		}
 	}
 	
-	
-	
 	public void printLooker(Graphics g, int offsetX, int offsetY) {
 		char[] looker = new char[2];
 		looker[0]=' ';
@@ -100,7 +110,9 @@ public class DungeonPanel extends JPanel {
 			g.drawChars(looker, 1, 1, offsetX+6, offsetY);
 		}
 		// Mise a jour de la bordure du cadre de jeu
-		setBorder(BorderFactory.createLineBorder(g.getColor()==Color.BLACK?Resources.lightGray:g.getColor()));
+		Color newBorderColor = (g.getColor()==Color.BLACK)?Resources.lightGray:g.getColor();
+		if(borderColor!=newBorderColor)
+		{ setBorder(BorderFactory.createLineBorder(newBorderColor)); borderColor = newBorderColor; }
 	}
 	
 	public boolean isLight(int i, int j) {
@@ -121,6 +133,16 @@ public class DungeonPanel extends JPanel {
 		return false;
 	}
 	
+	protected void refreshTable() {
+		this.table="";
+		Tile[][] table = win.getMap().getTable();	
+		for(int i=0; i<table.length; i++) {
+			for(int j=0; j<table[0].length; j++) {
+				this.table+=table[i][j].getSymbol();
+			}
+		}
+	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.BLACK);
@@ -128,15 +150,17 @@ public class DungeonPanel extends JPanel {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 12));
 		
-		Tile[][] table = win.getMap().getTable();		
-		int i, offsetX=15, offsetY=26;
+		if(dirty) { refreshTable(); dirty=false; }
+			
+		int offsetX=15, offsetY=26;
 		char[] c = new char[1];
-		for(i=0; i<table.length; i++) {
-			for(int j=0; j<table[0].length; j++) {
-				c[0]=table[i][j].getSymbol();
-				prepareColor(g, table, i, j);
+		for(int i=0; i<win.getMap().getHeight(); i++) {
+			for(int j=0; j<win.getMap().getWidth(); j++) {
+				c[0]=table.charAt(i*win.getMap().getWidth()+j);
+				prepareColor(g, win.getMap().getTable(), i, j);
 				g.drawChars(c, 0, 1, offsetX, offsetY);
-				if(table[i][j] instanceof TilePlayer) { printLooker(g, offsetX, offsetY); }
+				if(table.charAt(i*win.getMap().getWidth()+j)==TileFactory.getInstance().createTilePlayer().getSymbol()) 
+				{ printLooker(g, offsetX, offsetY); }
 				offsetX+=14; 
 			}
 			offsetY+=16; 

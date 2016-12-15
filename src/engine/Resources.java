@@ -44,6 +44,7 @@ public class Resources {
 		Left('q'),
 		Right('d'),
 		Take('f'),
+		Inventory('i'),
 		RepareWeapon('a'),
 		RepareShield('e'),
 		Pause('p'),

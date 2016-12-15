@@ -9,7 +9,7 @@ import objects.mob.*;
 import rooms.*;
 import tiles.*;
 
-public class Map {
+public class Map extends Observable {
 	protected Tile[][] table;
 	protected Vector<Room> rooms;
 	protected Vector<Monster> monsters;
@@ -366,18 +366,17 @@ public class Map {
 		}
 	}
 	
-	private int playerIn(int x, int y) {
-		int roomIndex=-1;
-		
+	private Room playerIn(int x, int y) {
+		Room room=null;
 		for(int i=0; i<this.rooms.size(); i++) {
 			if(x >= this.rooms.get(i).p1.x && x <= this.rooms.get(i).p2.x 
 					&& y >= this.rooms.get(i).p1.y && y <= this.rooms.get(i).p2.y) {
-				roomIndex=i;
+				room=rooms.get(i);
 				this.rooms.get(i).isDoor(x, y);
 				checkItem(x, y);
 			}
 		}
-		return roomIndex;
+		return room;
 	}  
 	
 	public boolean isPlayerDead() { return this.jerry.isDead(); }
@@ -447,10 +446,7 @@ public class Map {
 						items.add(new Shield(x, y));
 					}
 				}
-			} /*else if(content == 1) {
-				log.appendMessage("Open Barrel... Potion!");
-				items.add(new Potion(x, y));
-			}*/ else if(content == 1) {
+			} else if(content == 1) {
 				log.appendMessage("Open Barrel... Boom!");
 				this.jerry.harm(25);
 			} else {
@@ -463,36 +459,20 @@ public class Map {
 		Item i = isItem(x, y);
 		
 		if(i == null) { return; }
-		/*
-		if(i instanceof Potion) {
-			if(i.getVal()>=0) {
-				this.log.appendMessage("Drink Potion... Fast effect "+i.getVal()+"!");
-				this.jerry.setPotionEffect(i.getVal());
-			} else {
-				this.log.appendMessage("Drink Potion... Slow effect "+(i.getVal()*-1)+"!");
-				this.jerry.setPotionEffect(i.getVal());
-			}
-			this.jerry.setLooker(LookerFactory.getInstance().createLookerPotion(x, y, i.getVal()));
-		}
-		*/
-		if(i instanceof Weapon) {
-			this.log.appendMessage("Took "+((Weapon)i));
-			this.jerry.setWeapon((Weapon)i);
-			this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
-		} else if(i instanceof Shield) {
-			this.log.appendMessage("Took "+((Shield)i));
-			this.jerry.setShield(((Shield)i));
-			this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
-		}
 		
-		removeItem(x, y);
-		this.jerry.setFloor(TileFactory.getInstance().createTileStone());
+		if(i instanceof Weapon ||
+				i instanceof Shield) {
+			if(this.jerry.getInventory().addItem(i)) {
+				removeItem(x, y);	
+				this.jerry.setFloor(TileFactory.getInstance().createTileStone());
+				this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
+			}
+		}
 	}
 	
 	private void checkPlayerPos(int x, int y) {
 		if(isStairsUp(x, y)) dungeon.levelUp();
 		else if(isStairsDown(x, y)) {
-			// Patch when the boss is the stairs
 			if(this.dungeon.getLevel()%5==0 && this.dungeon.getLevel()>0) {
 				this.stairDown=new Point(x, y);
 			}
@@ -505,8 +485,10 @@ public class Map {
 		boolean monsterKilled;
 		String battleLog="";
 		for(int i=0; i<this.monsters.size(); i++) {
+			if(this.monsters.get(i).isDead()) { continue; }
+			if(this.jerry.isDead()) { return; }
 			// The player attacks the monster he is facing
-			if(((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y) && !this.monsters.get(i).isDead())) {
+			if((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y)) {
 				monsterKilled=this.jerry.fight(this.monsters.get(i));
 				if(monsterKilled && !(monsters.get(i) instanceof Boss)) {
 					Random rnd = new Random();
@@ -540,8 +522,9 @@ public class Map {
 			if((dir[i][0]+x == m.pos.x) && (dir[i][1]+y == m.pos.y) && !m.isDead()) {
 				battleLog=m.fightTurn(jerry);
 				if(jerry.hp<=0) {
+					log.appendMessage(battleLog);
 					jerry.murder();
-					return battleLog;
+					return "";
 				}
 				break;
 			}
@@ -561,7 +544,7 @@ public class Map {
 	private void movePlayer(int x, int y) {
 		if(this.jerry.getEffect().apply() && this.jerry.applyOnWalkEffect()) {
 			this.table[this.jerry.pos.y][this.jerry.pos.x] = this.jerry.getFloor();
-			this.jerry.move(x,  y);
+			this.jerry.move(x, y);
 			this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
 			checkPlayerPos(this.jerry.pos.x, this.jerry.pos.y);
 		}
@@ -619,7 +602,6 @@ public class Map {
 	private void moveMonster(Monster m, int x, int y) {
 		m.pos.x = x;
 		m.pos.y = y;
-		//m.getLooker().hide();
 	}
 	
 	private void moveAllMonsters() {
@@ -709,9 +691,9 @@ public class Map {
 	public String generateMapInfo() {
 		String info="";
 		if(this.dungeon.getLevel()%5==0 && this.dungeon.getLevel()>0 && this.boss!=null) {
-			info="  "+rooms.get(playerIn(this.jerry.pos.x, this.jerry.pos.y)).toString()+" ("+this.jerry.getFloor()+") \t\n  Level "+this.dungeon.getLevel()+" Boss "+this.boss.drawHealthBar()+"\t";
+			info="  "+playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+" ("+this.jerry.getFloor()+") \t\n  Level "+this.dungeon.getLevel()+" Boss "+this.boss.drawHealthBar()+"\t";
 		} else {
-			info="  "+rooms.get(playerIn(this.jerry.pos.x, this.jerry.pos.y)).toString()+" ("+this.jerry.getFloor()+") \t\n  Level "+this.level+"\t";
+			info="  "+playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+" ("+this.jerry.getFloor()+") \t\n  Level "+this.level+"\t";
 		}
 		return info;
 	}
@@ -735,10 +717,6 @@ public class Map {
 				System.out.print(""+this.table[i][j].getSymbol()+' ');
 			}
 			System.out.println();
-		}
-		System.out.flush();
-		for(int i=0; i<this.rooms.size(); i++) {
-			System.out.print(this.rooms.get(i).toString()+"; ");
 		}
 		System.out.println();
 	}

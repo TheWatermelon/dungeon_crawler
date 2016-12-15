@@ -2,8 +2,6 @@ package engine.menus;
 
 import java.awt.*;
 
-import javax.swing.BorderFactory;
-
 import engine.Resources;
 import engine.Window;
 
@@ -48,7 +46,6 @@ public class PauseMenu extends Menu {
 		
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
-		setBorder(BorderFactory.createLineBorder(Resources.white));
 		
 		g.drawString("Pause", getWidth()/2-32, getHeight()/2-87);
 		

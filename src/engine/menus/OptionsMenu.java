@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
-import javax.swing.BorderFactory;
-
 import engine.*;
 
 public class OptionsMenu extends Menu {
@@ -20,7 +18,7 @@ public class OptionsMenu extends Menu {
 	@Override
 	public void selectFocusedItem() {
 		if(focusedItem == 0) {
-			// Commands Menu
+			win.showCommandsMenu();
 		} else if(focusedItem == 1) {	// Cycle difficulty
 			Resources.getInstance().difficulty=(Resources.getInstance().difficulty+1)%3;
 		} else if(focusedItem == 2) {
@@ -69,7 +67,6 @@ public class OptionsMenu extends Menu {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
-		setBorder(BorderFactory.createLineBorder(Resources.white));
 		
 		refresh();
 		

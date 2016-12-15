@@ -18,13 +18,11 @@ public class MessageLog {
 		
 		if(log.size()-lines<0) {
 			for(int i=0; i<log.size(); i++) {
-				//res += "["+i+"] "+log.get(i);
 				res += log.get(i);
 				res += "\t\n";
 			}
 		} else {
 			for(int i=lines; i>0; i--) {
-				//res += "["+(log.size()-i)+"] "+log.get(log.size()-i);
 				res += log.get(log.size()-i);
 				res += "\t\n";
 			}

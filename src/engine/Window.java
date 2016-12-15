@@ -24,6 +24,8 @@ public class Window extends JFrame {
 	private JPanel mainMenu;
 	private JPanel pauseMenu;
 	private JPanel optionsMenu;
+	private JPanel commandsMenu;
+	private JPanel inventoryMenu;
 	private JTextPane head;
 	private JTextPane foot;
 	private JTextPane foot1;
@@ -49,6 +51,8 @@ public class Window extends JFrame {
 		this.mainMenu = new MainMenu(this);
 		this.pauseMenu = new PauseMenu(this);
 		this.optionsMenu = new OptionsMenu(this);
+		this.commandsMenu = new CommandsMenu(this);
+		this.inventoryMenu = new InventoryMenu(this);
 		
 		this.global = new JPanel();
 		this.global.setLayout(new BorderLayout());
@@ -103,7 +107,7 @@ public class Window extends JFrame {
 		this.foot2.setBackground(Color.black);
 		this.foot2.setForeground(Color.white);
 		this.foot2.setText("Z,Q,S,D: Move player\nRepare we(A)pon, shi(E)ld   \nF: Take item");
-		this.footPanel.add(this.foot2, BorderLayout.EAST);
+		//this.footPanel.add(this.foot2, BorderLayout.EAST);
 		// Global panel
 		this.global.add(this.headPanel, BorderLayout.NORTH);
 		this.global.add(this.dungeon, BorderLayout.CENTER);
@@ -150,7 +154,7 @@ public class Window extends JFrame {
 	public void setMap(Map m) {
 		this.map = m;
 	}
-	
+	public KeyListener getKeyListener() { return keyListener; }
 	public DungeonPanel getDungeonPanel() { return dungeon; }
 	public Dungeon getDungeon() { return d; }
 	
@@ -176,7 +180,17 @@ public class Window extends JFrame {
 		removeKeyListener(keyListener);
 		keyListener = new DungeonKeyListener(d, map, this);
 		addKeyListener(keyListener);
+		revalidate();
 		refresh();
+	}
+	
+	public void showInventoryMenu() {
+		remove(focusedPanel);
+		add(inventoryMenu);
+		focusedPanel = inventoryMenu;
+		removeKeyListener(keyListener);
+		keyListener = new MenuKeyListener((engine.menus.Menu)inventoryMenu);
+		addKeyListener(keyListener);
 		revalidate();
 		repaint();
 	}
@@ -203,6 +217,17 @@ public class Window extends JFrame {
 		repaint();
 	}
 	
+	public void showCommandsMenu() {
+		remove(focusedPanel);
+		add(commandsMenu);
+		focusedPanel = commandsMenu;
+		removeKeyListener(keyListener);
+		keyListener = new MenuKeyListener((engine.menus.Menu)commandsMenu);
+		addKeyListener(keyListener);
+		revalidate();
+		repaint();
+	}
+	
 	public void refreshListener() {
 		if(keyListener instanceof DungeonKeyListener) {
 			((DungeonKeyListener)keyListener).refresh(this.map, this);
@@ -210,14 +235,15 @@ public class Window extends JFrame {
 	}
 	
 	public void refresh() {
+		dungeon.setDirty(true);
 		if(!this.map.isPlayerDead()) {
 			this.map.printDungeon();
-			dungeon.repaint();
 			setLabel(this.map.generateMapInfo(), this.map.getPlayer().getAllInfo(), this.map.getLog());
 		} else {
 			setLabel(this.map.getFinalScreen(), this.map.getPlayer().getAllInfo(), this.map.getLog());
 		}
 		refreshListener();
 		revalidate();
+		repaint();
 	}
 }

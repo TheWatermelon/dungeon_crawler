@@ -14,10 +14,10 @@ public class Dungeon {
 	public Dungeon() {
 		log = new MessageLog();
 		levels = new ArrayList<Map>();
-		currentLevel = 0;
 		player = new Player(27, 13, log);
-		levels.add(new Map(54, 29, this));
+		levels.add(new Map(54, 26, this));
 		win = new Window("Dungeon Crawler", this);
+		win.setVisible(true);
 	}
 	
 	public Player getPlayer() { return player; }
@@ -27,30 +27,23 @@ public class Dungeon {
 	public MessageLog getLog() { return log; }
 	
 	public void start() {
-		levels.get(currentLevel).generateDungeon();
-		win.setVisible(true);
-		win.setMap(levels.get(currentLevel));
+		win.setMap(getMap());
+		win.refreshListener();
 		win.refresh();
 	}
 	
 	public void levelUp() {
-		if(currentLevel-1>=0) {
-			log.appendMessage("Going up...");
-			currentLevel--;
-			if(currentLevel%5==0 && currentLevel!=0) { 
-				win.getDungeonPanel().pickTheme();
-				win.getDungeonPanel().hideLight(); 
-			} else { win.getDungeonPanel().showLight(); }
-			levels.get(currentLevel).placePlayerStairsDown();
-			win.setMap(levels.get(currentLevel));
-			win.refresh();
-		} else {
-			log.appendMessage("There is no escape !");
-		}
+		log.appendMessage("Going up...");
+		currentLevel--;
+		if(currentLevel%5==0 && currentLevel!=0) { 
+			win.getDungeonPanel().pickTheme();
+			win.getDungeonPanel().hideLight(); 
+		} else { win.getDungeonPanel().showLight(); }
+		levels.get(currentLevel).placePlayerStairsDown();
+		start();
 	}
 	
 	public void levelDown() {
-		
 		if(currentLevel+1<levels.size()) {
 			log.appendMessage("Going down...");
 			currentLevel++;
@@ -59,8 +52,7 @@ public class Dungeon {
 				win.getDungeonPanel().hideLight(); 
 			} else { win.getDungeonPanel().showLight(); }
 			levels.get(currentLevel).placePlayerStairsUp();
-			win.setMap(levels.get(currentLevel));
-			win.refresh();
+			start();
 		} else {
 			newLevel();
 		}
@@ -69,6 +61,7 @@ public class Dungeon {
 	public void newLevel() {
 		currentLevel++;
 		levels.add(new Map(54, 29, this));
+		levels.get(currentLevel).generateDungeon();
 		if(currentLevel%5==0) {
 			win.getDungeonPanel().pickTheme();
 			win.getDungeonPanel().hideLight();
@@ -79,11 +72,12 @@ public class Dungeon {
 	}
 	
 	public void newGame() {
-		log = new MessageLog();
+		log.clear();
 		levels.clear();
 		currentLevel=0;
 		player.reset();
 		levels.add(new Map(54, 26, this));
+		levels.get(currentLevel).generateDungeon();
 		start();
 	}
 }

@@ -11,6 +11,7 @@ import objects.item.*;
 import objects.looker.*;
 
 public class Player extends Mob {
+	private Inventory inventory;
 	private int gold;
 	private int monstersKilled;
 	private int potionEffect;
@@ -33,12 +34,13 @@ public class Player extends Mob {
 		this.symbol = '@';
 		this.description = "Player";
 		this.effect = new EffectNormal();
+		this.inventory = new Inventory(5, l, this);
 	}
 	
 	public void murder() {
 		this.dead = true;
 		this.hp=0;
-		log.appendMessage("Dead! Press r to restart");
+		log.appendMessage("Dead! Press "+Resources.Commands.Restart.getKey()+" to restart");
 	}
 	
 	public boolean fight(Monster m) {
@@ -46,29 +48,12 @@ public class Player extends Mob {
 		
 		if(!effect.apply()) { return false; }
 		
-		/* RESERVED FOR FUTURE USE */
-		/*
-		if(this.vit!=0 && this.vit>=2*m.vit) {
-			// Player is twice faster than monster : he hits twice
-			for(int i=0; i<2; i++) {
-				battleLog+=fightTurn(m);
-				if(m.hp <= 0) { 
-					m.murder(); 
-					this.monstersKilled++;
-					log.appendMessage(battleLog);
-					return true;
-				}
-				battleLog+=" ";
-			}
-		} 
-		*/
-		
 		// Player attacks once
 		battleLog+=fightTurn(m);
 		if(m.hp <= 0) { 
+			log.appendMessage(battleLog);
 			m.murder(); 
 			this.monstersKilled++;
-			log.appendMessage(battleLog);
 			return true;
 		}
 		
@@ -213,6 +198,8 @@ public class Player extends Mob {
 	
 	private void checkWeapon() {
 		if(this.w.getDurability()==0) {
+			inventory.removeItem(this.w);
+			this.w.unequip();
 			this.w = new Weapon();
 			log.appendMessage("Weapon broke!");
 		}
@@ -220,39 +207,27 @@ public class Player extends Mob {
 	
 	private void checkShield() {
 		if(this.s.getDurability()==0) {
+			inventory.removeItem(this.s);
+			this.s.unequip();
 			this.s = new Shield();
 			log.appendMessage("Shield broke!");
 		}
 	}
 	
 	public void setWeapon(Weapon weapon) {
-		if(this.w.getVal() <= weapon.getVal()) {
-			this.w = weapon;
-			if(this.w.getEffect() instanceof EffectSelf) { this.w.getEffect().start(this); }
-			if(this.w.getEffect() instanceof EffectEquipement) { this.w.getEffect().start(this); }
-		} else {
-			if(this.w.getDurability()<this.w.getMaxDurability()) {
-				this.w.setDurability(this.w.getDurability() + 2*weapon.getVal());
-				if(this.w.getDurability()>this.w.getMaxDurability()) {
-					this.w.resetDurability();
-				}
-			}
-		}
+		this.w.unequip();
+		this.w = weapon;
+		this.w.equip();
+		if(this.w.getEffect() instanceof EffectSelf) { this.w.getEffect().start(this); }
+		if(this.w.getEffect() instanceof EffectEquipement) { this.w.getEffect().start(this); }
 	}
 	
 	public void setShield(Shield shield) {
-		if(this.s.getVal() <= shield.getVal()) {
-			this.s = shield;
-			if(this.s.getEffect() instanceof EffectSelf) { this.s.getEffect().start(this); }
-			if(this.s.getEffect() instanceof EffectEquipement) { this.s.getEffect().start(this); }
-		} else {
-			if(this.s.getDurability()<this.s.getMaxDurability()) {
-				this.s.setDurability(this.s.getDurability() + 2*shield.getVal());
-				if(this.s.getDurability()>this.s.getMaxDurability()) {
-					this.s.resetDurability();
-				}
-			}
-		}
+		this.s.unequip();
+		this.s = shield;
+		this.s.equip();
+		if(this.s.getEffect() instanceof EffectSelf) { this.s.getEffect().start(this); }
+		if(this.s.getEffect() instanceof EffectEquipement) { this.s.getEffect().start(this); }
 	}
 	
 	public void repareWeapon() {
@@ -300,8 +275,9 @@ public class Player extends Mob {
 		this.hp=this.maxHealth;
 		this.atk=5;
 		this.gold=0;
-		this.w=new Weapon();
-		this.s=new Shield();
+		setWeapon(new Weapon());
+		setShield(new Shield());
+		this.inventory.clear();
 		this.effect=new EffectNormal();
 		this.looker.hide();
 		this.monstersKilled=0;
@@ -342,12 +318,14 @@ public class Player extends Mob {
 	
 	public Shield getShield() { return this.s; }
 	
+	public Inventory getInventory() { return this.inventory; }
+	
 	public String getInfo() {
 		return ""+drawHealthBar()+"\nGold : "+this.gold+"\n"+"Kills : "+this.monstersKilled;
 	}
 	
 	public String getAllInfo() {
-		String weapon="\t", shield="\t"/*, vit=""+this.vit*/;
+		String weapon="\t", shield="\t";
 		
 		if(this.w.getVal()>0) {
 			weapon=this.w+" +"+this.w.getVal()+" ("+this.w.getDurability()+"/"+this.w.getMaxDurability()+")";
@@ -355,12 +333,7 @@ public class Player extends Mob {
 		if(this.s.getVal()>0) {
 			shield=this.s+" +"+this.s.getVal()+" ("+this.s.getDurability()+"/"+this.s.getMaxDurability()+")";
 		}
-		/*
-		if(potionEffect>0) {
-			vit+=" ("+potionEffect+")";
-		}
-		*/
-		return "   "+drawHealthBar()+" "+this.effect+" G:"+this.gold+/*"  VIT:"+vit+*/"\n   "+weapon+"\n"+"   "+shield;
+		return "   "+drawHealthBar()+" "+this.effect+" G:"+this.gold+"\n   "+weapon+"\n"+"   "+shield;
 	}
 	
 	public String getWeaponInfo() {

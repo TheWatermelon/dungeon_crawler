@@ -45,6 +45,8 @@ public class DungeonKeyListener implements KeyListener {
 			} else if(e.getKeyChar() == Resources.Commands.Take.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_ENTER) {
 				this.map.checkPickableItem(map.getPlayer().pos.x, map.getPlayer().pos.y);
+			} else if(e.getKeyChar() == Resources.Commands.Inventory.getKey()) {
+				this.win.showInventoryMenu();
 			} else if(e.getKeyChar() == Resources.Commands.Restart.getKey()) {
 				this.map.generateDungeon();
 			} else if(e.getKeyChar() == Resources.Commands.Pause.getKey()) {

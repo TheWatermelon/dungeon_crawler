@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
-import javax.swing.BorderFactory;
-
 import engine.Resources;
 import engine.Window;
 
@@ -44,7 +42,6 @@ public class MainMenu extends Menu {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
-		setBorder(BorderFactory.createLineBorder(Resources.white));
 		
 		g.drawString(win.getTitle(), getWidth()/2-(win.getTitle().length()*13/2), getHeight()/2-87);
 		
