@@ -3,6 +3,7 @@ package objects.item;
 import java.util.ArrayList;
 
 import engine.MessageLog;
+import objects.effect.EffectNormal;
 import objects.mob.Player;
 
 public class Inventory {
@@ -25,9 +26,22 @@ public class Inventory {
 	
 	public Item get(int index) { return content.get(index); }
 	
+	public int checkStackable(Item i) {
+		if(!i.isStackable()) { return -1; }
+		for(Item it : content) {
+			if(it.isEqualTo(i)) {
+				return content.indexOf(it);
+			}
+		}
+		return -1;
+	}
+	
 	public boolean addItem(Item i) { 
 		if(content.size()<size) {
-			content.add(i);
+			int itemSlot=checkStackable(i);
+			if(itemSlot!=-1) 
+			{ content.get(itemSlot).setVal(content.get(itemSlot).getVal()+1); } 
+			else { content.add(i); }
 			log.appendMessage(i+" added to Inventory");
 			return true;
 		} else {
@@ -48,6 +62,12 @@ public class Inventory {
 		log.appendMessage(i.description+" dropped !");
 	}
 	
+	public void repareItem(Item i) {
+		if(i instanceof Equipement) {
+			player.repareEquipement((Equipement)i);
+		}
+	}
+	
 	public void use(Item i) {
 		if(i instanceof Equipement) {
 			if(!((Equipement)i).isEquiped()) {
@@ -65,6 +85,19 @@ public class Inventory {
 				}
 			}
 			player.stuffLooker();
+		} else if(i instanceof Potion) {
+			if(i instanceof Antidote) {
+				if(!(player.getEffect() instanceof EffectNormal)) {
+					player.setEffect(new EffectNormal());
+					i.setVal(i.getVal()-1);
+				}
+			} else if(i instanceof HealingPotion) {
+				if(!player.isFullHealth()) {
+					player.heal(20);
+					i.setVal(i.getVal()-1);
+				}
+			}
+			if(i.getVal()==0) { content.remove(i); }
 		}
 	}
 }

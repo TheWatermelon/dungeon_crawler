@@ -18,7 +18,13 @@ public class Gold extends Item {
 		this.description="Gold";
 	}
 
+	@Override
 	public Tile getTile() {
 		return TileFactory.getInstance().createTileGold();
+	}
+	
+	@Override
+	public boolean isStackable() {
+		return true;
 	}
 }

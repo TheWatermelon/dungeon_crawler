@@ -49,6 +49,7 @@ public class Weapon extends Equipement {
 		}
 	}
 	
+	@Override
 	public Tile getTile() {
 		return TileFactory.getInstance().createTileWeapon();
 	}
@@ -73,5 +74,10 @@ public class Weapon extends Equipement {
 			return new EffectStrong();
 		}
 		return new EffectNormal();
+	}
+	
+	@Override
+	public boolean isStackable() {
+		return false;
 	}
 }

@@ -1,25 +1,14 @@
 package objects.item;
 
 import java.awt.Point;
-import java.util.Random;
 
 import tiles.*;
 
 public class Potion extends Item {
 	public Potion(int x, int y) {
 		this.pos = new Point(x, y);
-		this.val = pickVal();
+		this.val = 1;
 		this.description="Potion";
-	}
-	
-	protected int pickVal() {
-		Random rnd = new Random();
-		int val = pickVal(25);
-		if(rnd.nextInt(2)==0) {
-			// Pas de chance, celle la va faire mal!
-			return val*-1;
-		}
-		return val;
 	}
 
 	@Override
@@ -27,4 +16,8 @@ public class Potion extends Item {
 		return TileFactory.getInstance().createTilePotion();
 	}
 
+	@Override
+	public boolean isStackable() {
+		return true;
+	}
 }

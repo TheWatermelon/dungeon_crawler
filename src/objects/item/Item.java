@@ -15,5 +15,8 @@ public abstract class Item {
 	public final void setVal(int v) { this.val = v; }
 	public String toString() { return this.description; }
 	
+	public boolean isEqualTo(Item i) { return this==i; }
+	
 	public abstract Tile getTile();
+	public abstract boolean isStackable();
 }

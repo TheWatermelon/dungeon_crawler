@@ -19,7 +19,13 @@ public class Barrel extends Item {
 		
 	}
 	
+	@Override
 	public Tile getTile() {
 		return TileFactory.getInstance().createTileBarrel();
+	}
+	
+	@Override
+	public boolean isStackable() {
+		return false;
 	}
 }

@@ -17,7 +17,7 @@ public class TilePotion extends Tile {
 
 	@Override
 	public Color getColor() {
-		return Resources.red;
+		return Resources.lightGray;
 	}
 
 }

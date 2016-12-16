@@ -47,6 +47,7 @@ public class Shield extends Equipement {
 		}
 	}
 	
+	@Override
 	public Tile getTile() {
 		return TileFactory.getInstance().createTileShield();
 	}
@@ -65,5 +66,10 @@ public class Shield extends Equipement {
 			return new EffectStrong();
 		}
 		return new EffectNormal();
+	}
+	
+	@Override
+	public boolean isStackable() {
+		return false;
 	}
 }

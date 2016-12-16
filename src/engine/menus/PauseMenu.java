@@ -42,7 +42,7 @@ public class PauseMenu extends Menu {
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		String name = win.getMap().getPlayer().toString(), 
 				healthBar = win.getMap().getPlayer().drawHealthBar(),
-				stuff = win.getMap().getPlayer().getWeaponInfo();
+						stuff = "Gold : "+win.getMap().getPlayer().getGold()+" "+win.getMap().getPlayer().getWeaponInfo();
 		g.drawString(name, getWidth()/2-(name.length()*13/2), 60);
 		g.drawString(healthBar, getWidth()/2-(healthBar.length()*12/2), 80);
 		g.drawString(stuff, getWidth()/2-(stuff.length()*12/2), 100);

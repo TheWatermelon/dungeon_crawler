@@ -26,6 +26,27 @@ public class InventoryMenu extends Menu {
 			initPanel();
 		}
 	}
+	
+	public void repareItem() {
+		if(focusedItem<inv.getSize()) {
+			inv.repareItem(inv.get(focusedItem));
+			initPanel();
+		}
+	}
+	
+	@Override
+	public void incFocusedItem() {
+		focusedItem++;
+		while(focusedItem>=inv.getSize()&&focusedItem<inv.getMaxSize()) { focusedItem++; }
+		if(focusedItem==items.length) { focusedItem=0; }
+	}
+	
+	@Override
+	public void decFocusedItem() {
+		focusedItem--;
+		while(focusedItem>=inv.getSize()&&focusedItem<inv.getMaxSize()) { focusedItem--; }
+		if(focusedItem<0) { focusedItem = items.length-1; }
+	}
 
 	@Override
 	public void selectFocusedItem() {
@@ -40,6 +61,7 @@ public class InventoryMenu extends Menu {
 
 	@Override
 	protected void initPanel() {
+		if(inv.getSize()==0) { focusedItem=inv.getMaxSize(); }
 		for(int i=0; i<inv.getMaxSize(); i++) {
 			if(i<inv.getSize()) {
 				if(inv.get(i) instanceof Equipement) {
@@ -48,10 +70,10 @@ public class InventoryMenu extends Menu {
 					} else {
 						items[i]="";
 					}
+					items[i]+=inv.get(i).toString()+" ("+((Equipement)inv.get(i)).getDurability()+"/"+((Equipement)inv.get(i)).getMaxDurability()+")";
 				} else {
-					items[i]="";
+					items[i]=""+inv.get(i).toString()+" ("+inv.get(i).getVal()+")";
 				}
-				items[i]+=inv.get(i).toString()+" ("+((Equipement)inv.get(i)).getDurability()+"/"+((Equipement)inv.get(i)).getMaxDurability()+")";
 			} else {
 				items[i]="- empty -";
 			}
@@ -88,7 +110,11 @@ public class InventoryMenu extends Menu {
 		
 		initPanel();
 		
-		int offsetY=getHeight()/2-37;
+		String gold = "Gold : "+win.getMap().getPlayer().getGold();
+		g.setColor(Resources.yellow);
+		g.drawString(gold, getWidth()/2-(gold.length()*13/2), getHeight()/2-37);
+		
+		int offsetY=getHeight()/2-12;
 		for(int i=0; i<items.length; i++) {
 			if(i == focusedItem) { g.setColor(Resources.orange); } 
 			else { g.setColor(Resources.white); }
@@ -100,6 +126,8 @@ public class InventoryMenu extends Menu {
 		String commands=Resources.Commands.Up.getKey()+": Up, "+
 						Resources.Commands.Down.getKey()+": Down, "+
 						Resources.Commands.Take.getKey()+": Use/Equip, "+
+						Resources.Commands.RepareWeapon.getKey()+"/"+
+						Resources.Commands.RepareShield.getKey()+": Repare, "+
 						Resources.Commands.Left.getKey()+"/"+
 						Resources.Commands.Right.getKey()+": Drop";
 		g.setColor(Resources.white);

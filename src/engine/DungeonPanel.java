@@ -39,7 +39,7 @@ public class DungeonPanel extends JPanel {
 		
 		this.dirty=true;
 		this.table="";
-		this.borderColor = Resources.lightGray;
+		this.borderColor = Resources.white;
 		
 		this.basicColors = new Color[10];
 		this.basicColors[0] = Resources.lightGray;
@@ -92,7 +92,7 @@ public class DungeonPanel extends JPanel {
 			g.drawChars(looker, 1, 1, offsetX+6, offsetY);
 		}
 		// Mise a jour de la bordure du cadre de jeu
-		Color newBorderColor = (win.getMap().getPlayer().getLooker() instanceof LookerStuff)?Resources.white:g.getColor();
+		Color newBorderColor = (win.getMap().getPlayer().getLooker() instanceof LookerStuff || g.getColor()==Color.black)?Resources.white:g.getColor();
 		if(borderColor!=newBorderColor)
 		{ setBorder(BorderFactory.createLineBorder(newBorderColor)); borderColor = newBorderColor; }
 	}

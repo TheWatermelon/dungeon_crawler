@@ -26,6 +26,9 @@ public class InventoryMenuKeyListener extends MenuKeyListener {
 		} else if(e.getKeyChar() == Resources.Commands.Down.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_DOWN) {
 			menu.incFocusedItem();
+		} else if(e.getKeyChar() == Resources.Commands.RepareWeapon.getKey() ||
+				e.getKeyChar() == Resources.Commands.RepareShield.getKey()) {
+			((InventoryMenu)menu).repareItem();
 		}
 		menu.repaint();
 	}

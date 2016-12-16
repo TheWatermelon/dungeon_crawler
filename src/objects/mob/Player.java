@@ -234,21 +234,19 @@ public class Player extends Mob {
 	}
 	
 	public void repareWeapon() {
-		if(this.w.getDurability()<this.w.getMaxDurability() && this.w.getVal()>0) {
-			if(this.gold>=this.w.getVal()) {
-				this.gold -= this.w.getVal();
-				this.w.setDurability(this.w.getDurability()+1);
-				log.appendMessage("Spent "+this.w.getVal()+" to repare "+this.w);
-			}
-		}
+		repareEquipement(w);
 	}
 	
 	public void repareShield() {
-		if(this.s.getDurability()<this.s.getMaxDurability() && this.s.getVal()>0) {
-			if(this.gold>=this.s.getVal()) {
-				this.gold -= this.s.getVal();
-				this.s.setDurability(this.s.getDurability()+1);
-				log.appendMessage("Spent "+this.s.getVal()+" to repare "+this.s);
+		repareEquipement(s);
+	}
+	
+	public void repareEquipement(Equipement e) {
+		if(e.getDurability()<e.getMaxDurability() && e.getVal()>0) {
+			if(this.gold>=e.getVal()) {
+				this.gold -= e.getVal();
+				e.setDurability(e.getDurability()+1);
+				log.appendMessage("Spent "+e.getVal()+" to repare "+e);
 			}
 		}
 	}
@@ -317,6 +315,8 @@ public class Player extends Mob {
 			return effect.getColor();
 		}
 	}
+	
+	public int getGold() { return this.gold; }
 	
 	public int getAtk() { return this.atk+this.w.getVal(); }
 	

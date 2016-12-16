@@ -11,7 +11,13 @@ public class Fountain extends Item {
 		this.val = 5;
 	}
 	
+	@Override
 	public Tile getTile() {
 		return TileFactory.getInstance().createTileFountain();
+	}
+	
+	@Override
+	public boolean isStackable() {
+		return false;
 	}
 }

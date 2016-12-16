@@ -437,18 +437,26 @@ public class Map extends Observable {
 			removeItem(x, y);
 			if(content == 0) {
 				if(rnd.nextInt(2)==0) {
-					log.appendMessage("Open Barrel... Gold!");
-					items.add(new Gold(x, y));
-				} else {
+					log.appendMessage("Open Barrel... Potion!");
 					if(rnd.nextInt(2)==0) {
+						items.add(new HealingPotion(x, y));
+					} else {
+						items.add(new Antidote(x, y));
+					}
+				} else {
+					int itemChance = rnd.nextInt(2);
+					if(itemChance==0) {
 						log.appendMessage("Open Barrel... Weapon!");
 						items.add(new Weapon(x, y));
-					} else {
+					} else if(itemChance==1) {
 						log.appendMessage("Open Barrel... Shield!");
 						items.add(new Shield(x, y));
-					}
+					} 
 				}
-			} else if(content == 1) {
+			} else if(content==1) {
+				log.appendMessage("Open Barrel... Gold!");
+				items.add(new Gold(x, y));
+			} else if(content == 2) {
 				log.appendMessage("Open Barrel... Boom!");
 				this.jerry.harm(25);
 			} else {
@@ -463,7 +471,8 @@ public class Map extends Observable {
 		if(i == null) { return; }
 		
 		if(i instanceof Weapon ||
-				i instanceof Shield) {
+				i instanceof Shield ||
+				i instanceof Potion) {
 			if(this.jerry.getInventory().addItem(i)) {
 				items.remove(i);	
 				this.jerry.setFloor(TileFactory.getInstance().createTileStone());
@@ -495,7 +504,18 @@ public class Map extends Observable {
 				if(monsterKilled && !(monsters.get(i) instanceof Boss)) {
 					Random rnd = new Random();
 					if(rnd.nextInt(4)==0) {
-						this.items.add(new Gold(monsters.get(i).pos.x, monsters.get(i).pos.y, 5+this.level));
+						int itemDrop = rnd.nextInt(4);
+						if(itemDrop==0) {
+							this.items.add(new Gold(monsters.get(i).pos.x, monsters.get(i).pos.y, 5+this.level));
+						} else if(itemDrop==1) {
+							this.items.add(new Weapon(monsters.get(i).pos.x, monsters.get(i).pos.y));
+						} else if(itemDrop==2) {
+							this.items.add(new Shield(monsters.get(i).pos.x, monsters.get(i).pos.y));
+						} else {
+							if(rnd.nextInt(2)==0) 
+							{ this.items.add(new HealingPotion(monsters.get(i).pos.x, monsters.get(i).pos.y)); } 
+							else { this.items.add(new Antidote(monsters.get(i).pos.x, monsters.get(i).pos.y)); }
+						}
 					}
 				}
 			}
