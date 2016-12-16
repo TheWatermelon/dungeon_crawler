@@ -12,7 +12,7 @@ public class EffectWeak extends EffectEquipement {
 	public String name() { return "Weak"; }
 
 	@Override
-	public Color getColor() { return Resources.lightGray; }
+	public Color getColor() { return Resources.darkGray; }
 
 	@Override
 	public void start(Mob m) {

@@ -14,8 +14,8 @@ public class Dungeon {
 	public Dungeon() {
 		log = new MessageLog();
 		levels = new ArrayList<Map>();
-		player = new Player(27, 13, log, this);
-		levels.add(new Map(54, 26, this));
+		player = new Player(Resources.getInstance().resolution, Resources.getInstance().resolution/2, log, this);
+		levels.add(new Map(Resources.getInstance().resolution*2, Resources.getInstance().resolution, this));
 		win = new Window("Dungeon Crawler", this);
 		win.setVisible(true);
 	}
@@ -28,6 +28,7 @@ public class Dungeon {
 	
 	public void start() {
 		win.setMap(getMap());
+		win.getDungeonPanel().initPlayerRectangle();
 		win.refreshListener();
 		win.refresh();
 	}
@@ -36,7 +37,6 @@ public class Dungeon {
 		log.appendMessage("Going up...");
 		currentLevel--;
 		if(currentLevel%5==0 && currentLevel!=0) { 
-			win.getDungeonPanel().pickTheme();
 			win.getDungeonPanel().hideLight(); 
 		} else { win.getDungeonPanel().showLight(); }
 		levels.get(currentLevel).placePlayerStairsDown();
@@ -48,7 +48,6 @@ public class Dungeon {
 			log.appendMessage("Going down...");
 			currentLevel++;
 			if(currentLevel%5==0 && currentLevel!=0) { 
-				win.getDungeonPanel().pickTheme();
 				win.getDungeonPanel().hideLight(); 
 			} else { win.getDungeonPanel().showLight(); }
 			levels.get(currentLevel).placePlayerStairsUp();
@@ -60,14 +59,11 @@ public class Dungeon {
 	
 	public void newLevel() {
 		currentLevel++;
-		levels.add(new Map(54, 29, this));
+		levels.add(new Map(Resources.getInstance().resolution*2, Resources.getInstance().resolution, this));
 		levels.get(currentLevel).generateDungeon();
 		if(currentLevel%5==0) {
-			win.getDungeonPanel().pickTheme();
 			win.getDungeonPanel().hideLight();
-		} else {
-			win.getDungeonPanel().showLight();
-		}
+		} else { win.getDungeonPanel().showLight(); }
 		start();
 	}
 	
@@ -76,7 +72,7 @@ public class Dungeon {
 		levels.clear();
 		currentLevel=0;
 		player.reset();
-		levels.add(new Map(54, 26, this));
+		levels.add(new Map(Resources.getInstance().resolution*2, Resources.getInstance().resolution, this));
 		levels.get(currentLevel).generateDungeon();
 		start();
 	}

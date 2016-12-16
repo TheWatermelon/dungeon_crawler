@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.Random;
 import javax.swing.*;
 
+import objects.looker.LookerStuff;
 import tiles.*;
 
 public class DungeonPanel extends JPanel {
@@ -12,6 +13,9 @@ public class DungeonPanel extends JPanel {
 	protected Window win;
 	protected int[][] light;
 	protected boolean isLight;
+	
+	protected Rectangle window;
+	protected Rectangle player;
 	
 	// Indicators to check whether to refresh the table
 	protected boolean dirty;
@@ -29,6 +33,9 @@ public class DungeonPanel extends JPanel {
 		this.win = w;
 		this.light = Resources.drawCircle(9);
 		this.isLight=true;
+		
+		initPlayerRectangle();
+		calculateWindowRectangle();
 		
 		this.dirty=true;
 		this.table="";
@@ -83,10 +90,9 @@ public class DungeonPanel extends JPanel {
 			looker[1]=win.getMap().getPlayer().getLooker().getRight();
 			g.setColor(win.getMap().getPlayer().getLooker().getRightColor());
 			g.drawChars(looker, 1, 1, offsetX+6, offsetY);
-			g.setColor(Color.BLACK);
 		}
 		// Mise a jour de la bordure du cadre de jeu
-		Color newBorderColor = (g.getColor()==Color.BLACK)?Resources.white:g.getColor();
+		Color newBorderColor = (win.getMap().getPlayer().getLooker() instanceof LookerStuff)?Resources.white:g.getColor();
 		if(borderColor!=newBorderColor)
 		{ setBorder(BorderFactory.createLineBorder(newBorderColor)); borderColor = newBorderColor; }
 	}
@@ -109,6 +115,45 @@ public class DungeonPanel extends JPanel {
 		return false;
 	}
 	
+	public void initPlayerRectangle() {
+		int playerX1 = (win.getMap().getPlayer().pos.x-4)<0?0:win.getMap().getPlayer().pos.x-4;
+		int playerY1 = (win.getMap().getPlayer().pos.y-4)<0?0:win.getMap().getPlayer().pos.y-4;
+		int playerWidth = playerX1+9>win.getMap().getWidth()?win.getMap().getWidth()-playerX1:9;
+		int playerHeight = playerY1+9>win.getMap().getHeight()?win.getMap().getHeight()-playerY1:9;
+		player = new Rectangle(playerX1, playerY1, playerWidth, playerHeight);
+	}
+	
+	public void calculatePlayerRectangle() {
+		Point pos = win.getMap().getPlayer().pos;
+		
+		if(pos.x<player.x) {			// WEST
+			player = new Rectangle(player.x-1, player.y, player.width, player.height);
+		} else if(pos.x>player.x+player.width) {		// EAST
+			player = new Rectangle(player.x+1, player.y, player.width, player.height);
+		} else if(pos.y<player.y) {		// NORTH
+			player = new Rectangle(player.x, player.y-1, player.width, player.height);
+		} else if(pos.y>player.y+player.height) {		// SOUTH
+			player = new Rectangle(player.x, player.y+1, player.width, player.height);
+		}
+	}
+	
+	public void calculateWindowRectangle() {
+		int width = (int)Math.floor(getWidth()*54/782);
+		int height = (int)Math.floor(getHeight()*29/488);
+		int x1 = ((player.x+4-width/2)<0)?0:(player.x+4-width/2);
+		int maxX = x1+width>win.getMap().getWidth()?win.getMap().getWidth()-x1:width;
+		int y1 = ((player.y+4-height/2)<0)?0:(player.y+4-height/2);
+		int maxY = y1+height>win.getMap().getHeight()?win.getMap().getHeight()-y1:height;
+		window = new Rectangle(x1, y1, maxX, maxY);
+	}
+	
+	public void refreshRectangles() {
+		if(!player.contains(win.getMap().getPlayer().pos)) {
+			calculatePlayerRectangle();
+		}
+		calculateWindowRectangle();
+	}
+	
 	protected void refreshTable() {
 		this.table="";
 		Tile[][] table = win.getMap().getTable();	
@@ -124,14 +169,16 @@ public class DungeonPanel extends JPanel {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.WHITE);
-		g.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		g.setFont(new Font("Monospaced", Font.PLAIN, 14));
 		
 		if(dirty) { refreshTable(); dirty=false; }
+		
+		refreshRectangles();
 			
 		int offsetX=15, offsetY=26;
 		char[] c = new char[1];
-		for(int i=0; i<win.getMap().getHeight(); i++) {
-			for(int j=0; j<win.getMap().getWidth(); j++) {
+		for(int i=window.y; i<window.getHeight()+window.y; i++) {
+			for(int j=window.x; j<window.getWidth()+window.x; j++) {
 				c[0]=table.charAt(i*win.getMap().getWidth()+j);
 				prepareColor(g, win.getMap().getTable(), i, j);
 				g.drawChars(c, 0, 1, offsetX, offsetY);

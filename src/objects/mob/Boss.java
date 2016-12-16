@@ -18,11 +18,14 @@ public class Boss extends Monster {
 		this.description=desc;
 		this.floor = TileFactory.getInstance().createTileMonster(this.symbol);
 		this.mobTile = TileFactory.getInstance().createTileMonster(this.symbol);
+		this.log = l;
 	}
 	
 	public void murder() {
 		this.dead = true;
 		this.hp=0;
 		this.mobTile = TileFactory.getInstance().createTileStairsDown();
+		log.appendMessage("[Boss] "+description+" defeated !");
+		log.appendMessage("Stairs revealed !");
 	}
 }

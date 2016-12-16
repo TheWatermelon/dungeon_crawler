@@ -138,6 +138,13 @@ public class Window extends JFrame {
 		if(!this.foot1.getText().equals(s2)) {
 			this.foot1.setText(s2);
 		}
+		this.foot2.setText(Resources.Commands.Up.getKey()+","+
+				Resources.Commands.Down.getKey()+","+
+				Resources.Commands.Left.getKey()+","+
+				Resources.Commands.Right.getKey()+","+
+				": Move "+getMap().getPlayer()+"   \n"+
+				Resources.Commands.Inventory.getKey()+": Inventory\n"+
+				Resources.Commands.Pause.getKey()+": Pause");
 	}
 	
 	public void setLabel(String s, String s1, String s2, String s3) {

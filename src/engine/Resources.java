@@ -12,12 +12,13 @@ public class Resources {
 	private static String[] monsterName = { "alphyn",	"bunny",	"chima",	"dandan",	"elemal",	"fachen",	"goblin",	"hog",		"imp",		"jest",		"koalad",	"linum",	"mummy",	"nyan",		"olos", 	"pata", 	"qi", 	"rat", 		"snake", "troll", "uxie", 	"vermillion", 	"wasp", 	"xylopod", 	"yolocamph", 	"zilly" };
 	private static String[] monsterName1= { "Alpha", 	"Bunner", 	"Chimera", 	"Daran", 	"Elemental","Fraken", 	"Goblord", 	"Hedgard", 	"Imperos", 	"Jester", 	"Koamad", 	"Lordum", 	"Mastras", 	"Ninja", 	"Olopus", 	"Partara", 	"Quim", "Routard", 	"Snake", "Troll", "Uximer", "Vizir", 		"Werewolf", "Xinus", 	"Yopor", 		"Zebra" };
 	
-	private static String[] weaponName = { "void", "Wooden Sword", "Dagger", "Sword", "Broadsword", "Master Sword" };
-	private static String[] shieldName = { "void", "Wooden Shield", "Copper Shield", "Iron Shield", "Silver Shield", "Master Shield" };
+	private static String[] weaponName = { "void", "Wooden Sword",  "Copper Dagger", 	"Iron Sword",	"Silver Sword", 	"Master Sword" };
+	private static String[] shieldName = { "void", "Wooden Shield", "Copper Shield", 	"Iron Shield",	"Silver Shield", 	"Master Shield" };
 	
 	public static Color white = Color.WHITE;
 	public static Color yellow = Color.YELLOW;
 	public static Color darkYellow = new Color(0xA9, 0x96, 0x2D);
+	public static Color lightOrange = new Color(0xFF, 0x66, 0x00);
 	public static Color orange = Color.ORANGE;
 	public static Color brown = new Color(0xA5, 0x68, 0x2A);
 	public static Color darkBrown = new Color(0x45, 0x20, 0x00);
@@ -39,6 +40,8 @@ public class Resources {
 	public Color theme = lightGray;
 	
 	public int difficulty=1;
+	
+	public int resolution=30;
 	
 	public enum Commands {
 		Up('z'),

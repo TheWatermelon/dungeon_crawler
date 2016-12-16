@@ -41,7 +41,7 @@ public class Weapon extends Equipement {
 			case 3:
 				return Resources.lightGray;
 			case 4:
-				return Resources.gray;
+				return Resources.pink;
 			case 5:
 				return Resources.cyan;
 			default:

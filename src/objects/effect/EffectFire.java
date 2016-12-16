@@ -12,7 +12,7 @@ public class EffectFire extends EffectOther {
 	public String name() { return "Fire"; }
 	
 	@Override
-	public Color getColor() { return Resources.coolRed; }
+	public Color getColor() { return Resources.lightOrange; }
 
 	@Override
 	public void start(Mob m) {

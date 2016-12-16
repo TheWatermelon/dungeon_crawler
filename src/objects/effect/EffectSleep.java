@@ -12,7 +12,7 @@ public class EffectSleep extends EffectOther {
 	public String name() { return "Sleep"; }
 
 	@Override
-	public Color getColor() { return Resources.darkGray; }
+	public Color getColor() { return Resources.darkBlue; }
 	
 	@Override
 	public void start(Mob m) { 

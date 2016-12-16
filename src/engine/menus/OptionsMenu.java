@@ -12,7 +12,7 @@ public class OptionsMenu extends Menu {
 	public OptionsMenu(Window win) {
 		super(win);
 		focusedItem=0;
-		items = new String[5];
+		items = new String[6];
 		initPanel();
 	}
 
@@ -23,9 +23,11 @@ public class OptionsMenu extends Menu {
 			win.getMap().getPlayer().changeName();
 		} else if(focusedItem == 1) {
 			win.showCommandsMenu();
-		} else if(focusedItem == 2) {	// Cycle difficulty
+		} else if(focusedItem == 2) {	// Cycle resolution
+			Resources.getInstance().resolution=(Resources.getInstance().resolution==30)?60:30;
+		} else if(focusedItem == 3) {	// Cycle difficulty
 			Resources.getInstance().difficulty=(Resources.getInstance().difficulty+1)%3;
-		} else if(focusedItem == 3) {
+		} else if(focusedItem == 4) {
 			Resources.getInstance().theme = win.getDungeonPanel().pickTheme();
 		} else {
 			focusedItem=0;
@@ -44,15 +46,17 @@ public class OptionsMenu extends Menu {
 		
 		items[1] = "Commands";
 		
+		items[2] = "Resolution : "+Resources.getInstance().resolution*2+"x"+Resources.getInstance().resolution;
+		
 		String difficulty="";
 		if(Resources.getInstance().difficulty==0) { difficulty="Easy"; }
 		else if(Resources.getInstance().difficulty==1) { difficulty="Normal"; }
 		else if(Resources.getInstance().difficulty==2) { difficulty="Hard"; }
-		items[2] = "Difficulty : "+difficulty;
+		items[3] = "Difficulty : "+difficulty;
 		
-		items[3] = "Theme : ";
+		items[4] = "Theme : ";
 		
-		items[4] = "Back";
+		items[5] = "Back";
 	}
 
 	@Override
@@ -75,7 +79,7 @@ public class OptionsMenu extends Menu {
 			offsetY+=25;
 		}
 		g.setColor(Resources.getInstance().theme);
-		g.fillRect(getWidth()/2+60, getHeight()/2+22, 20, 20);
+		g.fillRect(getWidth()/2+60, getHeight()/2+47, 20, 20);
 		
 		String commands=Resources.Commands.Up.getKey()+": Up, "+
 				Resources.Commands.Down.getKey()+": Down, "+

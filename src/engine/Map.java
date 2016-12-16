@@ -506,6 +506,18 @@ public class Map extends Observable {
 		if(!battleLog.equals("")) { log.appendMessage(battleLog); }
 	}
 	
+	protected void monstersAttack() {
+		String battleLog="";
+		for(Monster m : monsters) {
+			if(m.isDead() || !this.isVisible(m.pos.x, m.pos.y)) { continue; }
+			if(m.getEffect().apply()) {
+				String tmp=monsterAttack(m);
+				if(!tmp.equals("")) { battleLog+=(!battleLog.equals(""))?(", "+tmp):tmp; }
+			}
+		}
+		if(!battleLog.equals("")) { log.appendMessage(battleLog); }
+	}
+	
 	private String monsterAttack(Monster m) {	
 		String battleLog="";
 		int x = jerry.pos.x, y = jerry.pos.y;
@@ -549,6 +561,8 @@ public class Map extends Observable {
 			this.jerry.move(x, y);
 			this.jerry.setFloor(this.table[this.jerry.pos.y][this.jerry.pos.x]);
 			checkPlayerPos(this.jerry.pos.x, this.jerry.pos.y);
+		} else {
+			monstersAttack();
 		}
 		moveAllMonsters();
 	}
@@ -607,7 +621,7 @@ public class Map extends Observable {
 	}
 	
 	private void moveAllMonsters() {
-		String battleLog="";
+		//String battleLog="";
 		for(Monster m : this.monsters) {
 			if(!m.isDead() && rnd.nextInt(10)>1 && isVisible(m.pos.x, m.pos.y) && m.getEffect().apply()) {
 				if(this.jerry.pos.y<m.pos.y) {
@@ -672,10 +686,10 @@ public class Map extends Observable {
 					}
 				}
 			}
-			String tmp=monsterAttack(m);
-			if(!tmp.equals("")) { battleLog+=(!battleLog.equals(""))?(", "+tmp):tmp; }
+			//String tmp=monsterAttack(m);
+			//if(!tmp.equals("")) { battleLog+=(!battleLog.equals(""))?(", "+tmp):tmp; }
 		}
-		if(!battleLog.equals("")) { log.appendMessage(battleLog); }
+		//if(!battleLog.equals("")) { log.appendMessage(battleLog); }
 	}
 	
 	public void printDungeon() {

@@ -13,7 +13,7 @@ public class EffectHeavy extends EffectSelf {
 	public String name() { return "Heavy"; }
 	
 	@Override
-	public Color getColor() { return Resources.lightGray; }
+	public Color getColor() { return Resources.gray; }
 
 	@Override
 	public void start(Mob m) { 

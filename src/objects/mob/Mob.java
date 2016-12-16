@@ -1,9 +1,11 @@
 package objects.mob;
 
+import java.awt.Color;
 import java.awt.Point;
 
 import engine.MessageLog;
 import objects.effect.Effect;
+import objects.effect.EffectNormal;
 import objects.looker.Looker;
 import tiles.Tile;
 import tiles.TileGold;
@@ -54,6 +56,10 @@ public abstract class Mob {
 	
 	public final Tile getMobTile() {
 		return this.mobTile;
+	}
+	
+	public Color getColor() {
+		return (effect instanceof EffectNormal)?mobTile.getColor():effect.getColor();
 	}
 	
 	
