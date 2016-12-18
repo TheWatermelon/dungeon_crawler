@@ -1,5 +1,6 @@
 package objects.item;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.util.Random;
 
@@ -17,6 +18,7 @@ public abstract class Item {
 	
 	public boolean isEqualTo(Item i) { return this==i; }
 	
+	public abstract Color getColor();
 	public abstract Tile getTile();
 	public abstract boolean isStackable();
 }

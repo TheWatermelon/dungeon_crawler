@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import tiles.*;
 
-public class Potion extends Item {
+public abstract class Potion extends Item {
 	public Potion(int x, int y) {
 		this.pos = new Point(x, y);
 		this.val = 1;

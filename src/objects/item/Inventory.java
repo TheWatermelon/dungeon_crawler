@@ -37,8 +37,8 @@ public class Inventory {
 	}
 	
 	public boolean addItem(Item i) { 
-		if(content.size()<size) {
-			int itemSlot=checkStackable(i);
+		int itemSlot=checkStackable(i);
+		if(itemSlot!=-1 || content.size()<size) {
 			if(itemSlot!=-1) 
 			{ content.get(itemSlot).setVal(content.get(itemSlot).getVal()+1); } 
 			else { content.add(i); }

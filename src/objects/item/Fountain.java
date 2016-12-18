@@ -1,7 +1,9 @@
 package objects.item;
 
+import java.awt.Color;
 import java.awt.Point;
 
+import engine.Resources;
 import tiles.*;
 
 public class Fountain extends Item {
@@ -19,5 +21,10 @@ public class Fountain extends Item {
 	@Override
 	public boolean isStackable() {
 		return false;
+	}
+
+	@Override
+	public Color getColor() {
+		return Resources.cyan;
 	}
 }

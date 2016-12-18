@@ -1,7 +1,9 @@
 package objects.item;
 
+import java.awt.Color;
 import java.awt.Point;
 
+import engine.Resources;
 import tiles.Tile;
 import tiles.TileFactory;
 
@@ -26,5 +28,10 @@ public class Gold extends Item {
 	@Override
 	public boolean isStackable() {
 		return true;
+	}
+
+	@Override
+	public Color getColor() {
+		return Resources.yellow;
 	}
 }

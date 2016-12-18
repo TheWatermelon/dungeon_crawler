@@ -72,7 +72,7 @@ public class InventoryMenu extends Menu {
 					}
 					items[i]+=inv.get(i).toString()+" ("+((Equipement)inv.get(i)).getDurability()+"/"+((Equipement)inv.get(i)).getMaxDurability()+")";
 				} else {
-					items[i]=""+inv.get(i).toString()+" ("+inv.get(i).getVal()+")";
+					items[i]=inv.get(i).toString()+" ("+inv.get(i).getVal()+")";
 				}
 			} else {
 				items[i]="- empty -";
@@ -120,6 +120,10 @@ public class InventoryMenu extends Menu {
 			else { g.setColor(Resources.white); }
 			int offsetX = items[i].length()*13/2;
 			g.drawString(items[i], getWidth()/2-offsetX, offsetY);
+			if(i<inv.getSize()) {
+				g.setColor(inv.get(i).getColor());
+				g.drawString(""+inv.get(i).getTile().getSymbol(), getWidth()/2+offsetX, offsetY);
+			}
 			offsetY+=25;
 		}
 		

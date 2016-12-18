@@ -400,14 +400,6 @@ public class Map extends Observable {
 		return null;
 	}
 	
-	private void removeItem(int x, int y) {
-		for(int i=0; i<items.size(); i++) {
-			if(x==items.get(i).pos.x && y==items.get(i).pos.y) {
-				items.remove(i);
-			}
-		}
-	}
-	
 	private void checkItem(int x, int y) {
 		Item i = isItem(x, y);
 		
@@ -415,7 +407,7 @@ public class Map extends Observable {
 		 
 		if(i instanceof Gold) {
 			this.jerry.addGold(i.getVal());
-			removeItem(x, y);
+			items.remove(i);
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerGold(this.jerry.pos.x, this.jerry.pos.y));
 		}
 		if(i instanceof Fountain) {
@@ -428,13 +420,13 @@ public class Map extends Observable {
 				}
 				if(i.getVal()==0){
 					log.appendMessage("The fountain disappear...");
-					removeItem(x, y);
+					items.remove(i);
 				}
 			}
 		}  else if(i instanceof Barrel) {
 			int content=((Barrel)i).open();
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerBarrel(this.jerry.pos.x, this.jerry.pos.y));
-			removeItem(x, y);
+			items.remove(i);
 			if(content == 0) {
 				if(rnd.nextInt(2)==0) {
 					log.appendMessage("Open Barrel... Potion!");
