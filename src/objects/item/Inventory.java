@@ -39,9 +39,13 @@ public class Inventory {
 	public boolean addItem(Item i) { 
 		int itemSlot=checkStackable(i);
 		if(itemSlot!=-1 || content.size()<size) {
-			if(itemSlot!=-1) 
-			{ content.get(itemSlot).setVal(content.get(itemSlot).getVal()+1); } 
-			else { content.add(i); }
+			if(itemSlot!=-1) { 
+				if(content.get(itemSlot) instanceof Potion) {
+					content.get(itemSlot).setVal(content.get(itemSlot).getVal()+1); 
+				} else if(content.get(itemSlot) instanceof Equipement) {
+					((Equipement)content.get(itemSlot)).resetDurability();
+				}
+			} else { content.add(i); }
 			log.appendMessage(i+" added to Inventory");
 			return true;
 		} else {
@@ -71,14 +75,16 @@ public class Inventory {
 	public void use(Item i) {
 		if(i instanceof Equipement) {
 			if(!((Equipement)i).isEquiped()) {
-				if(i instanceof Weapon) {
-					player.setWeapon((Weapon)i);
+				if(i instanceof Weapon ||
+						i instanceof Bow) {
+					player.setWeapon((Equipement)i);
 				} else if(i instanceof Shield) {
 					player.setShield((Shield)i);
 				}
 			} else {
 				((Equipement)i).unequip();
-				if(i instanceof Weapon) {
+				if(i instanceof Weapon ||
+						i instanceof Bow) {
 					player.setWeapon(new Weapon());
 				} else if(i instanceof Shield) {
 					player.setShield(new Shield());

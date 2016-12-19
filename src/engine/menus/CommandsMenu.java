@@ -43,7 +43,7 @@ public class CommandsMenu extends Menu implements Observer {
 		items[1] = "Down : "+Resources.Commands.Down.getKey();
 		items[2] = "Left : "+Resources.Commands.Left.getKey();
 		items[3] = "Right : "+Resources.Commands.Right.getKey();
-		items[4] = "Take : "+Resources.Commands.Take.getKey();
+		items[4] = "Take/Use : "+Resources.Commands.Take.getKey();
 		items[5] = "Inventory : "+Resources.Commands.Inventory.getKey();
 		items[6] = "Repare Weapon : "+Resources.Commands.RepareWeapon.getKey();
 		items[7] = "Repare Shield : "+Resources.Commands.RepareShield.getKey();
@@ -80,9 +80,15 @@ public class CommandsMenu extends Menu implements Observer {
 			offsetY+=25;
 		}
 		
-		String commands=Resources.Commands.Up.getKey()+": Up, "+
-				Resources.Commands.Down.getKey()+": Down, "+
-				Resources.Commands.Take.getKey()+": Change";
+		String commands;
+		if(cmd==-1) {
+			commands=Resources.Commands.Up.getKey()+": Up, "+
+					Resources.Commands.Down.getKey()+": Down, "+
+					Resources.Commands.Take.getKey()+": Change";
+		} else {
+			commands="Type the new key or type Enter to cancel";
+		}
+				
 		g.setColor(Resources.white);
 		g.drawString(commands, getWidth()/2-(commands.length()*13/2), getHeight()-30);
 	}

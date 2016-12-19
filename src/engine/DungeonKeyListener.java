@@ -22,29 +22,28 @@ public class DungeonKeyListener implements KeyListener {
 		this.win = w;
 	}
 
-	// French version (AZERTY keyboard)
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(!this.map.isPlayerDead()) {
 			if(e.getKeyChar() == Resources.Commands.Up.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_UP) {
-				this.map.movePlayerUp();
+				this.map.moveUp();
 			} else if(e.getKeyChar() == Resources.Commands.Down.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_DOWN) {
-				this.map.movePlayerDown();
+				this.map.moveDown();
 			} else if(e.getKeyChar() == Resources.Commands.Left.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_LEFT) {
-				this.map.movePlayerLeft();
+				this.map.moveLeft();
 			} else if(e.getKeyChar() == Resources.Commands.Right.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				this.map.movePlayerRight();
+				this.map.moveRight();
 			} else if(e.getKeyChar() == Resources.Commands.RepareWeapon.getKey()) {
 				this.map.getPlayer().repareWeapon();
 			} else if(e.getKeyChar() == Resources.Commands.RepareShield.getKey()) {
 				this.map.getPlayer().repareShield();
 			} else if(e.getKeyChar() == Resources.Commands.Take.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_ENTER) {
-				this.map.checkPickableItem(map.getPlayer().pos.x, map.getPlayer().pos.y);
+				this.map.checkAction(map.getPlayer().pos.x, map.getPlayer().pos.y);
 			} else if(e.getKeyChar() == Resources.Commands.Inventory.getKey()) {
 				this.win.showInventoryMenu();
 			} else if(e.getKeyChar() == Resources.Commands.Restart.getKey()) {

@@ -1,6 +1,7 @@
 package engine;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.util.Random;
 
 public class Resources {
@@ -133,4 +134,80 @@ public class Resources {
 		
 		return matrix;
 	}
+	
+	public static int[][] drawLine(int x1, int y1, int x2, int y2, int octant) {
+		int dx = x2 - x1;
+		int dy = y2 - y1;
+		int[][] matrix;
+		if(octant==1 || octant==2 || octant==5 || octant==6) {
+			matrix = new int[dx*2+1][dy*2+1];
+		} else {
+			matrix = new int[dy*2+1][dx*2+1];
+		}
+		
+		int D = 2*dy - dx;
+		int y = y1;
+		
+		for(int x=x1; x<=x2; x++) {
+			Point p = switchFromOctantZeroTo(octant, x, y);
+			if(octant==1 || octant==2 || octant==5 || octant==6) {
+				matrix[p.y+dx][p.x+dy]=1;
+			} else {
+				matrix[p.y+dy][p.x+dx]=1;
+			}
+			if(D>0) {
+				y++;
+				D-=dx;
+			}
+			D+=dy;
+		}
+		
+		return matrix;
+	}
+	
+	public static Point switchFromOctantZeroTo(int octant, int x, int y) {
+		switch(octant) {
+			case 0:
+				return new Point(x, y);
+			case 1:
+				return new Point(y, x);
+			case 2:
+				return new Point(-y, x);
+			case 3:
+				return new Point(-x, y);
+			case 4:
+				return new Point(-x, -y);
+			case 5:
+				return new Point(-y, -x);
+			case 6:
+				return new Point(y, -x);
+			case 7:
+				return new Point(x, -y);
+			default:
+				return new Point(x, y);
+		}
+	}
+	
+	public static Point switchToOctantZeroFrom(int octant, int x, int y) {
+		switch(octant) {
+		case 0:
+			return new Point(x, y);
+		case 1:
+			return new Point(y, x);
+		case 2:
+			return new Point(y, -x);
+		case 3:
+			return new Point(-x, y);
+		case 4:
+			return new Point(-x, -y);
+		case 5:
+			return new Point(-y, -x);
+		case 6:
+			return new Point(-y, x);
+		case 7:
+			return new Point(x, -y);
+		default:
+			return new Point(x, y);
+	}
+}
 }

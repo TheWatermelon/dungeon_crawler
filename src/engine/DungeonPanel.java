@@ -13,6 +13,7 @@ public class DungeonPanel extends JPanel {
 	protected Window win;
 	protected int[][] light;
 	protected boolean isLight;
+	protected int[][] fireLine;
 	
 	protected Rectangle window;
 	protected Rectangle player;
@@ -68,8 +69,12 @@ public class DungeonPanel extends JPanel {
 	
 	public void prepareColor(Graphics g, Tile[][] t, int i, int j) {
 		if(!isLight(i, j)) { g.setColor(Resources.darkerGray); return; }
+		
 		if(t[i][j] instanceof TilePlayer) {
 			g.setColor(win.getMap().getPlayer().getColor());
+		} else if(win.getMap().isFireMode()) {
+			if(isFireLine(i, j)) { g.setColor(Resources.white); }
+			else { g.setColor(t[i][j].getColor()); }
 		} else {
 			g.setColor(t[i][j].getColor());
 		}
@@ -115,6 +120,21 @@ public class DungeonPanel extends JPanel {
 		return false;
 	}
 	
+	public boolean isFireLine(int i, int j) {
+		int limitY=(int)Math.round(fireLine.length/2);
+		int limitX=(int)Math.round(fireLine[0].length/2);
+		if(i>=win.getMap().getPlayer().pos.y-limitY && i<=win.getMap().getPlayer().pos.y+limitY &&
+				j>=win.getMap().getPlayer().pos.x-limitX && j<=win.getMap().getPlayer().pos.x+limitX) {
+			int pointX = j-(win.getMap().getPlayer().pos.x-limitX);
+			int pointY = i-(win.getMap().getPlayer().pos.y-limitY);
+			if(fireLine[pointY][pointX]==1) {
+				return true;
+			}
+		} 
+		
+		return false;
+	}
+	
 	public void initPlayerRectangle() {
 		int playerX1 = (win.getMap().getPlayer().pos.x-4)<0?0:win.getMap().getPlayer().pos.x-4;
 		int playerY1 = (win.getMap().getPlayer().pos.y-4)<0?0:win.getMap().getPlayer().pos.y-4;
@@ -126,11 +146,11 @@ public class DungeonPanel extends JPanel {
 	public void calculatePlayerRectangle() {
 		Point pos = win.getMap().getPlayer().pos;
 		
-		if(pos.x<player.x) {			// WEST
+		if(pos.x<player.x) {							// WEST
 			player = new Rectangle(player.x-1, player.y, player.width, player.height);
 		} else if(pos.x>player.x+player.width) {		// EAST
 			player = new Rectangle(player.x+1, player.y, player.width, player.height);
-		} else if(pos.y<player.y) {		// NORTH
+		} else if(pos.y<player.y) {						// NORTH
 			player = new Rectangle(player.x, player.y-1, player.width, player.height);
 		} else if(pos.y>player.y+player.height) {		// SOUTH
 			player = new Rectangle(player.x, player.y+1, player.width, player.height);
@@ -154,6 +174,32 @@ public class DungeonPanel extends JPanel {
 		calculateWindowRectangle();
 	}
 	
+	public void refreshFireLine() {
+		if(win.getMap().isFireMode()) {
+			int playerX = win.getMap().getPlayer().pos.x,
+					playerY = win.getMap().getPlayer().pos.y,
+					fireX = win.getMap().getFirePoint().x - playerX,
+					fireY = win.getMap().getFirePoint().y - playerY;
+			// Detect the octant
+			int octant=0;
+			if(fireX>=0) {
+				if(fireY>=0) {
+					octant = (fireX>fireY)? 0 : 1;
+				} else {
+					octant = (fireX>-fireY)? 7 : 6;
+				}
+			} else {
+				if(fireY>=0) {
+					octant = (-fireX>fireY)? 3 : 2;
+				} else {
+					octant = (-fireX>-fireY)? 4 : 5;
+				}
+			}
+			Point p = Resources.switchToOctantZeroFrom(octant, fireX, fireY);		
+			fireLine = Resources.drawLine(0, 0, p.x, p.y, octant);
+		}
+	}
+	
 	protected void refreshTable() {
 		this.table="";
 		Tile[][] table = win.getMap().getTable();	
@@ -173,14 +219,23 @@ public class DungeonPanel extends JPanel {
 		
 		if(dirty) { refreshTable(); dirty=false; }
 		
+		refreshFireLine();
+		
 		refreshRectangles();
 			
 		int offsetX=15, offsetY=26;
 		char[] c = new char[1];
 		for(int i=window.y; i<window.getHeight()+window.y; i++) {
 			for(int j=window.x; j<window.getWidth()+window.x; j++) {
-				c[0]=table.charAt(i*win.getMap().getWidth()+j);
-				prepareColor(g, win.getMap().getTable(), i, j);
+				if(win.getMap().isFireMode() &&
+						i==win.getMap().getFirePoint().y &&
+						j==win.getMap().getFirePoint().x) {
+					c[0] = 'X';
+					g.setColor(Resources.white);
+				} else {
+					c[0]=table.charAt(i*win.getMap().getWidth()+j);
+					prepareColor(g, win.getMap().getTable(), i, j);
+				}
 				g.drawChars(c, 0, 1, offsetX, offsetY);
 				if(table.charAt(i*win.getMap().getWidth()+j)==TileFactory.getInstance().createTilePlayer().getSymbol()) 
 				{ printLooker(g, offsetX, offsetY); }

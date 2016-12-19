@@ -16,7 +16,7 @@ public class Player extends Mob {
 	private int gold;
 	private int monstersKilled;
 	private int potionEffect;
-	private Weapon w;
+	private Equipement w;
 	private Shield s;
 	private Dungeon dungeon;
 	
@@ -217,10 +217,14 @@ public class Player extends Mob {
 		}
 	}
 	
-	public void setWeapon(Weapon weapon) {
+	public void setWeapon(Equipement weapon) {
 		this.w.unequip();
 		this.w = weapon;
 		this.w.equip();
+		if(w instanceof Bow) { 
+			s.unequip();
+			s = new Shield();
+		}
 		if(this.w.getEffect() instanceof EffectSelf) { this.w.getEffect().start(this); }
 		if(this.w.getEffect() instanceof EffectEquipement) { this.w.getEffect().start(this); }
 	}
@@ -324,7 +328,7 @@ public class Player extends Mob {
 	
 	public int getKills() {	return this.monstersKilled; }
 	
-	public Weapon getWeapon() { return this.w; }
+	public Equipement getWeapon() { return this.w; }
 	
 	public Shield getShield() { return this.s; }
 	

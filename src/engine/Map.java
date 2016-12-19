@@ -26,6 +26,9 @@ public class Map extends Observable {
 	protected Random rnd;
 	public String oldString;
 	
+	protected boolean fireMode;
+	protected Point firePoint;
+	
 	public Map(int width, int height, Dungeon d) {
 		this.dungeon = d;
 		this.width = width;
@@ -436,14 +439,17 @@ public class Map extends Observable {
 						items.add(new Antidote(x, y));
 					}
 				} else {
-					int itemChance = rnd.nextInt(2);
+					int itemChance = rnd.nextInt(3);
 					if(itemChance==0) {
 						log.appendMessage("Open Barrel... Weapon!");
 						items.add(new Weapon(x, y));
 					} else if(itemChance==1) {
 						log.appendMessage("Open Barrel... Shield!");
 						items.add(new Shield(x, y));
-					} 
+					} else if(itemChance==2) {
+						log.appendMessage("Open Barrel... Bow!");
+						items.add(new Bow(x, y));
+					}
 				}
 			} else if(content==1) {
 				log.appendMessage("Open Barrel... Gold!");
@@ -457,13 +463,12 @@ public class Map extends Observable {
 		}
 	}
 	
-	public void checkPickableItem(int x, int y) {
+	public void checkAction(int x, int y) {
 		Item i = isItem(x, y);
 		
-		if(i == null) { return; }
+		if(i == null) { checkFire(); }
 		
-		if(i instanceof Weapon ||
-				i instanceof Shield ||
+		if(i instanceof Equipement ||
 				i instanceof Potion) {
 			if(this.jerry.getInventory().addItem(i)) {
 				items.remove(i);	
@@ -471,6 +476,44 @@ public class Map extends Observable {
 				this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
 			}
 		}
+	}
+	
+	public void checkFire() {
+		if(fireMode) {
+			fireMode = false;
+			if(checkSuccessfulFire()) {
+				checkMonster(firePoint.x, firePoint.y);
+				playerIn(firePoint.x, firePoint.y);
+			}
+			if(jerry.pos.x!=firePoint.x &&
+					jerry.pos.y!=firePoint.y) {
+				jerry.useWeapon();
+			} else if(jerry.pos.x==firePoint.x &&
+					jerry.pos.y==firePoint.y) {
+				log.appendMessage("This would be too easy...");
+			}
+			moveAllMonsters();
+		} else {
+			if(jerry.getWeapon() instanceof Bow) {
+				fireMode = true;
+				firePoint = new Point(jerry.pos.x, jerry.pos.y);
+			}
+		}
+	}
+	
+	public boolean checkSuccessfulFire() {
+		for(int i=Math.min(jerry.pos.y, firePoint.y); i<=Math.max(jerry.pos.y, firePoint.y); i++) {
+			for(int j=Math.min(jerry.pos.x, firePoint.x); j<=Math.max(jerry.pos.x, firePoint.x); j++) {
+				if(dungeon.getWin().getDungeonPanel().isFireLine(i, j)) {
+					if(table[i][j] instanceof TileWall ||
+							table[i][j] instanceof TileBarrel ||
+							table[i][j] instanceof TileFountain) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 	
 	private void checkPlayerPos(int x, int y) {
@@ -496,13 +539,15 @@ public class Map extends Observable {
 				if(monsterKilled && !(monsters.get(i) instanceof Boss)) {
 					Random rnd = new Random();
 					if(rnd.nextInt(4)==0) {
-						int itemDrop = rnd.nextInt(4);
+						int itemDrop = rnd.nextInt(5);
 						if(itemDrop==0) {
 							this.items.add(new Gold(monsters.get(i).pos.x, monsters.get(i).pos.y, 5+this.level));
 						} else if(itemDrop==1) {
 							this.items.add(new Weapon(monsters.get(i).pos.x, monsters.get(i).pos.y));
 						} else if(itemDrop==2) {
 							this.items.add(new Shield(monsters.get(i).pos.x, monsters.get(i).pos.y));
+						} else if(itemDrop==3) {
+							this.items.add(new Bow(monsters.get(i).pos.x, monsters.get(i).pos.y));
 						} else {
 							if(rnd.nextInt(2)==0) 
 							{ this.items.add(new HealingPotion(monsters.get(i).pos.x, monsters.get(i).pos.y)); } 
@@ -579,8 +624,12 @@ public class Map extends Observable {
 		moveAllMonsters();
 	}
 	
-	public void movePlayerUp() {
-		if(isWalkable(this.jerry.pos.x, this.jerry.pos.y-1)) {
+	public void moveUp() {
+		if(fireMode) {
+			if(!(table[firePoint.y-1][firePoint.x] instanceof TileWall) &&
+					!(table[firePoint.y-1][firePoint.x] instanceof TileVoid)) 
+			{ firePoint.y--; }
+		} else if(isWalkable(this.jerry.pos.x, this.jerry.pos.y-1)) {
 			movePlayer(this.jerry.pos.x, this.jerry.pos.y-1);
 		} else if(isMonster(this.jerry.pos.x, this.jerry.pos.y-1)){
 			checkMonster(this.jerry.pos.x, this.jerry.pos.y-1);
@@ -589,8 +638,12 @@ public class Map extends Observable {
 		}
 	}
 	
-	public void movePlayerDown() {
-		if(isWalkable(this.jerry.pos.x, this.jerry.pos.y+1)) {
+	public void moveDown() {
+		if(fireMode) {
+			if(!(table[firePoint.y+1][firePoint.x] instanceof TileWall) &&
+					!(table[firePoint.y+1][firePoint.x] instanceof TileVoid)) 
+			{ firePoint.y++; }
+		} else if(isWalkable(this.jerry.pos.x, this.jerry.pos.y+1)) {
 			movePlayer(this.jerry.pos.x, this.jerry.pos.y+1);
 		} else if(isMonster(this.jerry.pos.x, this.jerry.pos.y+1)){
 			checkMonster(this.jerry.pos.x, this.jerry.pos.y+1);
@@ -599,8 +652,12 @@ public class Map extends Observable {
 		}
 	}
 	
-	public void movePlayerLeft() {
-		if(isWalkable(this.jerry.pos.x-1, this.jerry.pos.y)) {
+	public void moveLeft() {
+		if(fireMode) {
+			if(!(table[firePoint.y][firePoint.x-1] instanceof TileWall) &&
+					!(table[firePoint.y][firePoint.x-1] instanceof TileVoid)) 
+			{ firePoint.x--; }
+		} else if(isWalkable(this.jerry.pos.x-1, this.jerry.pos.y)) {
 			movePlayer(this.jerry.pos.x-1, this.jerry.pos.y);
 		} else if(isMonster(this.jerry.pos.x-1, this.jerry.pos.y)){
 			checkMonster(this.jerry.pos.x-1, this.jerry.pos.y);
@@ -609,8 +666,12 @@ public class Map extends Observable {
 		}
 	}
 	
-	public void movePlayerRight() {
-		if(isWalkable(this.jerry.pos.x+1, this.jerry.pos.y)) {
+	public void moveRight() {
+		if(fireMode) {
+			if(!(table[firePoint.y][firePoint.x+1] instanceof TileWall) &&
+					!(table[firePoint.y][firePoint.x+1] instanceof TileVoid)) 
+			{ firePoint.x++; }
+		} else if(isWalkable(this.jerry.pos.x+1, this.jerry.pos.y)) {
 			movePlayer(this.jerry.pos.x+1, this.jerry.pos.y);
 		} else if(isMonster(this.jerry.pos.x+1, this.jerry.pos.y)){
 			checkMonster(this.jerry.pos.x+1, this.jerry.pos.y);
@@ -729,6 +790,9 @@ public class Map extends Observable {
 		}
 		return info;
 	}
+	
+	public boolean isFireMode() { return fireMode; }
+	public Point getFirePoint() { return firePoint; }
 	
 	public Player getPlayer() {
 		return this.jerry;
