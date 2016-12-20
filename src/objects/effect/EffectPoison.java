@@ -31,7 +31,8 @@ public class EffectPoison extends EffectOther {
 				affected.murder();
 				return false;
 			}
-			duration--;
+			// can only be cured
+			//duration--;
 		} else {
 			affected.getLog().appendMessage(affected+" is cured from poison!");
 			affected.setEffect(new EffectNormal());

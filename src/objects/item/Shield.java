@@ -13,7 +13,7 @@ public class Shield extends Equipement {
 		this.val=0;
 		this.maxDurability = -1;
 		this.resetDurability();
-		this.description = Resources.getShieldAt(0);
+		this.description = Resources.getEquipementAt(0);
 		this.effect = new EffectNormal();
 	}
 	
@@ -23,7 +23,9 @@ public class Shield extends Equipement {
 		this.maxDurability = val*10;
 		this.resetDurability();
 		this.effect = pickEffect();
-		this.description = this.effect.name()+" "+Resources.getShieldAt(val);
+		if(effect instanceof EffectNormal) 
+		{ this.description = Resources.getEquipementAt(val)+" Shield"; } 
+		else { this.description = effect.name()+" "+Resources.getEquipementAt(val)+" Shield"; }
 	}
 	
 	public Color getColor() {

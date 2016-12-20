@@ -15,7 +15,7 @@ public class Weapon extends Equipement {
 		this.val=0;
 		this.maxDurability = -1;
 		this.resetDurability();
-		this.description = Resources.getWeaponAt(0);
+		this.description = Resources.getEquipementAt(0);
 		this.effect = new EffectNormal();
 	}
 	
@@ -25,9 +25,12 @@ public class Weapon extends Equipement {
 		this.maxDurability = val*10;
 		this.resetDurability();
 		this.effect = pickEffect();
-		this.description = this.effect.name()+" "+Resources.getWeaponAt(val);
+		if(effect instanceof EffectNormal) 
+		{ this.description = Resources.getEquipementAt(val)+" Sword"; } 
+		else { this.description = effect.name()+" "+Resources.getEquipementAt(val)+" Sword"; }
 	}
 	
+	@Override
 	public Color getColor() {
 		if(!(effect instanceof EffectNormal)) {
 			return effect.getColor();

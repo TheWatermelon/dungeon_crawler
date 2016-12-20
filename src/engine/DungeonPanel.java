@@ -72,6 +72,9 @@ public class DungeonPanel extends JPanel {
 		
 		if(t[i][j] instanceof TilePlayer) {
 			g.setColor(win.getMap().getPlayer().getColor());
+		} else if(t[i][j] instanceof TileMonster) {
+			if(win.getMap().getMonster(j, i)!=null) { g.setColor(win.getMap().getMonster(j, i).getColor()); }
+			else { g.setColor(t[i][j].getColor()); }
 		} else if(win.getMap().isFireMode()) {
 			if(isFireLine(i, j)) { g.setColor(Resources.white); }
 			else { g.setColor(t[i][j].getColor()); }

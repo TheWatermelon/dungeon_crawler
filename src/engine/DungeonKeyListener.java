@@ -27,16 +27,16 @@ public class DungeonKeyListener implements KeyListener {
 		if(!this.map.isPlayerDead()) {
 			if(e.getKeyChar() == Resources.Commands.Up.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_UP) {
-				this.map.moveUp();
+				this.map.moveTo(Direction.North);
 			} else if(e.getKeyChar() == Resources.Commands.Down.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_DOWN) {
-				this.map.moveDown();
+				this.map.moveTo(Direction.South);
 			} else if(e.getKeyChar() == Resources.Commands.Left.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_LEFT) {
-				this.map.moveLeft();
+				this.map.moveTo(Direction.West);
 			} else if(e.getKeyChar() == Resources.Commands.Right.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				this.map.moveRight();
+				this.map.moveTo(Direction.East);
 			} else if(e.getKeyChar() == Resources.Commands.RepareWeapon.getKey()) {
 				this.map.getPlayer().repareWeapon();
 			} else if(e.getKeyChar() == Resources.Commands.RepareShield.getKey()) {
@@ -48,6 +48,7 @@ public class DungeonKeyListener implements KeyListener {
 				this.win.showInventoryMenu();
 			} else if(e.getKeyChar() == Resources.Commands.Restart.getKey()) {
 				this.map.generateDungeon();
+				this.win.getDungeonPanel().initPlayerRectangle();
 			} else if(e.getKeyChar() == Resources.Commands.Pause.getKey()) {
 				this.win.showPauseMenu();
 				return;

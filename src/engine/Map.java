@@ -484,15 +484,13 @@ public class Map extends Observable {
 			if(checkSuccessfulFire()) {
 				checkMonster(firePoint.x, firePoint.y);
 				playerIn(firePoint.x, firePoint.y);
-			}
-			if(jerry.pos.x!=firePoint.x &&
-					jerry.pos.y!=firePoint.y) {
+				moveAllMonsters();
 				jerry.useWeapon();
-			} else if(jerry.pos.x==firePoint.x &&
+			}
+			if(jerry.pos.x==firePoint.x &&
 					jerry.pos.y==firePoint.y) {
 				log.appendMessage("This would be too easy...");
 			}
-			moveAllMonsters();
 		} else {
 			if(jerry.getWeapon() instanceof Bow) {
 				fireMode = true;
@@ -502,6 +500,7 @@ public class Map extends Observable {
 	}
 	
 	public boolean checkSuccessfulFire() {
+		if(firePoint.x==jerry.pos.x && firePoint.y==jerry.pos.y) { return false; }
 		for(int i=Math.min(jerry.pos.y, firePoint.y); i<=Math.max(jerry.pos.y, firePoint.y); i++) {
 			for(int j=Math.min(jerry.pos.x, firePoint.x); j<=Math.max(jerry.pos.x, firePoint.x); j++) {
 				if(dungeon.getWin().getDungeonPanel().isFireLine(i, j)) {
@@ -514,6 +513,20 @@ public class Map extends Observable {
 			}
 		}
 		return true;
+	}
+	
+	public int getFireRadius() {
+		int radius=0;
+		this.dungeon.getWin().getDungeonPanel().refreshFireLine();
+		for(int i=Math.min(jerry.pos.y, firePoint.y); i<=Math.max(jerry.pos.y, firePoint.y); i++) {
+			for(int j=Math.min(jerry.pos.x, firePoint.x); j<=Math.max(jerry.pos.x, firePoint.x); j++) {
+				if(dungeon.getWin().getDungeonPanel().isFireLine(i, j)) {
+					radius++;
+				}
+			}
+		}
+		
+		return radius;
 	}
 	
 	private void checkPlayerPos(int x, int y) {
@@ -611,6 +624,15 @@ public class Map extends Observable {
 		}
 		return false;
 	}
+	
+	public Monster getMonster(int x, int y) {
+		for(int i=0; i<this.monsters.size(); i++) {
+			if(((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y) && !this.monsters.get(i).isDead()) || ((x==this.jerry.pos.x) && (y==this.jerry.pos.y))) {
+				return this.monsters.get(i);
+			}
+		}
+		return null;
+	}
 		
 	private void movePlayer(int x, int y) {
 		if(this.jerry.getEffect().apply() && this.jerry.applyOnWalkEffect()) {
@@ -624,59 +646,23 @@ public class Map extends Observable {
 		moveAllMonsters();
 	}
 	
-	public void moveUp() {
+	public void moveTo(Direction dir) {
 		if(fireMode) {
-			if(!(table[firePoint.y-1][firePoint.x] instanceof TileWall) &&
-					!(table[firePoint.y-1][firePoint.x] instanceof TileVoid)) 
-			{ firePoint.y--; }
-		} else if(isWalkable(this.jerry.pos.x, this.jerry.pos.y-1)) {
-			movePlayer(this.jerry.pos.x, this.jerry.pos.y-1);
-		} else if(isMonster(this.jerry.pos.x, this.jerry.pos.y-1)){
-			checkMonster(this.jerry.pos.x, this.jerry.pos.y-1);
+			if(!(table[firePoint.y+dir.getY()][firePoint.x+dir.getX()] instanceof TileWall) &&
+					!(table[firePoint.y+dir.getY()][firePoint.x+dir.getX()] instanceof TileVoid)) { 
+				firePoint.x+=dir.getX();
+				firePoint.y+=dir.getY();
+				if(getFireRadius()>jerry.getWeapon().getVal()+2) {
+					firePoint.x-=dir.getX();
+					firePoint.y-=dir.getY();
+				}
+			}
+		} else if(isWalkable(this.jerry.pos.x+dir.getX(), this.jerry.pos.y+dir.getY())) {
+			movePlayer(this.jerry.pos.x+dir.getX(), this.jerry.pos.y+dir.getY());
+		} else if(isMonster(this.jerry.pos.x+dir.getX(), this.jerry.pos.y+dir.getY())){
+			checkMonster(this.jerry.pos.x+dir.getX(), this.jerry.pos.y+dir.getY());
 		} else {
-			playerIn(this.jerry.pos.x, this.jerry.pos.y-1);
-		}
-	}
-	
-	public void moveDown() {
-		if(fireMode) {
-			if(!(table[firePoint.y+1][firePoint.x] instanceof TileWall) &&
-					!(table[firePoint.y+1][firePoint.x] instanceof TileVoid)) 
-			{ firePoint.y++; }
-		} else if(isWalkable(this.jerry.pos.x, this.jerry.pos.y+1)) {
-			movePlayer(this.jerry.pos.x, this.jerry.pos.y+1);
-		} else if(isMonster(this.jerry.pos.x, this.jerry.pos.y+1)){
-			checkMonster(this.jerry.pos.x, this.jerry.pos.y+1);
-		} else {
-			playerIn(this.jerry.pos.x, this.jerry.pos.y+1);
-		}
-	}
-	
-	public void moveLeft() {
-		if(fireMode) {
-			if(!(table[firePoint.y][firePoint.x-1] instanceof TileWall) &&
-					!(table[firePoint.y][firePoint.x-1] instanceof TileVoid)) 
-			{ firePoint.x--; }
-		} else if(isWalkable(this.jerry.pos.x-1, this.jerry.pos.y)) {
-			movePlayer(this.jerry.pos.x-1, this.jerry.pos.y);
-		} else if(isMonster(this.jerry.pos.x-1, this.jerry.pos.y)){
-			checkMonster(this.jerry.pos.x-1, this.jerry.pos.y);
-		} else {
-			playerIn(this.jerry.pos.x-1, this.jerry.pos.y);
-		}
-	}
-	
-	public void moveRight() {
-		if(fireMode) {
-			if(!(table[firePoint.y][firePoint.x+1] instanceof TileWall) &&
-					!(table[firePoint.y][firePoint.x+1] instanceof TileVoid)) 
-			{ firePoint.x++; }
-		} else if(isWalkable(this.jerry.pos.x+1, this.jerry.pos.y)) {
-			movePlayer(this.jerry.pos.x+1, this.jerry.pos.y);
-		} else if(isMonster(this.jerry.pos.x+1, this.jerry.pos.y)){
-			checkMonster(this.jerry.pos.x+1, this.jerry.pos.y);
-		} else {
-			playerIn(this.jerry.pos.x+1, this.jerry.pos.y);
+			playerIn(this.jerry.pos.x+dir.getX(), this.jerry.pos.y+dir.getY());
 		}
 	}
 	
@@ -688,81 +674,77 @@ public class Map extends Observable {
 		this.jerry.placeOn(this.stairDown.x, this.stairDown.y);
 	}
 	
-	private void moveMonster(Monster m, int x, int y) {
-		m.pos.x = x;
-		m.pos.y = y;
+	private void moveMonster(Monster m, Direction dir) {
+		m.pos.x+=dir.getX();
+		m.pos.y+=dir.getY();
 	}
 	
 	private void moveAllMonsters() {
-		//String battleLog="";
 		for(Monster m : this.monsters) {
 			if(!m.isDead() && rnd.nextInt(10)>1 && isVisible(m.pos.x, m.pos.y) && m.getEffect().apply()) {
 				if(this.jerry.pos.y<m.pos.y) {
 					// NORTH
 					if(isWalkable(m.pos.x, m.pos.y-1)) {
-						moveMonster(m, m.pos.x, m.pos.y-1);
+						moveMonster(m, Direction.North);
 					} else if(this.jerry.pos.x<m.pos.x) {
 						// ALT WEST
 						if(isWalkable(m.pos.x-1, m.pos.y)) {
-							moveMonster(m, m.pos.x-1, m.pos.y);
+							moveMonster(m, Direction.West);
 						}
 					} else if(this.jerry.pos.x>m.pos.x) {
 						// ALT EAST
 						if(isWalkable(m.pos.x+1, m.pos.y)) {
-							moveMonster(m, m.pos.x+1, m.pos.y);
+							moveMonster(m, Direction.East);
 						}
 					}
 				} else if(this.jerry.pos.y>m.pos.y) {
 					// SOUTH
 					if(isWalkable(m.pos.x, m.pos.y+1)) {
-						moveMonster(m, m.pos.x, m.pos.y+1);
+						moveMonster(m, Direction.South);
 					} else if(this.jerry.pos.x<m.pos.x) {
 						// ALT WEST
 						if(isWalkable(m.pos.x-1, m.pos.y)) {
-							moveMonster(m, m.pos.x-1, m.pos.y);
+							moveMonster(m, Direction.West);
 						}
 					} else if(this.jerry.pos.x>m.pos.x) {
 						// ALT EAST
 						if(isWalkable(m.pos.x+1, m.pos.y)) {
-							moveMonster(m, m.pos.x+1, m.pos.y);
+							moveMonster(m, Direction.East);
 						}
 					}
 				} else if(this.jerry.pos.x<m.pos.x) {
 					// WEST
 					if(isWalkable(m.pos.x-1, m.pos.y)) {
-						moveMonster(m, m.pos.x-1, m.pos.y);
+						moveMonster(m, Direction.West);
 					} else if(this.jerry.pos.y<m.pos.y) {
 						// ALT NORTH
 						if(isWalkable(m.pos.x, m.pos.y-1)) {
-							moveMonster(m, m.pos.x, m.pos.y-1);
+							moveMonster(m, Direction.North);
 						}
 					} else if(this.jerry.pos.y>m.pos.y) {
 						// ALT SOUTH
 						if(isWalkable(m.pos.x, m.pos.y+1)) {
-							moveMonster(m, m.pos.x, m.pos.y+1);
+							moveMonster(m, Direction.South);
 						}
 					}
 				} else if(this.jerry.pos.x>m.pos.x) {
 					// EAST
 					if(isWalkable(m.pos.x+1, m.pos.y)) {
-						moveMonster(m, m.pos.x+1, m.pos.y);
+						moveMonster(m, Direction.East);
 					} else if(this.jerry.pos.y<m.pos.y) {
 						// ALT NORTH
 						if(isWalkable(m.pos.x, m.pos.y-1)) {
-							moveMonster(m, m.pos.x, m.pos.y-1);
+							moveMonster(m, Direction.North);
 						}
 					} else if(this.jerry.pos.y>m.pos.y) {
 						// ALT SOUTH
 						if(isWalkable(m.pos.x, m.pos.y+1)) {
-							moveMonster(m, m.pos.x, m.pos.y+1);
+							moveMonster(m, Direction.South);
 						}
 					}
 				}
 			}
-			//String tmp=monsterAttack(m);
-			//if(!tmp.equals("")) { battleLog+=(!battleLog.equals(""))?(", "+tmp):tmp; }
 		}
-		//if(!battleLog.equals("")) { log.appendMessage(battleLog); }
 	}
 	
 	public void printDungeon() {

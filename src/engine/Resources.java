@@ -13,8 +13,7 @@ public class Resources {
 	private static String[] monsterName = { "alphyn",	"bunny",	"chima",	"dandan",	"elemal",	"fachen",	"goblin",	"hog",		"imp",		"jest",		"koalad",	"linum",	"mummy",	"nyan",		"olos", 	"pata", 	"qi", 	"rat", 		"snake", "troll", "uxie", 	"vermillion", 	"wasp", 	"xylopod", 	"yolocamph", 	"zilly" };
 	private static String[] monsterName1= { "Alpha", 	"Bunner", 	"Chimera", 	"Daran", 	"Elemental","Fraken", 	"Goblord", 	"Hedgard", 	"Imperos", 	"Jester", 	"Koamad", 	"Lordum", 	"Mastras", 	"Ninja", 	"Olopus", 	"Partara", 	"Quim", "Routard", 	"Snake", "Troll", "Uximer", "Vizir", 		"Werewolf", "Xinus", 	"Yopor", 		"Zebra" };
 	
-	private static String[] weaponName = { "void", "Wooden Sword",  "Copper Dagger", 	"Iron Sword",	"Silver Sword", 	"Master Sword" };
-	private static String[] shieldName = { "void", "Wooden Shield", "Copper Shield", 	"Iron Shield",	"Silver Shield", 	"Master Shield" };
+	private static String[] equipementName = { "void", "Wooden", "Copper", "Iron", "Silver", "Master" };
 	
 	public static Color white = Color.WHITE;
 	public static Color yellow = Color.YELLOW;
@@ -107,12 +106,8 @@ public class Resources {
 		return monsterName1[index];
 	}
 	
-	public static String getWeaponAt(int index) {
-		return weaponName[index];
-	}
-	
-	public static String getShieldAt(int index) {
-		return shieldName[index];
+	public static String getEquipementAt(int index) {
+		return equipementName[index];
 	}
 	
 	public static int[][] drawCircle(int size) {
