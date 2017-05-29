@@ -1,6 +1,10 @@
 package objects.item;
 
+import java.awt.Color;
+
+import engine.Resources;
 import objects.effect.Effect;
+import objects.effect.EffectNormal;
 
 public abstract class Equipement extends Item {
 	protected int maxDurability;
@@ -17,4 +21,27 @@ public abstract class Equipement extends Item {
 	public final boolean isEquiped() { return isEquiped; }
 	public final void equip() { isEquiped=true; }
 	public final void unequip() { isEquiped=false; }
+	public abstract Effect pickEffect();
+	
+	@Override
+	public Color getColor() {
+		if(!(effect instanceof EffectNormal)) {
+			return effect.getColor();
+		}
+		
+		switch(val) {
+			case 1:
+				return Resources.brown;
+			case 2:
+				return Resources.orange;
+			case 3:
+				return Resources.lightGray;
+			case 4:
+				return Resources.pink;
+			case 5:
+				return Resources.cyan;
+			default:
+				return Resources.lightGray;
+		}
+	}
 }

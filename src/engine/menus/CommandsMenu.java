@@ -22,6 +22,12 @@ public class CommandsMenu extends Menu implements Observer {
 		cmd=-1;
 		initPanel();
 	}
+	
+	@Override
+	public void exitMenu() {
+		focusedItem=0;
+		win.showOptionsMenu();
+	}
 
 	@Override
 	public void selectFocusedItem() {

@@ -1,6 +1,5 @@
 package objects.item;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.util.Random;
 
@@ -28,28 +27,6 @@ public class Weapon extends Equipement {
 		if(effect instanceof EffectNormal) 
 		{ this.description = Resources.getEquipementAt(val)+" Sword"; } 
 		else { this.description = effect.name()+" "+Resources.getEquipementAt(val)+" Sword"; }
-	}
-	
-	@Override
-	public Color getColor() {
-		if(!(effect instanceof EffectNormal)) {
-			return effect.getColor();
-		}
-		
-		switch(val) {
-			case 1:
-				return Resources.brown;
-			case 2:
-				return Resources.orange;
-			case 3:
-				return Resources.lightGray;
-			case 4:
-				return Resources.pink;
-			case 5:
-				return Resources.cyan;
-			default:
-				return Resources.lightGray;
-		}
 	}
 	
 	@Override

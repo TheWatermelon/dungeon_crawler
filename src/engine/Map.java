@@ -19,6 +19,7 @@ public class Map extends Observable {
 	protected Point stairDown;
 	protected Player jerry;
 	protected Boss boss;
+	protected String mobBar;
 	protected int level;
 	protected Dungeon dungeon;
 	protected int width;
@@ -45,6 +46,7 @@ public class Map extends Observable {
 		this.jerry.setFloor(TileFactory.getInstance().createTileStone());
 		this.rnd = new Random();
 		this.oldString="";
+		this.mobBar = "";
 	}
 	
 	public Tile[][] getTable() { return this.table; }
@@ -394,7 +396,7 @@ public class Map extends Observable {
 		return this.table[y][x] instanceof TileStairsDown;
 	}
 	
-	private Item isItem(int x, int y) {
+	public Item isItem(int x, int y) {
 		for(int i=items.size()-1; i>=0; i--) {
 			if(x==items.get(i).pos.x && y==items.get(i).pos.y) {
 				return items.get(i);
@@ -408,25 +410,7 @@ public class Map extends Observable {
 		
 		if(i == null) { return; }
 		 
-		if(i instanceof Gold) {
-			this.jerry.addGold(i.getVal());
-			items.remove(i);
-			this.jerry.setLooker(LookerFactory.getInstance().createLookerGold(this.jerry.pos.x, this.jerry.pos.y));
-		}
-		if(i instanceof Fountain) {
-			if(!jerry.isFullHealth()) {
-				if(i.getVal()-1>=0) {
-					this.jerry.cure();
-					this.jerry.setLooker(LookerFactory.getInstance().createLookerHealth(x, y));
-					// Player has used the fountain
-					i.setVal(i.getVal()-1);
-				}
-				if(i.getVal()==0){
-					log.appendMessage("The fountain disappear...");
-					items.remove(i);
-				}
-			}
-		}  else if(i instanceof Barrel) {
+		if(i instanceof Barrel) {
 			int content=((Barrel)i).open();
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerBarrel(this.jerry.pos.x, this.jerry.pos.y));
 			items.remove(i);
@@ -467,8 +451,26 @@ public class Map extends Observable {
 		Item i = isItem(x, y);
 		
 		if(i == null) { checkFire(); }
-		
-		if(i instanceof Equipement ||
+		if(i instanceof Gold) {
+			this.jerry.addGold(i.getVal());
+			items.remove(i);
+			this.jerry.setLooker(LookerFactory.getInstance().createLookerGold(this.jerry.pos.x, this.jerry.pos.y));
+		}
+		else if(i instanceof Fountain) {
+			if(!jerry.isFullHealth()) {
+				if(i.getVal()-1>=0) {
+					this.jerry.cure();
+					this.jerry.setLooker(LookerFactory.getInstance().createLookerHealth(x, y));
+					// Player has used the fountain
+					i.setVal(i.getVal()-1);
+				}
+				if(i.getVal()==0){
+					log.appendMessage("The fountain disappear...");
+					items.remove(i);
+				}
+			}
+		}
+		else if(i instanceof Equipement ||
 				i instanceof Potion) {
 			if(this.jerry.getInventory().addItem(i)) {
 				items.remove(i);	
@@ -567,6 +569,9 @@ public class Map extends Observable {
 							else { this.items.add(new Antidote(monsters.get(i).pos.x, monsters.get(i).pos.y)); }
 						}
 					}
+					this.mobBar = "";
+				} else if(!monsterKilled) {
+					this.mobBar = "["+this.monsters.get(i).getEffect().name()+"] "+this.monsters.get(i).description + "\n" + this.monsters.get(i).drawHealthBar();
 				}
 			}
 			// Check if another monster is facing the player
@@ -616,7 +621,7 @@ public class Map extends Observable {
 		return battleLog;
 	}
 	
-	private boolean isMonster(int x, int y) {
+	public boolean isMonster(int x, int y) {
 		for(int i=0; i<this.monsters.size(); i++) {
 			if(((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y) && !this.monsters.get(i).isDead()) || ((x==this.jerry.pos.x) && (y==this.jerry.pos.y))) {
 				return true;
@@ -766,11 +771,15 @@ public class Map extends Observable {
 	public String generateMapInfo() {
 		String info="";
 		if(this.dungeon.getLevel()%5==0 && this.dungeon.getLevel()>0 && this.boss!=null) {
-			info="  "+playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+" ("+this.jerry.getFloor()+") \t\n  Level "+this.dungeon.getLevel()+" Boss "+this.boss.drawHealthBar()+"\t";
+			info="  "+this.jerry.getFloor()+"\t\n  "+playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+"\t\t\n  Boss Level "+this.dungeon.getLevel();
 		} else {
-			info="  "+playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+" ("+this.jerry.getFloor()+") \t\n  Level "+this.level+"\t";
+			info="  "+this.jerry.getFloor()+"\t\n  "+playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+"\t\t\n  Level "+this.dungeon.getLevel();
 		}
 		return info;
+	}
+	
+	public String getMobInfo() {
+		return this.mobBar;
 	}
 	
 	public boolean isFireMode() { return fireMode; }
@@ -782,11 +791,11 @@ public class Map extends Observable {
 	
 	public String getLog() {
 		this.log.clean();
-		return this.log.getLast(3);
+		return this.log.getLast(4);
 	}
 	
 	public String getFinalScreen() {
-		return "  Game Over\t\n  Level "+this.level+"\t";
+		return "  Game Over\t\n  Level "+this.level+"\t\n  Press 'r' to restart";
 	}
 	
 	public void printOnConsole() {		

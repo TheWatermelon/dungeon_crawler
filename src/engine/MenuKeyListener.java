@@ -22,6 +22,8 @@ public class MenuKeyListener implements KeyListener {
 		} else if(e.getKeyChar() == Resources.Commands.Down.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_DOWN) {
 			menu.incFocusedItem();
+		} else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			menu.exitMenu();
 		}
 		menu.repaint();
 	}

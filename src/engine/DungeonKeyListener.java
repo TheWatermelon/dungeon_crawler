@@ -49,7 +49,8 @@ public class DungeonKeyListener implements KeyListener {
 			} else if(e.getKeyChar() == Resources.Commands.Restart.getKey()) {
 				this.map.generateDungeon();
 				this.win.getDungeonPanel().initPlayerRectangle();
-			} else if(e.getKeyChar() == Resources.Commands.Pause.getKey()) {
+			} else if(e.getKeyChar() == Resources.Commands.Pause.getKey() ||
+					e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 				this.win.showPauseMenu();
 				return;
 			}

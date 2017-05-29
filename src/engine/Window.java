@@ -27,6 +27,8 @@ public class Window extends JFrame {
 	private JPanel commandsMenu;
 	private JPanel inventoryMenu;
 	private JTextPane head;
+	private JTextPane head1;
+	private JTextPane head2;
 	private JTextPane foot;
 	private JTextPane foot1;
 	private JTextPane foot2;
@@ -34,6 +36,8 @@ public class Window extends JFrame {
 	
 	private JPanel focusedPanel;
 	private boolean isMainMenu;
+	
+	private String commands;
 	
 	public Window(String title, Dungeon d) {
 		super(title);
@@ -48,6 +52,15 @@ public class Window extends JFrame {
 		this.dungeon = new DungeonPanel(this);
 		addKeyListener(keyListener);
 		
+		this.commands = Resources.Commands.Up.getKey()+","+
+				Resources.Commands.Left.getKey()+","+
+				Resources.Commands.Down.getKey()+","+
+				Resources.Commands.Right.getKey()+
+				": Move "+getMap().getPlayer()+"   \n"+
+				Resources.Commands.Take.getKey()+": Take\n"+
+				Resources.Commands.Inventory.getKey()+": Inventory\n"+
+				Resources.Commands.Pause.getKey()+": Pause";
+		
 		this.mainMenu = new MainMenu(this);
 		this.pauseMenu = new PauseMenu(this);
 		this.optionsMenu = new OptionsMenu(this);
@@ -58,21 +71,41 @@ public class Window extends JFrame {
 		this.global.setLayout(new BorderLayout());
 		this.global.setBackground(Color.black);
 		this.global.setBorder(BorderFactory.createLineBorder(Color.white));
+
+		SimpleAttributeSet center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		SimpleAttributeSet justify = new SimpleAttributeSet();
+		StyleConstants.setAlignment(justify, StyleConstants.ALIGN_JUSTIFIED);
 		
 		this.headPanel = new JPanel();
 		this.headPanel.setLayout(new BorderLayout());
-		
+		// Player equipement
 		this.head = new JTextPane(); 
 		this.head.setEditable(false);
 		this.head.setFocusable(false);
 		this.head.setBackground(Color.black);
 		this.head.setForeground(Color.white);
 		StyledDocument doc = this.head.getStyledDocument();
-		SimpleAttributeSet center = new SimpleAttributeSet();
-		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-		doc.setParagraphAttributes(0, doc.getLength(), center, false);
-		
-		this.headPanel.add(this.head, BorderLayout.CENTER);
+		doc.setParagraphAttributes(0, doc.getLength(), justify, false);
+		this.headPanel.add(this.head, BorderLayout.WEST);
+		// Player name, gold, health bar and monsters killed
+		this.head1 = new JTextPane(); 
+		this.head1.setEditable(false);
+		this.head1.setFocusable(false);
+		this.head1.setBackground(Color.black);
+		this.head1.setForeground(Color.white);
+		StyledDocument doc1 = this.head1.getStyledDocument();
+		doc1.setParagraphAttributes(0, doc1.getLength(), center, false);
+		this.headPanel.add(this.head1, BorderLayout.CENTER);
+		// Monster name and health bar
+		this.head2 = new JTextPane(); 
+		this.head2.setEditable(false);
+		this.head2.setFocusable(false);
+		this.head2.setBackground(Color.black);
+		this.head2.setForeground(Color.white);
+		StyledDocument doc2 = this.head.getStyledDocument();
+		doc2.setParagraphAttributes(0, doc2.getLength(), center, false);
+		this.headPanel.add(this.head2, BorderLayout.EAST);
 		
 		this.leftPanel = new JPanel();
 		this.leftPanel.setBackground(Color.black);
@@ -89,7 +122,7 @@ public class Window extends JFrame {
 		this.foot.setBackground(Color.black);
 		this.foot.setForeground(Color.white);
 		StyledDocument doc0 = this.foot.getStyledDocument();
-		doc0.setParagraphAttributes(0, doc0.getLength(), center, false);
+		doc0.setParagraphAttributes(0, doc0.getLength(), justify, false);
 		this.footPanel.add(this.foot, BorderLayout.WEST);
 		// Log
 		this.foot1 = new JTextPane();
@@ -97,8 +130,8 @@ public class Window extends JFrame {
 		this.foot1.setFocusable(false);
 		this.foot1.setBackground(Color.black);
 		this.foot1.setForeground(Color.white);
-		StyledDocument doc1 = this.foot1.getStyledDocument();
-		doc1.setParagraphAttributes(0, doc1.getLength(), center, false);
+		StyledDocument doc3 = this.foot1.getStyledDocument();
+		doc3.setParagraphAttributes(0, doc3.getLength(), center, false);
 		this.footPanel.add(this.foot1, BorderLayout.CENTER);
 		// Commands
 		this.foot2 = new JTextPane();
@@ -106,13 +139,6 @@ public class Window extends JFrame {
 		this.foot2.setFocusable(false); 
 		this.foot2.setBackground(Color.black);
 		this.foot2.setForeground(Color.white);
-		this.foot2.setText(Resources.Commands.Up.getKey()+","+
-						Resources.Commands.Down.getKey()+","+
-						Resources.Commands.Left.getKey()+","+
-						Resources.Commands.Right.getKey()+","+
-						": Move "+getMap().getPlayer()+"   \n"+
-						Resources.Commands.Inventory.getKey()+": Inventory\n"+
-						Resources.Commands.Pause.getKey()+": Pause");
 		this.footPanel.add(this.foot2, BorderLayout.EAST);
 		// Global panel
 		this.global.add(this.headPanel, BorderLayout.NORTH);
@@ -138,28 +164,26 @@ public class Window extends JFrame {
 		if(!this.foot1.getText().equals(s2)) {
 			this.foot1.setText(s2);
 		}
-		this.foot2.setText(Resources.Commands.Up.getKey()+","+
-				Resources.Commands.Down.getKey()+","+
-				Resources.Commands.Left.getKey()+","+
-				Resources.Commands.Right.getKey()+","+
-				": Move "+getMap().getPlayer()+"   \n"+
-				Resources.Commands.Inventory.getKey()+": Inventory\n"+
-				Resources.Commands.Pause.getKey()+": Pause");
+		this.foot2.setText(commands);
 	}
 	
-	public void setLabel(String s, String s1, String s2, String s3) {
+	public void setLabel(String s, String s1, String s2, String s3, String s4) {
 		if(!this.head.getText().equals(s)) {
 			this.head.setText(s);
 		}
-		if(!this.foot.getText().equals(s1)) {
-			this.foot.setText(s1);
+		if(!this.head1.getText().equals(s1)) {
+			this.head1.setText(s1);
 		}
-		if(!this.foot1.getText().equals(s2)) {
-			this.foot1.setText(s2);
+		if(!this.head2.getText().equals(s2)) {
+			this.head2.setText(s2);
 		}
-		if(!this.foot2.getText().equals(s3)) {
-			this.foot2.setText(s3);
+		if(!this.foot.getText().equals(s3)) {
+			this.foot.setText(s3);
 		}
+		if(!this.foot1.getText().equals(s4)) {
+			this.foot1.setText(s4);
+		}
+		this.foot2.setText(commands);
 	}
 	
 	public Map getMap() { return map; }
@@ -251,9 +275,11 @@ public class Window extends JFrame {
 		dungeon.setDirty(true);
 		if(!this.map.isPlayerDead()) {
 			this.map.printDungeon();
-			setLabel(this.map.generateMapInfo(), this.map.getPlayer().getAllInfo(), this.map.getLog());
+			setLabel(this.map.getPlayer().getWeaponInfo(), this.map.getPlayer().getInfo(), this.map.getMobInfo(), this.map.generateMapInfo(), this.map.getLog());
 		} else {
-			setLabel(this.map.getFinalScreen(), this.map.getPlayer().getAllInfo(), this.map.getLog());
+			setLabel(this.map.getPlayer().getWeaponInfo(), this.map.getPlayer().getInfo(), this.map.getMobInfo(), this.map.getFinalScreen(), this.map.getLog());
+			leftPanel.setBackground(Color.RED);
+			rightPanel.setBackground(Color.RED);
 		}
 		refreshListener();
 		revalidate();

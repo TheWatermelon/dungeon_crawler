@@ -29,6 +29,8 @@ public class InventoryMenuKeyListener extends MenuKeyListener {
 		} else if(e.getKeyChar() == Resources.Commands.RepareWeapon.getKey() ||
 				e.getKeyChar() == Resources.Commands.RepareShield.getKey()) {
 			((InventoryMenu)menu).repareItem();
+		} else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			menu.exitMenu();
 		}
 		menu.repaint();
 	}

@@ -16,11 +16,11 @@ public abstract class Mob {
 	protected boolean dead;
 	protected char symbol;
 	protected Looker looker;
-	protected String description;
 	protected Tile floor;
 	protected Tile mobTile;
 	protected MessageLog log;
-	
+
+	public String description;
 	public int hp;
 	public int maxHealth;
 	public int atk;

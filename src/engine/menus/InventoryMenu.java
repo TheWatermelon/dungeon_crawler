@@ -47,6 +47,12 @@ public class InventoryMenu extends Menu {
 		while(focusedItem>=inv.getSize()&&focusedItem<inv.getMaxSize()) { focusedItem--; }
 		if(focusedItem<0) { focusedItem = items.length-1; }
 	}
+	
+	@Override
+	public void exitMenu() {
+		focusedItem=0;
+		win.showDungeon();
+	}
 
 	@Override
 	public void selectFocusedItem() {
@@ -102,7 +108,10 @@ public class InventoryMenu extends Menu {
 		g.drawString(""+win.getMap().getPlayer().getSymbol(), getWidth()/2-15, 150);
 		g.setColor(win.getMap().getPlayer().getLooker().getRightColor());
 		g.drawString(""+win.getMap().getPlayer().getLooker().getRight(), getWidth()/2+15, 150);
-		
+		if(win.getMap().getPlayer().getHelmet().getMaxDurability()!=-1) {
+			g.setColor(win.getMap().getPlayer().getHelmet().getColor());
+			g.drawString(""+win.getMap().getPlayer().getHelmet().getTile().getSymbol(), getWidth()/2-13, 140);
+		}
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		

@@ -20,6 +20,11 @@ public class MainMenu extends Menu {
 		super(win);
 		initPanel();
 	}
+	
+	@Override
+	public void exitMenu() {
+		System.exit(0);
+	}
 
 	@Override
 	public void selectFocusedItem() {

@@ -19,7 +19,7 @@ public class Corridor extends Room {
 	
 	public void parsingFloor(Vector<Item> v) {
 		Random rnd = new Random();
-		int parsingChance = rnd.nextInt(4), floorType = rnd.nextInt(4), height=0, width=0;
+		int parsingChance = rnd.nextInt(4), floorType = rnd.nextInt(5), height=0, width=0;
 		
 		if(parsingChance==0) {
 			if(getHeight()==2) {
@@ -38,6 +38,8 @@ public class Corridor extends Room {
 				v.add(new Shield(width+this.p1.x, height+this.p1.y));
 			} else if(floorType==3) {
 				v.add(new Bow(width+this.p1.x, height+this.p1.y));
+			} else if(floorType==4) {
+				v.add(new Helmet(width+this.p1.x, height+this.p1.y));
 			}
 		}
 	}

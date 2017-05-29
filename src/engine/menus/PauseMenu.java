@@ -13,6 +13,13 @@ public class PauseMenu extends Menu {
 		initPanel();
 	}
 	
+	@Override
+	public void exitMenu() {
+		focusedItem=0;
+		win.showDungeon();
+	}
+	
+	@Override
 	public void selectFocusedItem() {
 		if(focusedItem==0) {
 			win.showDungeon();
@@ -25,6 +32,7 @@ public class PauseMenu extends Menu {
 		}
 	}
 	
+	@Override
 	protected void initPanel() {
 		focusedItem = 0;
 		items = new String[3];
@@ -54,7 +62,10 @@ public class PauseMenu extends Menu {
 		g.drawString(""+win.getMap().getPlayer().getSymbol(), getWidth()/2-15, 150);
 		g.setColor(win.getMap().getPlayer().getLooker().getRightColor());
 		g.drawString(""+win.getMap().getPlayer().getLooker().getRight(), getWidth()/2+15, 150);
-		
+		if(win.getMap().getPlayer().getHelmet().getMaxDurability()!=-1) {
+			g.setColor(win.getMap().getPlayer().getHelmet().getColor());
+			g.drawString(""+win.getMap().getPlayer().getHelmet().getTile().getSymbol(), getWidth()/2-13, 140);
+		}
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		

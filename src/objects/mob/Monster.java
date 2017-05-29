@@ -85,11 +85,13 @@ public class Monster extends Mob {
 				battleLog+=this.description+" miss "; 
 			} else if(((deg*getAtk())-p.getDef())<=0) {
 				p.useShield();
+				p.useHelmet();
 				battleLog+=p.description+" dodged "; 
 			} else {
 				int dmg = (deg*getAtk())-p.getDef();
 				p.hp -= dmg;
 				p.useShield();
+				p.useHelmet();
 				if(rnd.nextInt(3)==0) {	effectSpreader.start(p); }
 				if(deg==1) {
 					battleLog+=description+" deals "+dmg+" to "+p.description+" ";

@@ -84,13 +84,16 @@ public class DungeonPanel extends JPanel {
 	}
 	
 	public void printLooker(Graphics g, int offsetX, int offsetY) {
-		char[] looker = new char[2];
+		char[] looker = new char[3];
 		looker[0]=' ';
 		looker[1]=' ';
+		looker[2]=' ';
+		
 		if(!win.getMap().getPlayer().getLooker().isVisible()) { 
 			g.setColor(Color.BLACK);
 			g.drawChars(looker, 0, 1, offsetX-6, offsetY);
 			g.drawChars(looker, 1, 1, offsetX+6, offsetY);
+			g.drawChars(looker, 2, 1, offsetX, offsetY-3);
 		} else {
 			looker[0]=win.getMap().getPlayer().getLooker().getLeft();
 			g.setColor(win.getMap().getPlayer().getLooker().getLeftColor());
@@ -98,11 +101,59 @@ public class DungeonPanel extends JPanel {
 			looker[1]=win.getMap().getPlayer().getLooker().getRight();
 			g.setColor(win.getMap().getPlayer().getLooker().getRightColor());
 			g.drawChars(looker, 1, 1, offsetX+6, offsetY);
+			if(win.getMap().getPlayer().getHelmet().getMaxDurability()!=-1) {
+				looker[2]=win.getMap().getPlayer().getHelmet().getTile().getSymbol();
+				g.setColor(win.getMap().getPlayer().getHelmet().getColor());
+				g.drawChars(looker, 2, 1, offsetX+1, offsetY-4);
+			}
 		}
 		// Mise a jour de la bordure du cadre de jeu
 		Color newBorderColor = (win.getMap().getPlayer().getLooker() instanceof LookerStuff || g.getColor()==Color.black)?Resources.white:g.getColor();
 		if(borderColor!=newBorderColor)
 		{ setBorder(BorderFactory.createLineBorder(newBorderColor)); borderColor = newBorderColor; }
+	}
+	
+	public void printCommandsHelp(Graphics g, int offsetX, int offsetY) {
+		char[] command = new char [4];
+		
+		// If there is an item under the player
+		if(win.getMap().isItem(win.getMap().getPlayer().pos.x, win.getMap().getPlayer().pos.y) != null) {
+			command[0] = Resources.Commands.Take.getKey();
+		}
+		
+		// If there are monsters (may override item help)
+		int[][] direction = {
+				{0, -1},
+				{1, 0},
+				{0, 1},
+				{-1, 0}
+		};
+		Resources.Commands[] allCommands = Resources.Commands.values();
+		for(int i = 0; i<direction.length; i++) {
+			int deltaX = win.getMap().getPlayer().pos.x + direction[i][0];
+			int deltaY = win.getMap().getPlayer().pos.y + direction[i][1];
+			if(win.getMap().isMonster(deltaX, deltaY)) {
+				command[i] = allCommands[i].getKey();
+			}
+		}
+		
+		// Print the commands 2 cells away from the player
+		int[][] guiDirection = {
+				{offsetX, offsetY-2*16},
+				{offsetX+2*14, offsetY},
+				{offsetX, offsetY+2*16},
+				{offsetX-2*14, offsetY}
+		};
+		for(int i = 0; i<guiDirection.length; i++) {
+			if(command[i] != 0) {
+				g.setColor(new Color(255, 0, 0, 100));
+				g.drawRect(guiDirection[i][0]-3, guiDirection[i][1]-13, 14, 16);
+				g.setColor(Color.black);
+				g.fillRect(guiDirection[i][0]-2, guiDirection[i][1]-12, 13, 15);
+				g.setColor(Color.white);
+				g.drawChars(command, i, 1, guiDirection[i][0], guiDirection[i][1]);
+			}
+		}
 	}
 	
 	public boolean isLight(int i, int j) {
@@ -226,7 +277,7 @@ public class DungeonPanel extends JPanel {
 		
 		refreshRectangles();
 			
-		int offsetX=15, offsetY=26;
+		int offsetX=15, offsetY=30, playerOffsetX=15, playerOffsetY=30;
 		char[] c = new char[1];
 		for(int i=window.y; i<window.getHeight()+window.y; i++) {
 			for(int j=window.x; j<window.getWidth()+window.x; j++) {
@@ -240,12 +291,19 @@ public class DungeonPanel extends JPanel {
 					prepareColor(g, win.getMap().getTable(), i, j);
 				}
 				g.drawChars(c, 0, 1, offsetX, offsetY);
-				if(table.charAt(i*win.getMap().getWidth()+j)==TileFactory.getInstance().createTilePlayer().getSymbol()) 
-				{ printLooker(g, offsetX, offsetY); }
+				if(table.charAt(i*win.getMap().getWidth()+j)==TileFactory.getInstance().createTilePlayer().getSymbol()) { 
+					printLooker(g, offsetX, offsetY); 
+					playerOffsetX = offsetX;
+					playerOffsetY = offsetY;
+				}
 				offsetX+=14; 
 			}
 			offsetY+=16; 
 			offsetX=15;
+		}
+		
+		if(Resources.getInstance().commandsHelp) {
+			printCommandsHelp(g, playerOffsetX, playerOffsetY);
 		}
 	}
 }

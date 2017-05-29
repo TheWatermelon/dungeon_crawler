@@ -18,6 +18,7 @@ public class Player extends Mob {
 	private int potionEffect;
 	private Equipement w;
 	private Shield s;
+	private Helmet h;
 	private Dungeon dungeon;
 	
 	public Player(int x, int y, MessageLog l, Dungeon d) {
@@ -27,6 +28,7 @@ public class Player extends Mob {
 		this.vit=this.potionEffect=0;
 		this.w = new Weapon();
 		this.s = new Shield();
+		this.h = new Helmet();
 		this.gold=0;
 		this.monstersKilled=0;
 		this.dead = false;
@@ -36,7 +38,7 @@ public class Player extends Mob {
 		this.symbol = '@';
 		this.description = Resources.generatePlayerName();
 		this.effect = new EffectNormal();
-		this.inventory = new Inventory(5, l, this);
+		this.inventory = new Inventory(6, l, this);
 		this.dungeon=d;
 	}
 	
@@ -199,12 +201,21 @@ public class Player extends Mob {
 		checkShield();
 	}
 	
+	public void useHelmet() {
+		this.h.use();
+		checkHelmet();
+	}
+	
 	private void checkWeapon() {
 		if(this.w.getDurability()==0) {
 			inventory.removeItem(this.w);
 			this.w.unequip();
+			if(this.w instanceof Weapon) {
+				log.appendMessage("Weapon broke!");
+			} else if(this.w  instanceof Bow) {
+				log.appendMessage("Bow broke!");
+			}
 			this.w = new Weapon();
-			log.appendMessage("Weapon broke!");
 		}
 	}
 	
@@ -214,6 +225,15 @@ public class Player extends Mob {
 			this.s.unequip();
 			this.s = new Shield();
 			log.appendMessage("Shield broke!");
+		}
+	}
+	
+	private void checkHelmet() {
+		if(this.h.getDurability()==0) {
+			inventory.removeItem(this.h);
+			this.h.unequip();
+			log.appendMessage(this.h.getType()+" fell off!");
+			this.h = new Helmet();
 		}
 	}
 	
@@ -233,8 +253,19 @@ public class Player extends Mob {
 		this.s.unequip();
 		this.s = shield;
 		this.s.equip();
+		if(this.w instanceof Bow) { 
+			this.w.unequip(); 
+			this.w = new Weapon();
+		}
 		if(this.s.getEffect() instanceof EffectSelf) { this.s.getEffect().start(this); }
 		if(this.s.getEffect() instanceof EffectEquipement) { this.s.getEffect().start(this); }
+	}
+	
+	public void setHelmet(Helmet helmet) {
+		this.h.unequip();
+		this.h = helmet;
+		this.h.equip();
+		this.h.getEffect().start(this);
 	}
 	
 	public void repareWeapon() {
@@ -332,12 +363,14 @@ public class Player extends Mob {
 	
 	public Shield getShield() { return this.s; }
 	
+	public Helmet getHelmet() { return this.h; }
+	
 	public Inventory getInventory() { return this.inventory; }
 	
 	public Dungeon getDungeon() { return this.dungeon; }
 	
 	public String getInfo() {
-		return ""+drawHealthBar()+"\nGold : "+this.gold+"\n"+"Kills : "+this.monstersKilled;
+		return description+"\n"+drawHealthBar()+"\nGold : "+this.gold+" Kills : "+this.monstersKilled;
 	}
 	
 	public String getAllInfo() {
@@ -354,11 +387,14 @@ public class Player extends Mob {
 	
 	public String getWeaponInfo() {
 		String res="";
+		if(this.h.getVal()>0) {
+			res+="  "+this.h+" ("+this.h.getDurability()+"/"+this.h.getMaxDurability()+")\n";
+		}
 		if(this.w.getVal()>0) {
-			res+=this.w+" ("+this.w.getDurability()+"/"+this.w.getMaxDurability()+") ";
+			res+="  "+this.w+" ("+this.w.getDurability()+"/"+this.w.getMaxDurability()+")\n";
 		}
 		if(this.s.getVal()>0) {
-			res+=this.s+" ("+this.s.getDurability()+"/"+this.s.getMaxDurability()+")";
+			res+="  "+this.s+" ("+this.s.getDurability()+"/"+this.s.getMaxDurability()+")";
 		}
 		return res;
 	}

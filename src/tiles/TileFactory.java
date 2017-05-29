@@ -21,6 +21,7 @@ public class TileFactory {
 	private TileBarrel tileBarrel = new TileBarrel();
 	private TilePotion tilePotion = new TilePotion();
 	private TileBow tileBow = new TileBow();
+	private TileHelmet tileHelmet = new TileHelmet();
 	
 	private TileFactory() {
 		// CRAP CONSTRUCTOR
@@ -49,4 +50,5 @@ public class TileFactory {
 	public TileShield createTileShield() { return tileShield; }
 	public TilePotion createTilePotion() { return tilePotion; }
 	public TileBow createTileBow() { return tileBow; }
+	public TileHelmet createTileHelmet() { return tileHelmet; }
 }

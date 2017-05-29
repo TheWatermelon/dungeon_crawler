@@ -80,6 +80,8 @@ public class Inventory {
 					player.setWeapon((Equipement)i);
 				} else if(i instanceof Shield) {
 					player.setShield((Shield)i);
+				} else if(i instanceof Helmet) {
+					player.setHelmet((Helmet)i);
 				}
 			} else {
 				((Equipement)i).unequip();
@@ -88,6 +90,8 @@ public class Inventory {
 					player.setWeapon(new Weapon());
 				} else if(i instanceof Shield) {
 					player.setShield(new Shield());
+				} else if(i instanceof Helmet) {
+					player.setHelmet(new Helmet());
 				}
 			}
 			player.stuffLooker();

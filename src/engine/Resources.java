@@ -15,6 +15,9 @@ public class Resources {
 	
 	private static String[] equipementName = { "void", "Wooden", "Copper", "Iron", "Silver", "Master" };
 	
+	private static String[] helmetName = { "void", "Childish", "Beginner", "Apprentice", "Expert", "Master" };
+	private static String[] helmetType = { "Cap", "Hat", "Helmet" };
+	
 	public static Color white = Color.WHITE;
 	public static Color yellow = Color.YELLOW;
 	public static Color darkYellow = new Color(0xA9, 0x96, 0x2D);
@@ -43,11 +46,13 @@ public class Resources {
 	
 	public int resolution=30;
 	
+	public boolean commandsHelp = true;
+	
 	public enum Commands {
 		Up('z'),
+		Right('d'),
 		Down('s'),
 		Left('q'),
-		Right('d'),
 		Take('f'),
 		Inventory('i'),
 		RepareWeapon('a'),
@@ -108,6 +113,14 @@ public class Resources {
 	
 	public static String getEquipementAt(int index) {
 		return equipementName[index];
+	}
+	
+	public static String getHelmetNameAt(int index) {
+		return helmetName[index];
+	}
+	
+	public static String getHelmetType() {
+		return helmetType[(new Random()).nextInt(helmetType.length)];
 	}
 	
 	public static int[][] drawCircle(int size) {
