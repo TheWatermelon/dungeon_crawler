@@ -5,15 +5,7 @@ import java.awt.Point;
 import java.util.Random;
 
 import engine.Resources;
-import objects.effect.Effect;
-import objects.effect.EffectFire;
-import objects.effect.EffectHeavy;
-import objects.effect.EffectNormal;
-import objects.effect.EffectParalyze;
-import objects.effect.EffectPoison;
-import objects.effect.EffectSleep;
-import objects.effect.EffectStrong;
-import objects.effect.EffectWeak;
+import objects.effect.*;
 import tiles.Tile;
 import tiles.TileFactory;
 
@@ -53,7 +45,7 @@ public class Bow extends Equipement {
 	
 	public Effect pickEffect() {
 		Random rnd = new Random();
-		int effectChance=rnd.nextInt(15);
+		int effectChance=rnd.nextInt(16);
 		
 		if(effectChance==0) {
 			return new EffectPoison();
@@ -69,6 +61,8 @@ public class Bow extends Equipement {
 			return new EffectFire();
 		} else if(effectChance==6) {
 			return new EffectStrong();
+		} else if(effectChance==7) {
+			return new EffectStrength();
 		}
 		return new EffectNormal();
 	}

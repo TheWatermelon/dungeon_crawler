@@ -23,6 +23,9 @@ public class EffectPoison extends EffectOther {
 	}
 	
 	@Override
+	public void stop() {}
+	
+	@Override
 	public boolean apply() {
 		if(duration>0) {
 			affected.hp-=1;

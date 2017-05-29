@@ -20,7 +20,7 @@ public abstract class Equipement extends Item {
 	public final Effect getEffect() { return this.effect; }
 	public final boolean isEquiped() { return isEquiped; }
 	public final void equip() { isEquiped=true; }
-	public final void unequip() { isEquiped=false; }
+	public final void unequip() { isEquiped=false; effect.stop(); }
 	public abstract Effect pickEffect();
 	
 	@Override

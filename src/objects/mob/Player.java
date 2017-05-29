@@ -26,6 +26,7 @@ public class Player extends Mob {
 		this.atk=5;
 		this.def=0;
 		this.vit=this.potionEffect=0;
+		this.bonusAtk = this.bonusDef = this.bonusVit = 0;
 		this.w = new Weapon();
 		this.s = new Shield();
 		this.h = new Helmet();
@@ -168,6 +169,10 @@ public class Player extends Mob {
 		}
 	}
 	
+	public void resetBonuses() {
+		this.bonusAtk = this.bonusDef = this.bonusVit = 0;
+	}
+	
 	public void setPotionEffect(int val) {
 		this.vit=val;
 		if(val<0) {
@@ -234,6 +239,7 @@ public class Player extends Mob {
 			this.h.unequip();
 			log.appendMessage(this.h.getType()+" fell off!");
 			this.h = new Helmet();
+			resetBonuses();
 		}
 	}
 	
@@ -353,9 +359,9 @@ public class Player extends Mob {
 	
 	public int getGold() { return this.gold; }
 	
-	public int getAtk() { return this.atk+this.w.getVal(); }
+	public int getAtk() { return this.atk+this.bonusAtk+this.w.getVal(); }
 	
-	public int getDef() { return this.def+this.s.getVal(); }
+	public int getDef() { return this.def+this.bonusDef+this.s.getVal(); }
 	
 	public int getKills() {	return this.monstersKilled; }
 	

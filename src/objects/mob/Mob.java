@@ -24,8 +24,11 @@ public abstract class Mob {
 	public int hp;
 	public int maxHealth;
 	public int atk;
+	public int bonusAtk;
 	public int def;
+	public int bonusDef;
 	public int vit;
+	public int bonusVit;
 	public Effect effect;
 
 	public abstract void murder();
@@ -77,6 +80,16 @@ public abstract class Mob {
 	public final Looker getLooker() {
 		this.looker.placeOn(pos.x, pos.y);
 		return this.looker;
+	}
+	
+	public String getPrintableMobInfo() {
+		String res = "";
+		if(!(this.effect instanceof EffectNormal)) {
+			res += "["+effect.name()+"] ";
+		}
+		res += description + "\n" + drawHealthBar();
+		
+		return res;
 	}
 	
 	public final String drawHealthBar() {

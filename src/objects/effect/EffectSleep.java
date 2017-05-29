@@ -21,6 +21,9 @@ public class EffectSleep extends EffectOther {
 		m.setEffect(this); 
 		m.getLog().appendMessage(m+" fall asleep!");
 	}
+	
+	@Override
+	public void stop() {}
 
 	@Override
 	public boolean apply() {

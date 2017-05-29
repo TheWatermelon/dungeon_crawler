@@ -35,7 +35,7 @@ public class Shield extends Equipement {
 	@Override
 	public Effect pickEffect() {
 		Random rnd = new Random();
-		int effectChance=rnd.nextInt(8);
+		int effectChance=rnd.nextInt(9);
 		
 		if(effectChance<2) {
 			return new EffectWeak();
@@ -45,6 +45,8 @@ public class Shield extends Equipement {
 			return new EffectHeavy();
 		} else if(effectChance==4) {
 			return new EffectStrong();
+		} else if(effectChance==5) {
+			return new EffectToughness();
 		}
 		return new EffectNormal();
 	}

@@ -21,6 +21,9 @@ public class EffectHeavy extends EffectSelf {
 	}
 
 	@Override
+	public void stop() {}
+	
+	@Override
 	public boolean apply() {
 		Random rnd = new Random();
 		

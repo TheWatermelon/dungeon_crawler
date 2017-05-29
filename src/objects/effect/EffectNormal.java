@@ -15,4 +15,6 @@ public class EffectNormal extends EffectSelf {
 	public boolean apply() { return true; }
 	@Override
 	public void start(Mob m) {}
+	@Override
+	public void stop() {}
 }

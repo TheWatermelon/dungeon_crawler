@@ -109,8 +109,15 @@ public class DungeonPanel extends JPanel {
 		}
 		// Mise a jour de la bordure du cadre de jeu
 		Color newBorderColor = (win.getMap().getPlayer().getLooker() instanceof LookerStuff || g.getColor()==Color.black)?Resources.white:g.getColor();
-		if(borderColor!=newBorderColor)
-		{ setBorder(BorderFactory.createLineBorder(newBorderColor)); borderColor = newBorderColor; }
+		if(borderColor!=newBorderColor) { 
+			setBorder(BorderFactory.createLineBorder(newBorderColor)); 
+			borderColor = newBorderColor; 
+			if(borderColor == Resources.white) {
+				win.denotifyColor();
+			} else {
+				win.notifyColor(borderColor);
+			}
+		}
 	}
 	
 	public void printCommandsHelp(Graphics g, int offsetX, int offsetY) {

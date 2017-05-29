@@ -22,6 +22,9 @@ public class EffectParalyze extends EffectOther {
 		m.setEffect(this); 
 		m.getLog().appendMessage(m+" is paralyzed!");
 	}
+	
+	@Override
+	public void stop() {}
 
 	@Override
 	public boolean apply() {

@@ -94,12 +94,12 @@ public class InventoryMenu extends Menu {
 		
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
-		String name = win.getMap().getPlayer().toString(), 
-				healthBar = win.getMap().getPlayer().drawHealthBar(),
-				stuff = win.getMap().getPlayer().getWeaponInfo();
+		String name = win.getMap().getPlayer().toString(); 
+		String healthBar = win.getMap().getPlayer().drawHealthBar();
+		//String stuff = win.getMap().getPlayer().getWeaponInfo();
 		g.drawString(name, getWidth()/2-(name.length()*13/2), 60);
 		g.drawString(healthBar, getWidth()/2-(healthBar.length()*12/2), 80);
-		g.drawString(stuff, getWidth()/2-(stuff.length()*12/2), 100);
+		//g.drawString(stuff, getWidth()/2-(stuff.length()*12/2), 100);
 
 		g.setFont(new Font("Monospaced", Font.PLAIN, 50));
 		g.setColor(win.getMap().getPlayer().getLooker().getLeftColor());

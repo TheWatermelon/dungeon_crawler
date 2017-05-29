@@ -56,10 +56,10 @@ public class Window extends JFrame {
 				Resources.Commands.Left.getKey()+","+
 				Resources.Commands.Down.getKey()+","+
 				Resources.Commands.Right.getKey()+
-				": Move "+getMap().getPlayer()+"   \n"+
-				Resources.Commands.Take.getKey()+": Take\n"+
-				Resources.Commands.Inventory.getKey()+": Inventory\n"+
-				Resources.Commands.Pause.getKey()+": Pause";
+				": Move "+getMap().getPlayer()+"  \n"+
+				Resources.Commands.Take.getKey()+": Take  \n"+
+				Resources.Commands.Inventory.getKey()+": Inventory  \n"+
+				Resources.Commands.Pause.getKey()+": Pause  ";
 		
 		this.mainMenu = new MainMenu(this);
 		this.pauseMenu = new PauseMenu(this);
@@ -76,36 +76,42 @@ public class Window extends JFrame {
 		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
 		SimpleAttributeSet justify = new SimpleAttributeSet();
 		StyleConstants.setAlignment(justify, StyleConstants.ALIGN_JUSTIFIED);
+		SimpleAttributeSet right = new SimpleAttributeSet();
+		StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT);
 		
 		this.headPanel = new JPanel();
-		this.headPanel.setLayout(new BorderLayout());
+		this.headPanel.setLayout(new GridLayout(1,3));
+		this.headPanel.setPreferredSize(new Dimension(820, 50));
 		// Player equipement
 		this.head = new JTextPane(); 
 		this.head.setEditable(false);
 		this.head.setFocusable(false);
 		this.head.setBackground(Color.black);
 		this.head.setForeground(Color.white);
+		this.head.setFont(new Font("Monospaced", Font.BOLD, 12));
 		StyledDocument doc = this.head.getStyledDocument();
-		doc.setParagraphAttributes(0, doc.getLength(), justify, false);
-		this.headPanel.add(this.head, BorderLayout.WEST);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
+		this.headPanel.add(this.head);
 		// Player name, gold, health bar and monsters killed
 		this.head1 = new JTextPane(); 
 		this.head1.setEditable(false);
 		this.head1.setFocusable(false);
 		this.head1.setBackground(Color.black);
 		this.head1.setForeground(Color.white);
+		this.head1.setFont(new Font("Monospaced", Font.BOLD, 12));
 		StyledDocument doc1 = this.head1.getStyledDocument();
 		doc1.setParagraphAttributes(0, doc1.getLength(), center, false);
-		this.headPanel.add(this.head1, BorderLayout.CENTER);
+		this.headPanel.add(this.head1);
 		// Monster name and health bar
 		this.head2 = new JTextPane(); 
 		this.head2.setEditable(false);
 		this.head2.setFocusable(false);
 		this.head2.setBackground(Color.black);
 		this.head2.setForeground(Color.white);
-		StyledDocument doc2 = this.head.getStyledDocument();
+		this.head2.setFont(new Font("Monospaced", Font.BOLD, 12));
+		StyledDocument doc2 = this.head2.getStyledDocument();
 		doc2.setParagraphAttributes(0, doc2.getLength(), center, false);
-		this.headPanel.add(this.head2, BorderLayout.EAST);
+		this.headPanel.add(this.head2);
 		
 		this.leftPanel = new JPanel();
 		this.leftPanel.setBackground(Color.black);
@@ -114,32 +120,37 @@ public class Window extends JFrame {
 		this.rightPanel.setBackground(Color.black);
 		
 		this.footPanel = new JPanel();
-		this.footPanel.setLayout(new BorderLayout());
-		// HP, Gold, Kills, Weapon & Shield
+		this.footPanel.setLayout(new GridLayout(1, 3));
+		// Map info
 		this.foot = new JTextPane();
 		this.foot.setEditable(false);
 		this.foot.setFocusable(false);
 		this.foot.setBackground(Color.black);
 		this.foot.setForeground(Color.white);
+		this.foot.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		StyledDocument doc0 = this.foot.getStyledDocument();
 		doc0.setParagraphAttributes(0, doc0.getLength(), justify, false);
-		this.footPanel.add(this.foot, BorderLayout.WEST);
+		this.footPanel.add(this.foot);
 		// Log
 		this.foot1 = new JTextPane();
 		this.foot1.setEditable(false);
 		this.foot1.setFocusable(false);
 		this.foot1.setBackground(Color.black);
 		this.foot1.setForeground(Color.white);
+		//this.foot1.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		StyledDocument doc3 = this.foot1.getStyledDocument();
 		doc3.setParagraphAttributes(0, doc3.getLength(), center, false);
-		this.footPanel.add(this.foot1, BorderLayout.CENTER);
+		this.footPanel.add(this.foot1);
 		// Commands
 		this.foot2 = new JTextPane();
 		this.foot2.setEditable(false);
 		this.foot2.setFocusable(false); 
 		this.foot2.setBackground(Color.black);
 		this.foot2.setForeground(Color.white);
-		this.footPanel.add(this.foot2, BorderLayout.EAST);
+		this.foot2.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		StyledDocument doc4 = this.foot2.getStyledDocument();
+		doc4.setParagraphAttributes(0, doc4.getLength(), right, false);
+		this.footPanel.add(foot2);
 		// Global panel
 		this.global.add(this.headPanel, BorderLayout.NORTH);
 		this.global.add(this.dungeon, BorderLayout.CENTER);
@@ -184,6 +195,16 @@ public class Window extends JFrame {
 			this.foot1.setText(s4);
 		}
 		this.foot2.setText(commands);
+	}
+	
+	public void notifyColor(Color c) {
+		this.leftPanel.setBackground(c);
+		this.rightPanel.setBackground(c);
+	}
+	
+	public void denotifyColor() {
+		this.leftPanel.setBackground(Color.black);
+		this.rightPanel.setBackground(Color.black);
 	}
 	
 	public Map getMap() { return map; }

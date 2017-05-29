@@ -14,7 +14,8 @@ public abstract class Effect {
 	protected final String getDescription() { return this.description; }
 	public abstract String name();
 	public abstract Color getColor();
-	public abstract void start(Mob m); 
+	public abstract void start(Mob m);
+	public abstract void stop();
 	public abstract boolean apply();
 	
 	@Override

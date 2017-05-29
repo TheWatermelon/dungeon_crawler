@@ -18,6 +18,9 @@ public class EffectHeal extends EffectSelf {
 	public void start(Mob m) {
 		affected=m;
 	}
+	
+	@Override
+	public void stop() {}
 
 	@Override
 	public boolean apply() {

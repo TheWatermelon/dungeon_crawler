@@ -36,7 +36,7 @@ public class Weapon extends Equipement {
 	
 	public Effect pickEffect() {
 		Random rnd = new Random();
-		int effectChance=rnd.nextInt(15);
+		int effectChance=rnd.nextInt(16);
 		
 		if(effectChance==0) {
 			return new EffectPoison();
@@ -52,6 +52,8 @@ public class Weapon extends Equipement {
 			return new EffectFire();
 		} else if(effectChance==6) {
 			return new EffectStrong();
+		} else if(effectChance==7) {
+			return new EffectStrength();
 		}
 		return new EffectNormal();
 	}

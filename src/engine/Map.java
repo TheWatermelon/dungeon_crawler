@@ -19,7 +19,7 @@ public class Map extends Observable {
 	protected Point stairDown;
 	protected Player jerry;
 	protected Boss boss;
-	protected String mobBar;
+	protected Monster focusedMonster;
 	protected int level;
 	protected Dungeon dungeon;
 	protected int width;
@@ -46,7 +46,6 @@ public class Map extends Observable {
 		this.jerry.setFloor(TileFactory.getInstance().createTileStone());
 		this.rnd = new Random();
 		this.oldString="";
-		this.mobBar = "";
 	}
 	
 	public Tile[][] getTable() { return this.table; }
@@ -569,9 +568,9 @@ public class Map extends Observable {
 							else { this.items.add(new Antidote(monsters.get(i).pos.x, monsters.get(i).pos.y)); }
 						}
 					}
-					this.mobBar = "";
+					this.focusedMonster = null;
 				} else if(!monsterKilled) {
-					this.mobBar = "["+this.monsters.get(i).getEffect().name()+"] "+this.monsters.get(i).description + "\n" + this.monsters.get(i).drawHealthBar();
+					this.focusedMonster = this.monsters.get(i);
 				}
 			}
 			// Check if another monster is facing the player
@@ -771,15 +770,15 @@ public class Map extends Observable {
 	public String generateMapInfo() {
 		String info="";
 		if(this.dungeon.getLevel()%5==0 && this.dungeon.getLevel()>0 && this.boss!=null) {
-			info="  "+this.jerry.getFloor()+"\t\n  "+playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+"\t\t\n  Boss Level "+this.dungeon.getLevel();
+			info="  Step on "+this.jerry.getFloor()+"\n  "+playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+"\n  Boss Level "+this.dungeon.getLevel();
 		} else {
-			info="  "+this.jerry.getFloor()+"\t\n  "+playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+"\t\t\n  Level "+this.dungeon.getLevel();
+			info="  Step on "+this.jerry.getFloor()+"\n  "+playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+"\n  Level "+this.dungeon.getLevel();
 		}
 		return info;
 	}
 	
 	public String getMobInfo() {
-		return this.mobBar;
+		return this.focusedMonster != null ? this.focusedMonster.getPrintableMobInfo() : "";
 	}
 	
 	public boolean isFireMode() { return fireMode; }

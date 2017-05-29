@@ -20,6 +20,9 @@ public class EffectFire extends EffectOther {
 		m.setEffect(this);
 		maxDuration=duration=5;
 	}
+	
+	@Override
+	public void stop() {}
 
 	@Override
 	public boolean apply() {

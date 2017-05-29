@@ -18,6 +18,9 @@ public class EffectWeak extends EffectEquipement {
 	public void start(Mob m) {
 		affected=m;		
 	}
+	
+	@Override
+	public void stop() {}
 
 	@Override
 	public boolean apply() {

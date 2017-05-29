@@ -15,6 +15,9 @@ public class EffectStrong extends EffectEquipement {
 	}
 	
 	@Override
+	public void stop() {}
+	
+	@Override
 	public Color getColor() { return Resources.darkYellow; }
 	
 	@Override
