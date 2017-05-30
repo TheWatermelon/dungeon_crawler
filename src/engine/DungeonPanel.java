@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.Random;
 import javax.swing.*;
 
+import objects.effect.EffectNormal;
 import objects.looker.LookerStuff;
 import tiles.*;
 
@@ -109,6 +110,7 @@ public class DungeonPanel extends JPanel {
 		}
 		// Mise a jour de la bordure du cadre de jeu
 		Color newBorderColor = (win.getMap().getPlayer().getLooker() instanceof LookerStuff || g.getColor()==Color.black)?Resources.white:g.getColor();
+		newBorderColor = (win.getMap().getPlayer().getEffect() instanceof EffectNormal)?newBorderColor:win.getMap().getPlayer().getEffect().getColor();
 		if(borderColor!=newBorderColor) { 
 			setBorder(BorderFactory.createLineBorder(newBorderColor)); 
 			borderColor = newBorderColor; 

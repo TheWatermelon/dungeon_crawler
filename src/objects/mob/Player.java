@@ -377,7 +377,11 @@ public class Player extends Mob {
 	public Dungeon getDungeon() { return this.dungeon; }
 	
 	public String getInfo() {
-		return description+"\n"+drawHealthBar()+"\nGold : "+this.gold+" Kills : "+this.monstersKilled;
+		String strEffect="";
+		if(!(this.effect instanceof EffectNormal)) {
+			strEffect += "["+this.effect+"] ";
+		}
+		return strEffect+description+"\n"+drawHealthBar()+"\nGold : "+this.gold+" Kills : "+this.monstersKilled;
 	}
 	
 	public String getAllInfo() {

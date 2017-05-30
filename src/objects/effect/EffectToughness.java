@@ -19,7 +19,7 @@ public class EffectToughness extends EffectSelf {
 
 	@Override
 	public Color getColor() {
-		return Resources.blue;
+		return Resources.cyan;
 	}
 
 	@Override

@@ -22,14 +22,18 @@ public class InventoryMenuKeyListener extends MenuKeyListener {
         	((InventoryMenuGrid)menu).dropItem();
 		} else if(e.getKeyChar() == Resources.Commands.Up.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_UP) {
+			((InventoryMenuGrid)menu).dropWanted = false;
 			menu.decFocusedItem();
 		} else if(e.getKeyChar() == Resources.Commands.Down.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_DOWN) {
+			((InventoryMenuGrid)menu).dropWanted = false;
 			menu.incFocusedItem();
 		} else if(e.getKeyChar() == Resources.Commands.RepareWeapon.getKey() ||
 				e.getKeyChar() == Resources.Commands.RepareShield.getKey()) {
+			((InventoryMenuGrid)menu).dropWanted = false;
 			((InventoryMenuGrid)menu).repareItem();
 		} else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			((InventoryMenuGrid)menu).dropWanted = false;
 			menu.exitMenu();
 		}
 		menu.repaint();

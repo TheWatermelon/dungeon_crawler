@@ -13,19 +13,27 @@ public class InventoryMenuGrid extends Menu {
 	private static final long serialVersionUID = 1L;
 	
 	protected Inventory inv;
+	public boolean dropWanted;
+	private static final String dropText = "Press again to drop, other key to cancel";
 	
 	public InventoryMenuGrid(Window win) {
 		super(win);
 		focusedItem=0;
+		dropWanted=false;
 		inv = win.getMap().getPlayer().getInventory();
 		items = new String[inv.getMaxSize()+1];
 		initPanel();
 	}
 	
 	public void dropItem() {
-		if(focusedItem<inv.getSize()) {
-			inv.dropItem(inv.get(focusedItem));
-			initPanel();
+		if(!dropWanted) {
+			dropWanted=true;
+		} else {
+			dropWanted=false;
+			if(focusedItem<inv.getSize()) {
+				inv.dropItem(inv.get(focusedItem));
+				initPanel();
+			}
 		}
 	}
 	
@@ -87,6 +95,8 @@ public class InventoryMenuGrid extends Menu {
 			}
 		}
 		items[inv.getMaxSize()]="Back";
+		
+		if(dropWanted) { items[focusedItem] = dropText; }
 	}
 
 	@Override
