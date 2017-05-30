@@ -21,6 +21,7 @@ public class Resources {
 	public static Color white = Color.WHITE;
 	public static Color yellow = Color.YELLOW;
 	public static Color darkYellow = new Color(0xA9, 0x96, 0x2D);
+	public static Color darkerYellow = new Color(0xA9, 0x96, 0x2D, 126);
 	public static Color lightOrange = new Color(0xFF, 0x66, 0x00);
 	public static Color orange = Color.ORANGE;
 	public static Color brown = new Color(0xA5, 0x68, 0x2A);

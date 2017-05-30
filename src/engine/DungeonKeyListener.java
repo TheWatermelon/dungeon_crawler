@@ -49,10 +49,16 @@ public class DungeonKeyListener implements KeyListener {
 			} else if(e.getKeyChar() == Resources.Commands.Restart.getKey()) {
 				this.map.generateDungeon();
 				this.win.getDungeonPanel().initPlayerRectangle();
-			} else if(e.getKeyChar() == Resources.Commands.Pause.getKey() ||
-					e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			} else if(e.getKeyChar() == Resources.Commands.Pause.getKey()) {
 				this.win.showPauseMenu();
 				return;
+			} else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				if(this.win.getMap().isFireMode()) {
+					this.win.getMap().fireMode = false;
+				} else {
+					this.win.showPauseMenu();
+					return;	
+				}
 			}
 			// Refresh map on window
 			this.win.refresh();

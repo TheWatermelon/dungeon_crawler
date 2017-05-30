@@ -52,12 +52,11 @@ public class Helmet extends Equipement {
 		Random rnd = new Random();
 		int effectChance=rnd.nextInt(4);
 		
-		if(effectChance==0) {
+		if(effectChance<=1) {
 			return new EffectStrength();
-		} else if(effectChance==1) {
+		} else {
 			return new EffectToughness();
 		}
-		return new EffectNormal();
 	}
 
 }

@@ -46,7 +46,7 @@ public class Inventory {
 					((Equipement)content.get(itemSlot)).resetDurability();
 				}
 			} else { content.add(i); }
-			log.appendMessage(i+" added to Inventory");
+			log.appendMessage(i+" taken");
 			return true;
 		} else {
 			log.appendMessage("Inventory full !");

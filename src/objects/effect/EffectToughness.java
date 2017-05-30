@@ -6,7 +6,7 @@ import java.util.Random;
 import engine.Resources;
 import objects.mob.Mob;
 
-public class EffectToughness extends Effect {
+public class EffectToughness extends EffectSelf {
 	public EffectToughness() {
 		super("TGH");
 		this.duration = (new Random()).nextInt(5)+1;
@@ -14,7 +14,7 @@ public class EffectToughness extends Effect {
 
 	@Override
 	public String name() {
-		return "Toughness +"+this.duration;
+		return "Tough+"+this.duration;
 	}
 
 	@Override

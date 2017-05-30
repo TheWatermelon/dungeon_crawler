@@ -95,17 +95,17 @@ public class DungeonPanel extends JPanel {
 			g.drawChars(looker, 1, 1, offsetX+6, offsetY);
 			g.drawChars(looker, 2, 1, offsetX, offsetY-3);
 		} else {
+			if(win.getMap().getPlayer().getHelmet().getMaxDurability()!=-1) {
+				looker[2]=win.getMap().getPlayer().getHelmet().getTile().getSymbol();
+				g.setColor(win.getMap().getPlayer().getHelmet().getColor());
+				g.drawChars(looker, 2, 1, offsetX+1, offsetY-4);
+			}
 			looker[0]=win.getMap().getPlayer().getLooker().getLeft();
 			g.setColor(win.getMap().getPlayer().getLooker().getLeftColor());
 			g.drawChars(looker, 0, 1, offsetX-6, offsetY);
 			looker[1]=win.getMap().getPlayer().getLooker().getRight();
 			g.setColor(win.getMap().getPlayer().getLooker().getRightColor());
 			g.drawChars(looker, 1, 1, offsetX+6, offsetY);
-			if(win.getMap().getPlayer().getHelmet().getMaxDurability()!=-1) {
-				looker[2]=win.getMap().getPlayer().getHelmet().getTile().getSymbol();
-				g.setColor(win.getMap().getPlayer().getHelmet().getColor());
-				g.drawChars(looker, 2, 1, offsetX+1, offsetY-4);
-			}
 		}
 		// Mise a jour de la bordure du cadre de jeu
 		Color newBorderColor = (win.getMap().getPlayer().getLooker() instanceof LookerStuff || g.getColor()==Color.black)?Resources.white:g.getColor();
@@ -125,7 +125,7 @@ public class DungeonPanel extends JPanel {
 		
 		// If there is an item under the player
 		if(win.getMap().isItem(win.getMap().getPlayer().pos.x, win.getMap().getPlayer().pos.y) != null) {
-			command[0] = Resources.Commands.Take.getKey();
+			command[0] = Character.toUpperCase(Resources.Commands.Take.getKey());
 		}
 		
 		// If there are monsters (may override item help)
@@ -140,7 +140,7 @@ public class DungeonPanel extends JPanel {
 			int deltaX = win.getMap().getPlayer().pos.x + direction[i][0];
 			int deltaY = win.getMap().getPlayer().pos.y + direction[i][1];
 			if(win.getMap().isMonster(deltaX, deltaY)) {
-				command[i] = allCommands[i].getKey();
+				command[i] = Character.toUpperCase(allCommands[i].getKey());
 			}
 		}
 		

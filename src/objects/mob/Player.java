@@ -271,7 +271,8 @@ public class Player extends Mob {
 		this.h.unequip();
 		this.h = helmet;
 		this.h.equip();
-		this.h.getEffect().start(this);
+		if(this.h.getEffect() instanceof EffectSelf) { this.h.getEffect().start(this); }
+		if(this.h.getEffect() instanceof EffectEquipement) { this.h.getEffect().start(this); }
 	}
 	
 	public void repareWeapon() {

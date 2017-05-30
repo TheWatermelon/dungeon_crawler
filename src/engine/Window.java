@@ -51,21 +51,21 @@ public class Window extends JFrame {
 		this.keyListener = new DungeonKeyListener(d, d.getMap(), this);
 		this.dungeon = new DungeonPanel(this);
 		addKeyListener(keyListener);
-		
-		this.commands = Resources.Commands.Up.getKey()+","+
-				Resources.Commands.Left.getKey()+","+
-				Resources.Commands.Down.getKey()+","+
-				Resources.Commands.Right.getKey()+
+
+		this.commands = Character.toUpperCase(Resources.Commands.Up.getKey())+","+
+				Character.toUpperCase(Resources.Commands.Left.getKey())+","+
+				Character.toUpperCase(Resources.Commands.Down.getKey())+","+
+				Character.toUpperCase(Resources.Commands.Right.getKey())+
 				": Move "+getMap().getPlayer()+"  \n"+
-				Resources.Commands.Take.getKey()+": Take  \n"+
-				Resources.Commands.Inventory.getKey()+": Inventory  \n"+
-				Resources.Commands.Pause.getKey()+": Pause  ";
+				Character.toUpperCase(Resources.Commands.Take.getKey())+": Take/Use Bow  \n"+
+				Character.toUpperCase(Resources.Commands.Inventory.getKey())+": Inventory  \n"+
+				Character.toUpperCase(Resources.Commands.Pause.getKey())+": Pause  ";
 		
 		this.mainMenu = new MainMenu(this);
 		this.pauseMenu = new PauseMenu(this);
 		this.optionsMenu = new OptionsMenu(this);
 		this.commandsMenu = new CommandsMenu(this);
-		this.inventoryMenu = new InventoryMenu(this);
+		this.inventoryMenu = new InventoryMenuGrid(this);
 		
 		this.global = new JPanel();
 		this.global.setLayout(new BorderLayout());

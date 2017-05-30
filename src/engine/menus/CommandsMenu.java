@@ -45,16 +45,16 @@ public class CommandsMenu extends Menu implements Observer {
 
 	@Override
 	protected void initPanel() {
-		items[0] = "Up : "+Resources.Commands.Up.getKey();
-		items[1] = "Down : "+Resources.Commands.Down.getKey();
-		items[2] = "Left : "+Resources.Commands.Left.getKey();
-		items[3] = "Right : "+Resources.Commands.Right.getKey();
-		items[4] = "Take/Use : "+Resources.Commands.Take.getKey();
-		items[5] = "Inventory : "+Resources.Commands.Inventory.getKey();
-		items[6] = "Repare Weapon : "+Resources.Commands.RepareWeapon.getKey();
-		items[7] = "Repare Shield : "+Resources.Commands.RepareShield.getKey();
-		items[8] = "Pause : "+Resources.Commands.Pause.getKey();
-		items[9] = "Restart : "+Resources.Commands.Restart.getKey();
+		items[0] = "Up : "+Character.toUpperCase(Resources.Commands.Up.getKey());
+		items[1] = "Down : "+Character.toUpperCase(Resources.Commands.Down.getKey());
+		items[2] = "Left : "+Character.toUpperCase(Resources.Commands.Left.getKey());
+		items[3] = "Right : "+Character.toUpperCase(Resources.Commands.Right.getKey());
+		items[4] = "Take/Use : "+Character.toUpperCase(Resources.Commands.Take.getKey());
+		items[5] = "Inventory : "+Character.toUpperCase(Resources.Commands.Inventory.getKey());
+		items[6] = "Repare Weapon : "+Character.toUpperCase(Resources.Commands.RepareWeapon.getKey());
+		items[7] = "Repare Shield : "+Character.toUpperCase(Resources.Commands.RepareShield.getKey());
+		items[8] = "Pause : "+Character.toUpperCase(Resources.Commands.Pause.getKey());
+		items[9] = "Restart : "+Character.toUpperCase(Resources.Commands.Restart.getKey());
 		items[10] = "Back";
 	}
 
@@ -88,9 +88,9 @@ public class CommandsMenu extends Menu implements Observer {
 		
 		String commands;
 		if(cmd==-1) {
-			commands=Resources.Commands.Up.getKey()+": Up, "+
-					Resources.Commands.Down.getKey()+": Down, "+
-					Resources.Commands.Take.getKey()+": Change";
+			commands=Character.toUpperCase(Resources.Commands.Up.getKey())+": Up, "+
+					Character.toUpperCase(Resources.Commands.Down.getKey())+": Down, "+
+							Character.toUpperCase(Resources.Commands.Take.getKey())+": Change";
 		} else {
 			commands="Type the new key or type Enter to cancel";
 		}

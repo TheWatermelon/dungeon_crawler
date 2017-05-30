@@ -16,10 +16,10 @@ public class InventoryMenuKeyListener extends MenuKeyListener {
             menu.selectFocusedItem();
         } else if(e.getKeyChar() == Resources.Commands.Left.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_LEFT) {
-        	((InventoryMenu)menu).dropItem();
+        	((InventoryMenuGrid)menu).dropItem();
 		} else if(e.getKeyChar() == Resources.Commands.Right.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_RIGHT) {
-        	((InventoryMenu)menu).dropItem();
+        	((InventoryMenuGrid)menu).dropItem();
 		} else if(e.getKeyChar() == Resources.Commands.Up.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_UP) {
 			menu.decFocusedItem();
@@ -28,7 +28,7 @@ public class InventoryMenuKeyListener extends MenuKeyListener {
 			menu.incFocusedItem();
 		} else if(e.getKeyChar() == Resources.Commands.RepareWeapon.getKey() ||
 				e.getKeyChar() == Resources.Commands.RepareShield.getKey()) {
-			((InventoryMenu)menu).repareItem();
+			((InventoryMenuGrid)menu).repareItem();
 		} else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			menu.exitMenu();
 		}
