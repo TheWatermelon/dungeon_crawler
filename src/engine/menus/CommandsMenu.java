@@ -51,8 +51,8 @@ public class CommandsMenu extends Menu implements Observer {
 		items[3] = "Right : "+Character.toUpperCase(Resources.Commands.Right.getKey());
 		items[4] = "Take/Use : "+Character.toUpperCase(Resources.Commands.Take.getKey());
 		items[5] = "Inventory : "+Character.toUpperCase(Resources.Commands.Inventory.getKey());
-		items[6] = "Repare Weapon : "+Character.toUpperCase(Resources.Commands.RepareWeapon.getKey());
-		items[7] = "Repare Shield : "+Character.toUpperCase(Resources.Commands.RepareShield.getKey());
+		items[6] = "Repare Weapon : "+Character.toUpperCase(Resources.Commands.QuickAction1.getKey());
+		items[7] = "Repare Shield : "+Character.toUpperCase(Resources.Commands.QuickAction2.getKey());
 		items[8] = "Pause : "+Character.toUpperCase(Resources.Commands.Pause.getKey());
 		items[9] = "Restart : "+Character.toUpperCase(Resources.Commands.Restart.getKey());
 		items[10] = "Back";

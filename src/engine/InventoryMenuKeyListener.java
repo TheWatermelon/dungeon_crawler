@@ -16,24 +16,20 @@ public class InventoryMenuKeyListener extends MenuKeyListener {
             menu.selectFocusedItem();
         } else if(e.getKeyChar() == Resources.Commands.Left.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_LEFT) {
-        	((InventoryMenuGrid)menu).dropItem();
+        	((InventoryMenu)menu).dropItem();
 		} else if(e.getKeyChar() == Resources.Commands.Right.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_RIGHT) {
-        	((InventoryMenuGrid)menu).dropItem();
+        	((InventoryMenu)menu).dropItem();
 		} else if(e.getKeyChar() == Resources.Commands.Up.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_UP) {
-			((InventoryMenuGrid)menu).dropWanted = false;
 			menu.decFocusedItem();
 		} else if(e.getKeyChar() == Resources.Commands.Down.getKey() ||
         		e.getKeyCode() == KeyEvent.VK_DOWN) {
-			((InventoryMenuGrid)menu).dropWanted = false;
 			menu.incFocusedItem();
-		} else if(e.getKeyChar() == Resources.Commands.RepareWeapon.getKey() ||
-				e.getKeyChar() == Resources.Commands.RepareShield.getKey()) {
-			((InventoryMenuGrid)menu).dropWanted = false;
+		} else if(e.getKeyChar() == Resources.Commands.QuickAction1.getKey() ||
+				e.getKeyChar() == Resources.Commands.QuickAction2.getKey()) {
 			((InventoryMenuGrid)menu).repareItem();
 		} else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			((InventoryMenuGrid)menu).dropWanted = false;
 			menu.exitMenu();
 		}
 		menu.repaint();

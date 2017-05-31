@@ -768,11 +768,21 @@ public class Map extends Observable {
 	}
 	
 	public String generateMapInfo() {
+		String info="  ";
+		if(this.dungeon.getLevel()%5==0 && this.dungeon.getLevel()>0 && this.boss!=null) {
+			info+=playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+" ("+this.jerry.getFloor()+")\n  Boss Level "+this.dungeon.getLevel();
+		} else {
+			info+=playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+" ("+this.jerry.getFloor()+")\n  Level "+this.dungeon.getLevel();
+		}
+		return info;
+	}
+	
+	public String getPrintableLevelInfo() {
 		String info="";
 		if(this.dungeon.getLevel()%5==0 && this.dungeon.getLevel()>0 && this.boss!=null) {
-			info="  Step on "+this.jerry.getFloor()+"\n  "+playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+"\n  Boss Level "+this.dungeon.getLevel();
+			info+="Boss Level "+this.dungeon.getLevel();
 		} else {
-			info="  Step on "+this.jerry.getFloor()+"\n  "+playerIn(this.jerry.pos.x, this.jerry.pos.y).toString()+"\n  Level "+this.dungeon.getLevel();
+			info+="Level "+this.dungeon.getLevel();
 		}
 		return info;
 	}

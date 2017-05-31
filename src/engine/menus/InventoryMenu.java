@@ -139,8 +139,8 @@ public class InventoryMenu extends Menu {
 		String commands=Resources.Commands.Up.getKey()+": Up, "+
 						Resources.Commands.Down.getKey()+": Down, "+
 						Resources.Commands.Take.getKey()+": Use/Equip, "+
-						Resources.Commands.RepareWeapon.getKey()+"/"+
-						Resources.Commands.RepareShield.getKey()+": Repare, "+
+						Resources.Commands.QuickAction1.getKey()+"/"+
+						Resources.Commands.QuickAction2.getKey()+": Repare, "+
 						Resources.Commands.Left.getKey()+"/"+
 						Resources.Commands.Right.getKey()+": Drop";
 		g.setColor(Resources.white);

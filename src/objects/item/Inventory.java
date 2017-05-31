@@ -8,6 +8,8 @@ import objects.mob.Player;
 
 public class Inventory {
 	protected ArrayList<Item> content;
+	protected Item quickItem1;
+	protected Item quickItem2;
 	protected int size;
 	protected MessageLog log;
 	protected Player player;
@@ -15,6 +17,8 @@ public class Inventory {
 	public Inventory(int size, MessageLog log, Player p) {
 		this.size = size;
 		this.content = new ArrayList<Item>();
+		this.quickItem1 = null;
+		this.quickItem2 = null;
 		this.player = p;
 		this.log = log;
 	}
@@ -25,6 +29,14 @@ public class Inventory {
 	public int getMaxSize() { return this.size; }
 	
 	public Item get(int index) { return content.get(index); }
+
+	public void setQuickItem1(Item i) { this.quickItem1 = i; }
+	public Item getQuickItem1() { return this.quickItem1; }
+	public void resetQuickItem1() { this.quickItem1 = null; }
+	
+	public void setQuickItem2(Item i) { this.quickItem2 = i; }
+	public Item getQuickItem2() { return this.quickItem2; }
+	public void resetQuickItem2() { this.quickItem2 = null; }
 	
 	public int checkStackable(Item i) {
 		if(!i.isStackable()) { return -1; }
@@ -55,6 +67,8 @@ public class Inventory {
 	}
 	
 	public void removeItem(Item i) {
+		if(this.quickItem1==i) { this.quickItem1 = null; }
+		else if(this.quickItem2==i) { this.quickItem2 = null; }
 		content.remove(i);
 	}
 	
@@ -107,7 +121,9 @@ public class Inventory {
 					i.setVal(i.getVal()-1);
 				}
 			}
-			if(i.getVal()==0) { content.remove(i); }
+			if(i.getVal()==0) { 
+				this.removeItem(i); 
+			}
 		}
 	}
 }

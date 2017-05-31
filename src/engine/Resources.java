@@ -56,8 +56,8 @@ public class Resources {
 		Left('q'),
 		Take('f'),
 		Inventory('i'),
-		RepareWeapon('a'),
-		RepareShield('e'),
+		QuickAction1('a'),
+		QuickAction2('e'),
 		Pause('p'),
 		Restart('r');
 		

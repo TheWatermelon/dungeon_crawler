@@ -29,7 +29,7 @@ public class Window extends JFrame {
 	private JTextPane head;
 	private JTextPane head1;
 	private JTextPane head2;
-	private JTextPane foot;
+	private JPanel foot;
 	private JTextPane foot1;
 	private JTextPane foot2;
 	private DungeonPanel dungeon;
@@ -122,6 +122,7 @@ public class Window extends JFrame {
 		this.footPanel = new JPanel();
 		this.footPanel.setLayout(new GridLayout(1, 3));
 		// Map info
+		/*
 		this.foot = new JTextPane();
 		this.foot.setEditable(false);
 		this.foot.setFocusable(false);
@@ -130,6 +131,8 @@ public class Window extends JFrame {
 		this.foot.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		StyledDocument doc0 = this.foot.getStyledDocument();
 		doc0.setParagraphAttributes(0, doc0.getLength(), justify, false);
+		*/
+		this.foot = new QuickActionsPanel(map.getPlayer().getInventory());
 		this.footPanel.add(this.foot);
 		// Log
 		this.foot1 = new JTextPane();
@@ -169,9 +172,9 @@ public class Window extends JFrame {
 		if(!this.head.getText().equals(s)) {
 			this.head.setText(s);
 		}
-		if(!this.foot.getText().equals(s1)) {
-			this.foot.setText(s1);
-		}
+		
+		((QuickActionsPanel)this.foot).setInfoText(s1);
+		
 		if(!this.foot1.getText().equals(s2)) {
 			this.foot1.setText(s2);
 		}
@@ -188,9 +191,9 @@ public class Window extends JFrame {
 		if(!this.head2.getText().equals(s2)) {
 			this.head2.setText(s2);
 		}
-		if(!this.foot.getText().equals(s3)) {
-			this.foot.setText(s3);
-		}
+		
+		((QuickActionsPanel)this.foot).setInfoText(s3);
+		
 		if(!this.foot1.getText().equals(s4)) {
 			this.foot1.setText(s4);
 		}
@@ -247,7 +250,7 @@ public class Window extends JFrame {
 		add(inventoryMenu);
 		focusedPanel = inventoryMenu;
 		removeKeyListener(keyListener);
-		keyListener = new InventoryMenuKeyListener((InventoryMenuGrid) inventoryMenu);
+		keyListener = new InventoryMenuGridKeyListener((InventoryMenuGrid) inventoryMenu);
 		addKeyListener(keyListener);
 		revalidate();
 		repaint();
@@ -296,9 +299,9 @@ public class Window extends JFrame {
 		dungeon.setDirty(true);
 		if(!this.map.isPlayerDead()) {
 			this.map.printDungeon();
-			setLabel(this.map.getPlayer().getWeaponInfo(), this.map.getPlayer().getInfo(), this.map.getMobInfo(), this.map.generateMapInfo(), this.map.getLog());
+			setLabel(this.map.getPlayer().getWeaponInfo(), this.map.getPlayer().getInfo(), this.map.getMobInfo(), this.map.getPrintableLevelInfo(), this.map.getLog());
 		} else {
-			setLabel(this.map.getPlayer().getWeaponInfo(), this.map.getPlayer().getInfo(), this.map.getMobInfo(), this.map.getFinalScreen(), this.map.getLog());
+			setLabel(this.map.getPlayer().getWeaponInfo(), this.map.getPlayer().getInfo(), this.map.getMobInfo(), this.map.getPrintableLevelInfo(), this.map.getLog());
 			leftPanel.setBackground(Color.RED);
 			rightPanel.setBackground(Color.RED);
 		}

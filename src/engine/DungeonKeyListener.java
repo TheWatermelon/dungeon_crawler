@@ -37,10 +37,10 @@ public class DungeonKeyListener implements KeyListener {
 			} else if(e.getKeyChar() == Resources.Commands.Right.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				this.map.moveTo(Direction.East);
-			} else if(e.getKeyChar() == Resources.Commands.RepareWeapon.getKey()) {
-				this.map.getPlayer().repareWeapon();
-			} else if(e.getKeyChar() == Resources.Commands.RepareShield.getKey()) {
-				this.map.getPlayer().repareShield();
+			} else if(e.getKeyChar() == Resources.Commands.QuickAction1.getKey()) {
+				this.map.getPlayer().getInventory().use(this.map.getPlayer().getInventory().getQuickItem1());
+			} else if(e.getKeyChar() == Resources.Commands.QuickAction2.getKey()) {
+				this.map.getPlayer().getInventory().use(this.map.getPlayer().getInventory().getQuickItem2());
 			} else if(e.getKeyChar() == Resources.Commands.Take.getKey() ||
 					e.getKeyCode() == KeyEvent.VK_ENTER) {
 				this.map.checkAction(map.getPlayer().pos.x, map.getPlayer().pos.y);
