@@ -2,7 +2,6 @@
 
 This project is a dungeon crawler with procedural generation written in Java.
 
-###
 
 ## Game mechanics
 
@@ -16,3 +15,7 @@ This project is a dungeon crawler with procedural generation written in Java.
     - potions
 * Enchanted items
 * 3 difficulties
+
+## Screenshots
+
+![Screenshot](../blob/master/doc/09_ninth-look.png?raw=true)
