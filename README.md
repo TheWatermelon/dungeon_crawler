@@ -1,3 +1,18 @@
-# dungeon_generator
+# Dungeon Crawler
+
+This project is a dungeon crawler with procedural generation written in Java.
+
 ###
-This project is a dungeon crawler with procedural generation.
+
+## Game mechanics
+
+* Rooms and corridors
+* Monsters and bosses
+* Items
+    - swords
+    - bows
+    - shields
+    - hats
+    - potions
+* Enchanted items
+* 3 difficulties
