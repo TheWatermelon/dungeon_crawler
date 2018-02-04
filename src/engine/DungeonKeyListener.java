@@ -17,11 +17,20 @@ public class DungeonKeyListener implements KeyListener {
 		this.win = w;
 	}
 	
+	/**
+	 * refresh : reset key listener to the corresponding map and window
+	 * @param m
+	 * @param w
+	 */
 	public void refresh(Map m, Window w) {
 		this.map = m;
 		this.win = w;
 	}
 
+	/**
+	 * keyPressed : actions based on key pressed
+	 * @param e
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(!this.map.isPlayerDead()) {

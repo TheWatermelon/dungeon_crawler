@@ -58,16 +58,37 @@ public class DungeonPanel extends JPanel {
 		Resources.getInstance().theme = pickTheme();
 	}
 	
+	/**
+	 * setDirty : setter for dirty
+	 * @param val
+	 */
 	public void setDirty(boolean val) { dirty = val; }
 	
+	/**
+	 * showLight : enable isLight
+	 */
 	public void showLight() { isLight=true; }
+	/**
+	 * hideLight : disable isLight
+	 */
 	public void hideLight() { isLight=false; }
 	
+	/**
+	 * pickTheme : randomly pick a color theme for the walls
+	 * @return
+	 */
 	public Color pickTheme() {
 		this.wall = basicColors[(new Random()).nextInt(basicColors.length)];
 		return this.wall;
 	}
 	
+	/**
+	 * prepareColor : set g color based on Tile in (i;j)
+	 * @param g : brush
+	 * @param t : Tile grid
+	 * @param i : x axis
+	 * @param j : y axis
+	 */
 	public void prepareColor(Graphics g, Tile[][] t, int i, int j) {
 		if(!isLight(i, j)) { g.setColor(Resources.darkerGray); return; }
 		
@@ -84,6 +105,12 @@ public class DungeonPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * printLooker : get player looker and print it with colors
+	 * @param g
+	 * @param offsetX
+	 * @param offsetY
+	 */
 	public void printLooker(Graphics g, int offsetX, int offsetY) {
 		char[] looker = new char[3];
 		looker[0]=' ';
@@ -122,6 +149,12 @@ public class DungeonPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * printCommandsHelp : print commands for possible actions in squares around the player
+	 * @param g
+	 * @param offsetX
+	 * @param offsetY
+	 */
 	public void printCommandsHelp(Graphics g, int offsetX, int offsetY) {
 		char[] command = new char [4];
 		
@@ -165,6 +198,12 @@ public class DungeonPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * isLight : adapt player coordinates to light table to determine if a point (i;j) is in the light
+	 * @param i
+	 * @param j
+	 * @return
+	 */
 	public boolean isLight(int i, int j) {
 		if(isLight) { return true; }
 		
@@ -183,6 +222,12 @@ public class DungeonPanel extends JPanel {
 		return false;
 	}
 	
+	/**
+	 * isFireLine : adapt player coordinates to fireLine table to determine if a point (i;j) is in the fireLine
+	 * @param i
+	 * @param j
+	 * @return
+	 */
 	public boolean isFireLine(int i, int j) {
 		int limitY=(int)Math.round(fireLine.length/2);
 		int limitX=(int)Math.round(fireLine[0].length/2);
@@ -198,6 +243,9 @@ public class DungeonPanel extends JPanel {
 		return false;
 	}
 	
+	/**
+	 * initPlayerRectangle : setup a 9x9 rectangle around the player
+	 */
 	public void initPlayerRectangle() {
 		int playerX1 = (win.getMap().getPlayer().pos.x-4)<0?0:win.getMap().getPlayer().pos.x-4;
 		int playerY1 = (win.getMap().getPlayer().pos.y-4)<0?0:win.getMap().getPlayer().pos.y-4;
@@ -206,6 +254,9 @@ public class DungeonPanel extends JPanel {
 		player = new Rectangle(playerX1, playerY1, playerWidth, playerHeight);
 	}
 	
+	/**
+	 * calculatePlayerRectangle : reset player rectangle position after player's move
+	 */
 	public void calculatePlayerRectangle() {
 		Point pos = win.getMap().getPlayer().pos;
 		
@@ -220,6 +271,9 @@ public class DungeonPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * calculateWindowRectangle : create a 9x9 rectangle around the player to fix the scroll limit
+	 */
 	public void calculateWindowRectangle() {
 		int width = (int)Math.floor(getWidth()*54/782);
 		int height = (int)Math.floor(getHeight()*29/488);
@@ -230,6 +284,9 @@ public class DungeonPanel extends JPanel {
 		window = new Rectangle(x1, y1, maxX, maxY);
 	}
 	
+	/**
+	 * refreshRectangles : refresh both player and window rectangles
+	 */
 	public void refreshRectangles() {
 		if(!player.contains(win.getMap().getPlayer().pos)) {
 			calculatePlayerRectangle();
@@ -237,6 +294,9 @@ public class DungeonPanel extends JPanel {
 		calculateWindowRectangle();
 	}
 	
+	/**
+	 * refreshFireLine : draw fireLine based on player pos and fire point
+	 */
 	public void refreshFireLine() {
 		if(win.getMap().isFireMode()) {
 			int playerX = win.getMap().getPlayer().pos.x,
@@ -263,6 +323,9 @@ public class DungeonPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * refreshTable : refresh string with all symbols from Tile table
+	 */
 	protected void refreshTable() {
 		this.table="";
 		Tile[][] table = win.getMap().getTable();	
@@ -273,6 +336,9 @@ public class DungeonPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * paintComponent : draw current map on window
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.BLACK);

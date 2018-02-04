@@ -33,6 +33,9 @@ public class Dungeon {
 		win.refresh();
 	}
 	
+	/**
+	 * levelUp : ascend one level
+	 */
 	public void levelUp() {
 		log.appendMessage("Going up...");
 		currentLevel--;
@@ -43,6 +46,9 @@ public class Dungeon {
 		start();
 	}
 	
+	/**
+	 * levelDown : descend one level
+	 */
 	public void levelDown() {
 		if(currentLevel+1<levels.size()) {
 			log.appendMessage("Going down...");
@@ -57,6 +63,9 @@ public class Dungeon {
 		}
 	}
 	
+	/**
+	 * newLevel : create a level and add it to the dungeon
+	 */
 	public void newLevel() {
 		currentLevel++;
 		levels.add(new Map(Resources.getInstance().resolution*2, Resources.getInstance().resolution, this));
@@ -67,6 +76,9 @@ public class Dungeon {
 		start();
 	}
 	
+	/**
+	 * newGame : start a new game
+	 */
 	public void newGame() {
 		log.clear();
 		levels.clear();
