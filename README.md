@@ -18,4 +18,5 @@ This project is a dungeon crawler with procedural generation written in Java.
 
 ## Screenshots
 
-![Screenshot](doc/09_ninthLook.png?raw=true)
+![dungeon](doc/09_ninthLook.png?raw=true)
+![inventory](doc/09_inv_menu.png?raw=true)
