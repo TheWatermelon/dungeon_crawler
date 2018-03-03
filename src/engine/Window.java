@@ -70,7 +70,7 @@ public class Window extends JFrame {
 		this.global = new JPanel();
 		this.global.setLayout(new BorderLayout());
 		this.global.setBackground(Color.black);
-		this.global.setBorder(BorderFactory.createLineBorder(Color.white));
+		//this.global.setBorder(BorderFactory.createLineBorder(Color.white));
 
 		SimpleAttributeSet center = new SimpleAttributeSet();
 		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);

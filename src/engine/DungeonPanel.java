@@ -117,23 +117,25 @@ public class DungeonPanel extends JPanel {
 		looker[1]=' ';
 		looker[2]=' ';
 		
+		int fontSize = Resources.getDungeonFont().getSize();
+		
 		if(!win.getMap().getPlayer().getLooker().isVisible()) { 
 			g.setColor(Color.BLACK);
-			g.drawChars(looker, 0, 1, offsetX-6, offsetY);
-			g.drawChars(looker, 1, 1, offsetX+6, offsetY);
+			g.drawChars(looker, 0, 1, offsetX-(fontSize/2-1), offsetY);
+			g.drawChars(looker, 1, 1, offsetX+(fontSize/2+1), offsetY);
 			g.drawChars(looker, 2, 1, offsetX, offsetY-3);
 		} else {
 			if(win.getMap().getPlayer().getHelmet().getMaxDurability()!=-1) {
 				looker[2]=win.getMap().getPlayer().getHelmet().getTile().getSymbol();
 				g.setColor(win.getMap().getPlayer().getHelmet().getColor());
-				g.drawChars(looker, 2, 1, offsetX+1, offsetY-4);
+				g.drawChars(looker, 2, 1, offsetX, offsetY-3);
 			}
 			looker[0]=win.getMap().getPlayer().getLooker().getLeft();
 			g.setColor(win.getMap().getPlayer().getLooker().getLeftColor());
-			g.drawChars(looker, 0, 1, offsetX-6, offsetY);
+			g.drawChars(looker, 0, 1, offsetX-(fontSize/2-1), offsetY);
 			looker[1]=win.getMap().getPlayer().getLooker().getRight();
 			g.setColor(win.getMap().getPlayer().getLooker().getRightColor());
-			g.drawChars(looker, 1, 1, offsetX+6, offsetY);
+			g.drawChars(looker, 1, 1, offsetX+(fontSize/2+1), offsetY);
 		}
 		// Mise a jour de la bordure du cadre de jeu
 		Color newBorderColor = (win.getMap().getPlayer().getLooker() instanceof LookerStuff || g.getColor()==Color.black)?Resources.white:g.getColor();
@@ -157,6 +159,7 @@ public class DungeonPanel extends JPanel {
 	 */
 	public void printCommandsHelp(Graphics g, int offsetX, int offsetY) {
 		char[] command = new char [4];
+		int fontSize = Resources.getDungeonFont().getSize();
 		
 		// If there is an item under the player
 		if(win.getMap().isItem(win.getMap().getPlayer().pos.x, win.getMap().getPlayer().pos.y) != null) {
@@ -181,17 +184,17 @@ public class DungeonPanel extends JPanel {
 		
 		// Print the commands 2 cells away from the player
 		int[][] guiDirection = {
-				{offsetX, offsetY-2*16},
-				{offsetX+2*14, offsetY},
-				{offsetX, offsetY+2*16},
-				{offsetX-2*14, offsetY}
+				{offsetX, offsetY-2*(fontSize+2)},
+				{offsetX+2*fontSize, offsetY},
+				{offsetX, offsetY+2*(fontSize+2)},
+				{offsetX-2*fontSize, offsetY}
 		};
 		for(int i = 0; i<guiDirection.length; i++) {
 			if(command[i] != 0) {
 				g.setColor(new Color(255, 0, 0, 100));
-				g.drawRect(guiDirection[i][0]-3, guiDirection[i][1]-13, 14, 16);
+				g.drawRect(guiDirection[i][0]-3, guiDirection[i][1]-(fontSize-1), fontSize, (fontSize+2));
 				g.setColor(Color.black);
-				g.fillRect(guiDirection[i][0]-2, guiDirection[i][1]-12, 13, 15);
+				g.fillRect(guiDirection[i][0]-2, guiDirection[i][1]-(fontSize-2), fontSize-1, (fontSize+1));
 				g.setColor(Color.white);
 				g.drawChars(command, i, 1, guiDirection[i][0], guiDirection[i][1]);
 			}
@@ -344,7 +347,7 @@ public class DungeonPanel extends JPanel {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.WHITE);
-		g.setFont(new Font("Monospaced", Font.PLAIN, 14));
+		g.setFont(Resources.getDungeonFont());
 		
 		if(dirty) { refreshTable(); dirty=false; }
 		
@@ -370,10 +373,11 @@ public class DungeonPanel extends JPanel {
 					printLooker(g, offsetX, offsetY); 
 					playerOffsetX = offsetX;
 					playerOffsetY = offsetY;
+					g.setFont(new Font("Monospaced", Font.PLAIN, 16));
 				}
-				offsetX+=14; 
+				offsetX+=Resources.getDungeonFont().getSize(); 
 			}
-			offsetY+=16; 
+			offsetY+=Resources.getDungeonFont().getSize()+2; 
 			offsetX=15;
 		}
 		

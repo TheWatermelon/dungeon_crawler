@@ -1,11 +1,14 @@
 package engine;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Point;
 import java.util.Random;
 
 public class Resources {
 	private static Resources res;
+	
+	private static Font dungeonFont;
 	
 	private static String[] playerPrefix = { "Anu", "Ara", "Ash", "Cath", "Cer", "Chi", "Dio", "Esh", "Fau", "Fer", "Flo", "Goth", "Ha", "Heph", "Her", "Hog", "Io", "Iri", "Jan", "Jun", "Kya", "Kri", "Kuv", "Lak", "Log", "Lok", "Let", "Mith", "Mor", "Ogu", "Par", "Pah", "Rash", "Ram", "Shak", "Sham", "Sed", "Tar", "Ten", "Ven", "Vic", "Vul", "Wel", "Wot", "Yam", "Yog" };
 	private static String[] playerSuffix = { "asu", "bis", "bog", "can", "cha", "chen", "dan", "dir", "dum", "duk", "gard", "gorn", "gun", "gus", "han", "hen", "kar", "ken", "ki", "lord", "man", "mer", "mon", "mora", "nar", "no", "num", "nus", "pai", "pala", "phyn", "pheus", "qi", "qun", "ros", "rion", "sha", "shi", "sta", "thor", "tri", "ten", "van", "uru", "zyr" };
@@ -17,7 +20,7 @@ public class Resources {
 	
 	private static String[] helmetName = { "void", "Childish", "Beginner", "Apprentice", "Expert", "Master" };
 	private static String[] helmetType = { "Cap", "Hat", "Helmet" };
-	
+		
 	public static Color white = Color.WHITE;
 	public static Color yellow = Color.YELLOW;
 	public static Color darkYellow = new Color(0xA9, 0x96, 0x2D);
@@ -78,6 +81,23 @@ public class Resources {
 			res = new Resources();
 		}
 		return res;
+	}
+	
+	public static Font getDungeonFont() {
+		if(dungeonFont == null) {
+			/*
+			try {
+			     GraphicsEnvironment ge = 
+			         GraphicsEnvironment.getLocalGraphicsEnvironment();
+			     dungeonFont = Font.createFont(Font.TRUETYPE_FONT, new File("/Consolas.ttf"));
+			     ge.registerFont(dungeonFont);
+			} catch (IOException|FontFormatException e) {
+			     //Handle exception
+			}
+			*/
+			dungeonFont = new Font("Monospaced", Font.PLAIN, 16);
+		}
+	    return dungeonFont;
 	}
 	
 	public static String generatePlayerName() {
