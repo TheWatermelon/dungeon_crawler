@@ -11,8 +11,14 @@ public class KeyLogger extends Observable implements KeyListener {
 		addObserver(o);
 	}
 	
+	/**
+	 * getKey : getter for key
+	 */
 	public char getKey() { return this.key; }
 	
+	/**
+	 * keyPressed : keys and corresponding actions
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub

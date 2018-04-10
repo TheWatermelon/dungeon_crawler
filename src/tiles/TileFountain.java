@@ -12,7 +12,8 @@ public class TileFountain extends Tile {
 	
 	@Override
 	public char getSymbol() {
-		return 0xB1;
+		//return 0xB1;
+		return '1';
 	}
 
 	@Override

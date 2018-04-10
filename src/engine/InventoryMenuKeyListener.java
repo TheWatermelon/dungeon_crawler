@@ -9,6 +9,10 @@ public class InventoryMenuKeyListener extends MenuKeyListener {
 		super(m);
 	}
 
+
+/**
+ * keyPressed : keys and corresponding actions
+ */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyChar() == Resources.Commands.Take.getKey() ||

@@ -3,12 +3,16 @@ package engine;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
+
+import game.Main;
 
 public class Resources {
 	private static Resources res;
-	
-	private static Font dungeonFont;
 	
 	private static String[] playerPrefix = { "Anu", "Ara", "Ash", "Cath", "Cer", "Chi", "Dio", "Esh", "Fau", "Fer", "Flo", "Goth", "Ha", "Heph", "Her", "Hog", "Io", "Iri", "Jan", "Jun", "Kya", "Kri", "Kuv", "Lak", "Log", "Lok", "Let", "Mith", "Mor", "Ogu", "Par", "Pah", "Rash", "Ram", "Shak", "Sham", "Sed", "Tar", "Ten", "Ven", "Vic", "Vul", "Wel", "Wot", "Yam", "Yog" };
 	private static String[] playerSuffix = { "asu", "bis", "bog", "can", "cha", "chen", "dan", "dir", "dum", "duk", "gard", "gorn", "gun", "gus", "han", "hen", "kar", "ken", "ki", "lord", "man", "mer", "mon", "mora", "nar", "no", "num", "nus", "pai", "pala", "phyn", "pheus", "qi", "qun", "ros", "rion", "sha", "shi", "sta", "thor", "tri", "ten", "van", "uru", "zyr" };
@@ -20,6 +24,8 @@ public class Resources {
 	
 	private static String[] helmetName = { "void", "Childish", "Beginner", "Apprentice", "Expert", "Master" };
 	private static String[] helmetType = { "Cap", "Hat", "Helmet" };
+	
+	private static Font dungeonFont;
 		
 	public static Color white = Color.WHITE;
 	public static Color yellow = Color.YELLOW;
@@ -52,6 +58,8 @@ public class Resources {
 	
 	public boolean commandsHelp = true;
 	
+	public SpriteSheet sprites;
+	
 	public enum Commands {
 		Up('z'),
 		Right('d'),
@@ -73,7 +81,17 @@ public class Resources {
 	};
 	
 	private Resources() {
-		
+		try {
+			BufferedImage sheet = ImageIO.read(Main.class.getResourceAsStream("/char_table.png"));
+			sprites = new SpriteSheetBuilder().
+					withSpriteSheet(sheet).
+					withCols(13).
+					withRows(10).
+					withSpriteCount(130).
+					build();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static Resources getInstance() {

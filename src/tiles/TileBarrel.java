@@ -12,7 +12,8 @@ public class TileBarrel extends Tile {
 	
 	@Override
 	public char getSymbol() {
-		return 0xD4;
+		//return 0xD4;
+		return '0';
 	}
 
 	@Override

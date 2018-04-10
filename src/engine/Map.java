@@ -53,7 +53,10 @@ public class Map extends Observable {
 	public int getWidth() { return this.width; }
 	public Vector<Monster> getMonsters() { return monsters; }
 	public Vector<Item> getItems() { return items; }
-	
+
+	/**
+	 * fillRectangle : fill the tile table with a rectangle (x1, x2, y1, y2) of a tile t
+	 */
 	public void fillRectangle(Tile[][] table, int x1, int y1, int x2, int y2, Tile t) {
 		if(x1 < 0 || y1 < 0 || x2 > table[0].length-1 || y2 > table.length-1) {
 			return;
@@ -65,7 +68,9 @@ public class Map extends Observable {
 			}
 		}
 	}
-	
+	/**
+	 * checkOn : check if the rectangle (x1, x2, y1, y2) is available on the tile table
+	 */ 
 	public boolean checkOn(int x1, int y1, int x2, int y2) {
 		if(x1<0 || y1<0 || x2>=this.table[0].length || y2>=this.table.length)
 			return false;
@@ -85,6 +90,9 @@ public class Map extends Observable {
 		return true;
 	}
 	
+	/**
+	 * isVisible : check if the room containing the point (x, y) is visible
+	 */
 	public boolean isVisible(int x, int y) {
 		for(int i=0; i<rooms.size(); i++) {
 			if(x>rooms.get(i).p1.x && x<rooms.get(i).p2.x
@@ -96,10 +104,17 @@ public class Map extends Observable {
 		return true;
 	}
 	
+	/**
+	 * isWalkable : check if the tile at (x, y) is walkable
+	 */
 	public boolean isWalkable(int x, int y) {
 		return this.table[y][x].isWalkable() && !isMonster(x, y);
 	}
 	
+	/**
+	 * generateDungeon : generate a level : place rooms,
+	 * monsters, items, stairs and player
+	 */
 	public void generateDungeon() {
 		Room room;
 		int roomIndex, height, width;
@@ -147,6 +162,10 @@ public class Map extends Observable {
 		}
 	}
 
+ /**
+  * generateRectangleRoom : generate a new room next to room
+  * @param room : the room closed to the new room 
+  */
 	private void generateRectangleRoom(Room room) {
 		int wallSide, height, width, mid;
 		
@@ -200,6 +219,11 @@ public class Map extends Observable {
 		}
 	}
 	
+	/**
+	 * generateCorridor : generate a corridor next to room or a corridor.
+	 * @param room : the existing room (or corridor)
+	 * @param junction : if true, the existing room is a corridor
+	 */
 	private void generateCorridor(Room room, boolean junction) {
 		int wallSide, height, width;
 
@@ -264,12 +288,18 @@ public class Map extends Observable {
 		}
 	}
 	
+	/**
+	 * generateItems : place items in the rooms
+	 */
 	private void generateItems() {
 		for(int i=0; i<rooms.size(); i++) {
 			rooms.get(i).parsingFloor(items);
 		}
 	}
 	
+	/**
+	 * generateMonsters : generate the monsters and place them in the rooms
+	 */
 	private void generateMonsters() {
 		Room room;
 		int roomNumber, roomIndex, monsterNumber, height, width, monsterName;
@@ -310,6 +340,9 @@ public class Map extends Observable {
 		}
 	}
 	
+	/**
+	 * placeStairs : generate the stairs
+	 */
 	private void placeStairs() {
 		Room selectedRoom;
 		int height, width;
@@ -327,10 +360,16 @@ public class Map extends Observable {
 		this.stairDown = new Point(width, height);
 	}
 	
+	/**
+	 * integratePlayer : place the player in the Tile table
+	 */
 	private void integratePlayer() {
 		this.table[this.jerry.pos.y][this.jerry.pos.x] = TileFactory.getInstance().createTilePlayer();
 	}
 	
+	/**
+	 * integrateMobs : place the mobs (monsters, boss and player) in the Tile table
+	 */
 	private void integrateMobs() {
 		for(int i=0; i<this.monsters.size(); i++) {
 			this.monsters.get(i).setFloor(this.table[this.monsters.get(i).pos.y][this.monsters.get(i).pos.x]);
@@ -360,6 +399,9 @@ public class Map extends Observable {
 		integratePlayer();
 	}
 	
+	/**
+	 * integrateItems : place all common items in Tile table
+	 */
 	private void integrateItems() {
 		for(int i=0; i<items.size(); i++) {
 			if(!isMonster(items.get(i).pos.x, items.get(i).pos.y) && !(this.table[items.get(i).pos.y][items.get(i).pos.x] instanceof TileVoid) && 
@@ -371,6 +413,10 @@ public class Map extends Observable {
 		}
 	}
 	
+	/**
+	 * playerIn : get the room the player is in,
+	 * activate effects if the player steps on something
+	 */
 	private Room playerIn(int x, int y) {
 		Room room=null;
 		for(int i=0; i<this.rooms.size(); i++) {
@@ -385,16 +431,28 @@ public class Map extends Observable {
 		return room;
 	}  
 	
+	/**
+	 * isPlayerDead : check if the player is dead
+	 */
 	public boolean isPlayerDead() { return this.jerry.isDead(); }
 	
+	/**
+	 * isStairsUp : check if the tile at (x, y) is a StairUp
+	 */
 	private boolean isStairsUp(int x, int y) {
 		return this.table[y][x] instanceof TileStairsUp;
 	}
 	
+	/**
+	 * isStairsDown : check if the tile at (x, y) is a StairDown
+	 */
 	private boolean isStairsDown(int x, int y) {
 		return this.table[y][x] instanceof TileStairsDown;
 	}
 	
+	/**
+	 * isItem : return the Item at (x, y), null if no item 
+	 */
 	public Item isItem(int x, int y) {
 		for(int i=items.size()-1; i>=0; i--) {
 			if(x==items.get(i).pos.x && y==items.get(i).pos.y) {
@@ -404,6 +462,10 @@ public class Map extends Observable {
 		return null;
 	}
 	
+	/**
+	 * checkItem : trigger the action of the item placed at (x, y)
+	 * (triggered when the player steps in)
+	 */
 	private void checkItem(int x, int y) {
 		Item i = isItem(x, y);
 		
@@ -446,6 +508,10 @@ public class Map extends Observable {
 		}
 	}
 	
+	/**
+	 * checkAction : trigger the action corresponding to the point (x, y)
+	 * (triggered by a player action : take item, fire, ...)
+	 */
 	public void checkAction(int x, int y) {
 		Item i = isItem(x, y);
 		
@@ -479,6 +545,9 @@ public class Map extends Observable {
 		}
 	}
 	
+	/**
+	 * checkFire : trigger action when player fires at firePoint
+	 */
 	public void checkFire() {
 		if(fireMode) {
 			fireMode = false;
@@ -500,6 +569,10 @@ public class Map extends Observable {
 		}
 	}
 	
+	/**
+	 * checkSuccessfulFire : check if the arrow as made it to firePoint
+	 * (arrow can be bloqued by walls, barrels, fountains)
+	 */
 	public boolean checkSuccessfulFire() {
 		if(firePoint.x==jerry.pos.x && firePoint.y==jerry.pos.y) { return false; }
 		for(int i=Math.min(jerry.pos.y, firePoint.y); i<=Math.max(jerry.pos.y, firePoint.y); i++) {
@@ -516,6 +589,9 @@ public class Map extends Observable {
 		return true;
 	}
 	
+	/**
+	 * getFireRadius : count the distance in tiles from the player to the arrow
+	 */
 	public int getFireRadius() {
 		int radius=0;
 		this.dungeon.getWin().getDungeonPanel().refreshFireLine();
@@ -530,6 +606,9 @@ public class Map extends Observable {
 		return radius;
 	}
 	
+	/**
+	 * checkPlayerPos : trigger action when player stands on (x, y)
+	 */
 	private void checkPlayerPos(int x, int y) {
 		if(isStairsUp(x, y)) dungeon.levelUp();
 		else if(isStairsDown(x, y)) {
@@ -541,6 +620,9 @@ public class Map extends Observable {
 		playerIn(x, y);
 	}
 	
+	/**
+	 * checkMonster : trigger action when a monster at (x, y) is targetted
+	 */
 	private void checkMonster(int x, int y) {
 		boolean monsterKilled;
 		String battleLog="";
@@ -580,6 +662,9 @@ public class Map extends Observable {
 		if(!battleLog.equals("")) { log.appendMessage(battleLog); }
 	}
 	
+	/**
+	 * monstersAttack : provoke all monsters
+	 */
 	protected void monstersAttack() {
 		String battleLog="";
 		for(Monster m : monsters) {
@@ -592,6 +677,9 @@ public class Map extends Observable {
 		if(!battleLog.equals("")) { log.appendMessage(battleLog); }
 	}
 	
+	/**
+	 * monsterAttack : the monster m attacks only if it is arround the player
+	 */
 	private String monsterAttack(Monster m) {	
 		String battleLog="";
 		int x = jerry.pos.x, y = jerry.pos.y;
@@ -620,6 +708,9 @@ public class Map extends Observable {
 		return battleLog;
 	}
 	
+	/**
+	 * isMonster : check if a monster is at (x, y)
+	 */
 	public boolean isMonster(int x, int y) {
 		for(int i=0; i<this.monsters.size(); i++) {
 			if(((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y) && !this.monsters.get(i).isDead()) || ((x==this.jerry.pos.x) && (y==this.jerry.pos.y))) {
@@ -629,6 +720,9 @@ public class Map extends Observable {
 		return false;
 	}
 	
+	/**
+	 * getMonster : returns Monster at (x, y)
+	 */
 	public Monster getMonster(int x, int y) {
 		for(int i=0; i<this.monsters.size(); i++) {
 			if(((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y) && !this.monsters.get(i).isDead()) || ((x==this.jerry.pos.x) && (y==this.jerry.pos.y))) {
@@ -638,6 +732,9 @@ public class Map extends Observable {
 		return null;
 	}
 		
+	/**
+	 * movePlayer : move the player at (x, y), provoke the monsters and move them
+	 */
 	private void movePlayer(int x, int y) {
 		if(this.jerry.getEffect().apply() && this.jerry.applyOnWalkEffect()) {
 			this.table[this.jerry.pos.y][this.jerry.pos.x] = this.jerry.getFloor();
@@ -650,6 +747,9 @@ public class Map extends Observable {
 		moveAllMonsters();
 	}
 	
+	/**
+	 * moveTo : move the player to direction dir, and trigger actions based on new pos
+	 */
 	public void moveTo(Direction dir) {
 		if(fireMode) {
 			if(!(table[firePoint.y+dir.getY()][firePoint.x+dir.getX()] instanceof TileWall) &&
@@ -670,19 +770,31 @@ public class Map extends Observable {
 		}
 	}
 	
+	/**
+	 * placePlayerStairsUp : place the player on the stairUp
+	 */
 	public void placePlayerStairsUp() {
 		this.jerry.placeOn(this.stairUp.x, this.stairUp.y);
 	}
 	
+	/**
+	 * placePlayerStairsDown : place the player on the stairDown
+	 */
 	public void placePlayerStairsDown() {
 		this.jerry.placeOn(this.stairDown.x, this.stairDown.y);
 	}
 	
+	/**
+	 * moveMonster : move the monster m to the direction dir
+	 */
 	private void moveMonster(Monster m, Direction dir) {
 		m.pos.x+=dir.getX();
 		m.pos.y+=dir.getY();
 	}
 	
+	/**
+	 * moveAllMonsters : move all monsters to them closer to the player
+	 */
 	private void moveAllMonsters() {
 		for(Monster m : this.monsters) {
 			if(!m.isDead() && rnd.nextInt(10)>1 && isVisible(m.pos.x, m.pos.y) && m.getEffect().apply()) {
@@ -751,6 +863,9 @@ public class Map extends Observable {
 		}
 	}
 	
+	/**
+	 * printDungeon : print all objects (rooms, items, mobs) on Tile table
+	 */
 	public void printDungeon() {
 		fillRectangle(this.table, 0, 0, getWidth()-1, getHeight()-1, TileFactory.getInstance().createTileVoid());
 		for(int i=0; i<rooms.size(); i++) {
@@ -767,6 +882,9 @@ public class Map extends Observable {
 		integratePlayer();
 	}
 	
+	/**
+	 * generateMapInfo : generate a String with the dungeon level, the room, the tile the player is on
+	 */
 	public String generateMapInfo() {
 		String info="  ";
 		if(this.dungeon.getLevel()%5==0 && this.dungeon.getLevel()>0 && this.boss!=null) {
@@ -777,6 +895,9 @@ public class Map extends Observable {
 		return info;
 	}
 	
+	/**
+	 * getPrintableInfo : generate a String with a formatted dungeon level
+	 */
 	public String getPrintableLevelInfo() {
 		String info="";
 		if(this.dungeon.getLevel()%5==0 && this.dungeon.getLevel()>0 && this.boss!=null) {
@@ -787,26 +908,46 @@ public class Map extends Observable {
 		return info;
 	}
 	
+	/**
+	 * getMobInfo : generate String with the focused mob info
+	 */
 	public String getMobInfo() {
 		return this.focusedMonster != null ? this.focusedMonster.getPrintableMobInfo() : "";
 	}
 	
+	/**
+	 * isFireMode : check if the fireMode is on
+	 */
 	public boolean isFireMode() { return fireMode; }
+	/**
+	 * getFirePoint : getter for firePoint
+	 */
 	public Point getFirePoint() { return firePoint; }
-	
+	/**
+	 * getPlayer : getter for player
+	 */
 	public Player getPlayer() {
 		return this.jerry;
 	}
 	
+	/**
+	 * getLog : getter for the latest logs
+	 */
 	public String getLog() {
 		this.log.clean();
 		return this.log.getLast(4);
 	}
 	
+	/**
+	 * getFinalScreen : generate String for the death screen
+	 */
 	public String getFinalScreen() {
 		return "  Game Over\t\n  Level "+this.level+"\t\n  Press 'r' to restart";
 	}
 	
+	/**
+	 * printOnConsole : old method to print map on console
+	 */
 	public void printOnConsole() {		
 		for(int i=0; i<this.table.length; i++) {
 			for(int j=0; j<this.table[0].length; j++) {
