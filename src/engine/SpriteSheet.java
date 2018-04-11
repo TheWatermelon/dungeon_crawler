@@ -37,7 +37,7 @@ public class SpriteSheet {
 	}
 
 	public BufferedImage getColoredSprite16(BufferedImage sprite, Color c) {
-		if(this.spritesColor[this.sprites16.indexOf(sprite)] == c) {
+		if(this.spritesColor[this.sprites16.indexOf(sprite)].getRGB() == c.getRGB()) {
 			return this.coloredSprites16.get(this.sprites16.indexOf(sprite));
 		} else {
 			BufferedImage newSprite = this.coloredSprites16.get(this.sprites16.indexOf(sprite));
