@@ -114,6 +114,7 @@ public class DungeonPanel extends JPanel {
 	 */
 	public void printLooker(Graphics g, int offsetX, int offsetY) {
 		Graphics2D g2d = (Graphics2D) g.create();
+		Color newBorderColor = Color.BLACK;
 		
 		char[] looker = new char[3];
 		looker[0]=' ';
@@ -126,6 +127,7 @@ public class DungeonPanel extends JPanel {
 			g2d.drawImage(Resources.getInstance().sprites.getSprite16((int)looker[0]), offsetX-(fontSize/2-1), offsetY, this);
 			g2d.drawImage(Resources.getInstance().sprites.getSprite16((int)looker[1]), offsetX+(fontSize/2+1), offsetY, this);
 			g2d.drawImage(Resources.getInstance().sprites.getSprite16((int)looker[2]), offsetX, offsetY-3, this);
+			newBorderColor = Color.BLACK;
 			/*
 			g.setColor(Color.BLACK);
 			g.drawChars(looker, 0, 1, offsetX-(fontSize/2-1), offsetY);
@@ -136,6 +138,7 @@ public class DungeonPanel extends JPanel {
 			if(win.getMap().getPlayer().getHelmet().getMaxDurability()!=-1) {
 				looker[2]=win.getMap().getPlayer().getHelmet().getTile().getSymbol();
 				g2d.drawImage(Resources.getInstance().sprites.getSprite16((int)looker[2]), offsetX, offsetY-3, this);
+				newBorderColor = win.getMap().getPlayer().getHelmet().getColor();
 				//g.setColor(win.getMap().getPlayer().getHelmet().getColor());
 				//g.drawChars(looker, 2, 1, offsetX, offsetY-3);
 			}
@@ -149,6 +152,7 @@ public class DungeonPanel extends JPanel {
 				offsetY, 
 				this
 			);
+			newBorderColor = win.getMap().getPlayer().getLooker().getLeftColor();
 			//g.setColor(win.getMap().getPlayer().getLooker().getLeftColor());
 			//g.drawChars(looker, 0, 1, offsetX-(fontSize/2-1), offsetY);
 			looker[1]=win.getMap().getPlayer().getLooker().getRight();
@@ -161,13 +165,14 @@ public class DungeonPanel extends JPanel {
 				offsetY, 
 				this
 			);
+			newBorderColor = win.getMap().getPlayer().getLooker().getRightColor();
 			//g.setColor(win.getMap().getPlayer().getLooker().getRightColor());
 			//g.drawChars(looker, 1, 1, offsetX+(fontSize/2+1), offsetY);
 		}
 		// Mise a jour de la bordure du cadre de jeu
-		Color newBorderColor = (win.getMap().getPlayer().getLooker() instanceof LookerStuff || g.getColor()==Color.black)?Resources.white:g.getColor();
+		newBorderColor = (win.getMap().getPlayer().getLooker() instanceof LookerStuff || newBorderColor==Color.black)?Resources.white:newBorderColor;
 		newBorderColor = (win.getMap().getPlayer().getEffect() instanceof EffectNormal)?newBorderColor:win.getMap().getPlayer().getEffect().getColor();
-		if(borderColor!=newBorderColor) { 
+		if(borderColor!=newBorderColor && newBorderColor != Resources.coolRed) { 
 			setBorder(BorderFactory.createLineBorder(newBorderColor)); 
 			borderColor = newBorderColor; 
 			if(borderColor == Resources.white) {
@@ -175,6 +180,8 @@ public class DungeonPanel extends JPanel {
 			} else {
 				win.notifyColor(borderColor);
 			}
+		} else if(newBorderColor == Resources.coolRed) {
+			win.notifyColor(newBorderColor);
 		}
 	}
 	

@@ -19,8 +19,8 @@ public class Window extends JFrame {
 	private JPanel global;
 	private JPanel headPanel;
 	private JPanel footPanel;
-	private JPanel leftPanel;
-	private JPanel rightPanel;
+	private FadePanel leftPanel;
+	private FadePanel rightPanel;
 	private JPanel mainMenu;
 	private JPanel pauseMenu;
 	private JPanel optionsMenu;
@@ -113,11 +113,8 @@ public class Window extends JFrame {
 		doc2.setParagraphAttributes(0, doc2.getLength(), center, false);
 		this.headPanel.add(this.head2);
 		
-		this.leftPanel = new JPanel();
-		this.leftPanel.setBackground(Color.black);
-		
-		this.rightPanel = new JPanel();
-		this.rightPanel.setBackground(Color.black);
+		this.leftPanel = new FadePanel(Color.black);
+		this.rightPanel = new FadePanel(Color.black);
 		
 		this.footPanel = new JPanel();
 		this.footPanel.setLayout(new GridLayout(1, 3));
@@ -201,13 +198,18 @@ public class Window extends JFrame {
 	}
 	
 	public void notifyColor(Color c) {
-		this.leftPanel.setBackground(c);
-		this.rightPanel.setBackground(c);
+		this.leftPanel.setColor(c);
+		this.leftPanel.resetFading();
+		this.leftPanel.startFading();
+		
+		this.rightPanel.setColor(c);
+		this.rightPanel.resetFading();
+		this.rightPanel.startFading();
 	}
 	
 	public void denotifyColor() {
-		this.leftPanel.setBackground(Color.black);
-		this.rightPanel.setBackground(Color.black);
+		this.leftPanel.setColor(Color.BLACK);
+		this.rightPanel.setColor(Color.BLACK);
 	}
 	
 	public Map getMap() { return map; }
@@ -302,8 +304,10 @@ public class Window extends JFrame {
 			setLabel(this.map.getPlayer().getWeaponInfo(), this.map.getPlayer().getInfo(), this.map.getMobInfo(), this.map.getPrintableLevelInfo(), this.map.getLog());
 		} else {
 			setLabel(this.map.getPlayer().getWeaponInfo(), this.map.getPlayer().getInfo(), this.map.getMobInfo(), this.map.getPrintableLevelInfo(), this.map.getLog());
-			leftPanel.setBackground(Color.RED);
-			rightPanel.setBackground(Color.RED);
+			leftPanel.setColor(Color.RED);
+			leftPanel.repaint();
+			rightPanel.setColor(Color.RED);
+			rightPanel.repaint();
 		}
 		refreshListener();
 		revalidate();
