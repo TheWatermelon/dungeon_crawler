@@ -80,8 +80,9 @@ public class Window extends JFrame {
 		StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT);
 		
 		this.headPanel = new JPanel();
-		this.headPanel.setLayout(new GridLayout(1,3));
-		this.headPanel.setPreferredSize(new Dimension(820, 50));
+		this.headPanel.setLayout(new BorderLayout());
+		//this.headPanel.setLayout(new GridLayout(1,3));
+		//this.headPanel.setPreferredSize(new Dimension(820, 50));
 		// Player equipement
 		this.head = new JTextPane(); 
 		this.head.setEditable(false);
@@ -89,9 +90,10 @@ public class Window extends JFrame {
 		this.head.setBackground(Color.black);
 		this.head.setForeground(Color.white);
 		this.head.setFont(new Font("Monospaced", Font.BOLD, 12));
+		this.head.setPreferredSize(new Dimension(this.getWidth()/3, 50));
 		StyledDocument doc = this.head.getStyledDocument();
 		doc.setParagraphAttributes(0, doc.getLength(), center, false);
-		this.headPanel.add(this.head);
+		this.headPanel.add(this.head, BorderLayout.WEST);
 		// Player name, gold, health bar and monsters killed
 		this.head1 = new JTextPane(); 
 		this.head1.setEditable(false);
@@ -99,9 +101,10 @@ public class Window extends JFrame {
 		this.head1.setBackground(Color.black);
 		this.head1.setForeground(Color.white);
 		this.head1.setFont(new Font("Monospaced", Font.BOLD, 12));
+		this.head1.setPreferredSize(new Dimension(this.getWidth()/3, 50));
 		StyledDocument doc1 = this.head1.getStyledDocument();
 		doc1.setParagraphAttributes(0, doc1.getLength(), center, false);
-		this.headPanel.add(this.head1);
+		this.headPanel.add(this.head1, BorderLayout.CENTER);
 		// Monster name and health bar
 		this.head2 = new JTextPane(); 
 		this.head2.setEditable(false);
@@ -109,38 +112,30 @@ public class Window extends JFrame {
 		this.head2.setBackground(Color.black);
 		this.head2.setForeground(Color.white);
 		this.head2.setFont(new Font("Monospaced", Font.BOLD, 12));
+		this.head2.setPreferredSize(new Dimension(this.getWidth()/3, 50));
 		StyledDocument doc2 = this.head2.getStyledDocument();
 		doc2.setParagraphAttributes(0, doc2.getLength(), center, false);
-		this.headPanel.add(this.head2);
+		this.headPanel.add(this.head2, BorderLayout.EAST);
 		
 		this.leftPanel = new FadePanel(Color.black);
 		this.rightPanel = new FadePanel(Color.black);
 		
 		this.footPanel = new JPanel();
-		this.footPanel.setLayout(new GridLayout(1, 3));
-		// Map info
-		/*
-		this.foot = new JTextPane();
-		this.foot.setEditable(false);
-		this.foot.setFocusable(false);
-		this.foot.setBackground(Color.black);
-		this.foot.setForeground(Color.white);
-		this.foot.setFont(new Font("Monospaced", Font.PLAIN, 13));
-		StyledDocument doc0 = this.foot.getStyledDocument();
-		doc0.setParagraphAttributes(0, doc0.getLength(), justify, false);
-		*/
+		this.footPanel.setLayout(new BorderLayout());
+		// Inventory
 		this.foot = new QuickActionsPanel(map.getPlayer().getInventory());
-		this.footPanel.add(this.foot);
+		this.foot.setPreferredSize(new Dimension(this.getWidth()/3, 75));
+		this.footPanel.add(this.foot, BorderLayout.WEST);
 		// Log
 		this.foot1 = new JTextPane();
 		this.foot1.setEditable(false);
 		this.foot1.setFocusable(false);
 		this.foot1.setBackground(Color.black);
 		this.foot1.setForeground(Color.white);
-		//this.foot1.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		this.foot1.setPreferredSize(new Dimension(this.getWidth()/3, 50));
 		StyledDocument doc3 = this.foot1.getStyledDocument();
 		doc3.setParagraphAttributes(0, doc3.getLength(), center, false);
-		this.footPanel.add(this.foot1);
+		this.footPanel.add(this.foot1, BorderLayout.CENTER);
 		// Commands
 		this.foot2 = new JTextPane();
 		this.foot2.setEditable(false);
@@ -148,9 +143,10 @@ public class Window extends JFrame {
 		this.foot2.setBackground(Color.black);
 		this.foot2.setForeground(Color.white);
 		this.foot2.setFont(new Font("Monospaced", Font.PLAIN, 13));
+		this.foot2.setPreferredSize(new Dimension(this.getWidth()/3, 50));
 		StyledDocument doc4 = this.foot2.getStyledDocument();
 		doc4.setParagraphAttributes(0, doc4.getLength(), right, false);
-		this.footPanel.add(foot2);
+		this.footPanel.add(foot2, BorderLayout.EAST);
 		// Global panel
 		this.global.add(this.headPanel, BorderLayout.NORTH);
 		this.global.add(this.dungeon, BorderLayout.CENTER);

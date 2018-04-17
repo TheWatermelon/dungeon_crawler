@@ -181,6 +181,7 @@ public class DungeonPanel extends JPanel {
 				win.notifyColor(borderColor);
 			}
 		} else if(newBorderColor == Resources.coolRed) {
+			setBorder(BorderFactory.createLineBorder(newBorderColor)); 
 			win.notifyColor(newBorderColor);
 		}
 	}
