@@ -2,6 +2,8 @@ package engine;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 import javax.swing.*;
 
@@ -9,7 +11,7 @@ import objects.effect.EffectNormal;
 import objects.looker.LookerStuff;
 import tiles.*;
 
-public class DungeonPanel extends JPanel {
+public class DungeonPanel extends JPanel implements Observer {
 	protected static final long serialVersionUID = 1L;
 	
 	protected Window win;
@@ -172,17 +174,17 @@ public class DungeonPanel extends JPanel {
 		// Mise a jour de la bordure du cadre de jeu
 		newBorderColor = (win.getMap().getPlayer().getLooker() instanceof LookerStuff || newBorderColor==Color.black)?Resources.white:newBorderColor;
 		newBorderColor = (win.getMap().getPlayer().getEffect() instanceof EffectNormal)?newBorderColor:win.getMap().getPlayer().getEffect().getColor();
-		if(borderColor!=newBorderColor && newBorderColor != Resources.coolRed) { 
-			setBorder(BorderFactory.createLineBorder(newBorderColor)); 
+		if(borderColor != newBorderColor && 
+				newBorderColor != Resources.white && 
+				newBorderColor != Resources.coolRed &&
+				newBorderColor != Resources.brown) {
 			borderColor = newBorderColor; 
-			if(borderColor == Resources.white) {
-				win.denotifyColor();
-			} else {
-				win.notifyColor(borderColor);
-			}
-		} else if(newBorderColor == Resources.coolRed) {
-			setBorder(BorderFactory.createLineBorder(newBorderColor)); 
-			win.notifyColor(newBorderColor);
+			this.win.notifyColor(newBorderColor);
+		} else if(newBorderColor == Resources.coolRed ||
+				newBorderColor == Resources.brown) {
+			this.win.notifyColor(newBorderColor);
+		} else if(newBorderColor == Resources.white) {
+			borderColor = newBorderColor; 
 		}
 	}
 	
@@ -431,5 +433,10 @@ public class DungeonPanel extends JPanel {
 		if(Resources.getInstance().commandsHelp) {
 			printCommandsHelp(g, playerOffsetX, playerOffsetY);
 		}
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		System.out.println("update");
 	}
 }

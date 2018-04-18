@@ -50,6 +50,7 @@ public class Window extends JFrame {
 
 		this.keyListener = new DungeonKeyListener(d, d.getMap(), this);
 		this.dungeon = new DungeonPanel(this);
+		this.map.addObserver(dungeon);
 		addKeyListener(keyListener);
 
 		this.commands = Character.toUpperCase(Resources.Commands.Up.getKey())+","+
@@ -70,8 +71,7 @@ public class Window extends JFrame {
 		this.global = new JPanel();
 		this.global.setLayout(new BorderLayout());
 		this.global.setBackground(Color.black);
-		//this.global.setBorder(BorderFactory.createLineBorder(Color.white));
-
+		
 		SimpleAttributeSet center = new SimpleAttributeSet();
 		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
 		SimpleAttributeSet justify = new SimpleAttributeSet();
@@ -81,8 +81,6 @@ public class Window extends JFrame {
 		
 		this.headPanel = new JPanel();
 		this.headPanel.setLayout(new BorderLayout());
-		//this.headPanel.setLayout(new GridLayout(1,3));
-		//this.headPanel.setPreferredSize(new Dimension(820, 50));
 		// Player equipement
 		this.head = new JTextPane(); 
 		this.head.setEditable(false);
@@ -205,7 +203,9 @@ public class Window extends JFrame {
 	
 	public void denotifyColor() {
 		this.leftPanel.setColor(Color.BLACK);
+		this.leftPanel.repaint();
 		this.rightPanel.setColor(Color.BLACK);
+		this.rightPanel.repaint();
 	}
 	
 	public Map getMap() { return map; }

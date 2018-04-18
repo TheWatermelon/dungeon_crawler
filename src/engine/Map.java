@@ -765,6 +765,7 @@ public class Map extends Observable {
 			movePlayer(this.jerry.pos.x+dir.getX(), this.jerry.pos.y+dir.getY());
 		} else if(isMonster(this.jerry.pos.x+dir.getX(), this.jerry.pos.y+dir.getY())){
 			checkMonster(this.jerry.pos.x+dir.getX(), this.jerry.pos.y+dir.getY());
+			moveAllMonsters();
 		} else {
 			playerIn(this.jerry.pos.x+dir.getX(), this.jerry.pos.y+dir.getY());
 		}

@@ -36,7 +36,6 @@ public class FadePanel extends JComponent implements ActionListener {
 			int red = (this.fadeColor.getRed()-step >= 0)? this.fadeColor.getRed()-step: 0;
 			int green = (this.fadeColor.getGreen()-step >= 0)? this.fadeColor.getGreen()-step: 0;
 			int blue = (this.fadeColor.getBlue()-step >= 0)? this.fadeColor.getBlue()-step: 0;
-			//System.out.println(red+","+green+","+blue);
 			this.fadeColor = new Color(red, green, blue);
 			this.repaint();
 		} else {
@@ -52,7 +51,6 @@ public class FadePanel extends JComponent implements ActionListener {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		//System.out.println("paint");
 		g.setColor(this.fadeColor);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 	}

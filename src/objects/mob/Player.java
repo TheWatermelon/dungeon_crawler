@@ -358,6 +358,13 @@ public class Player extends Mob {
 		}
 	}
 	
+	public Color getLookerColor() {
+		if(!(this.looker instanceof LookerStuff)) {
+			return this.looker.getColor();
+		}
+		return Resources.white;
+	}
+	
 	public int getGold() { return this.gold; }
 	
 	public int getAtk() { return this.atk+this.bonusAtk+this.w.getVal(); }
