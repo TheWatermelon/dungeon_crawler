@@ -6,47 +6,38 @@ import java.awt.Graphics;
 
 import engine.*;
 
-public class OptionsMenu extends Menu {
+public class OptionsMenuNewGame extends Menu {
 	private static final long serialVersionUID = 1L;
 	
-	public OptionsMenu(Window win) {
+	public OptionsMenuNewGame(Window win) {
 		super(win);
 		focusedItem=0;
-		items = new String[7];
+		items = new String[6];
 		initPanel();
 	}
 	
 	@Override
 	public void exitMenu() {
 		focusedItem=0;
-		if(win.isMainMenu()) {
-			win.showMainMenu();
-		} else {
-			win.showPauseMenu();
-		}
+		win.showMainMenu();
 	}
 
 	@Override
 	public void selectFocusedItem() {
-		if(focusedItem == 0) {
+		if(focusedItem == 0) {			// Change player name randomly
 			win.getMap().getPlayer().changeName();
-		} else if(focusedItem == 1) {
-			win.showCommandsMenu();
-		} else if(focusedItem == 2) { 	// Toggle commands help in game
+		} else if(focusedItem == 1) { 	// Toggle commands help in game
 			Resources.getInstance().commandsHelp = !Resources.getInstance().commandsHelp;
-		} else if(focusedItem == 3) {	// Cycle resolution
+		} else if(focusedItem == 2) {	// Cycle resolution
 			Resources.getInstance().resolution=(Resources.getInstance().resolution==30)?60:30;
-		} else if(focusedItem == 4) {	// Cycle difficulty
+		} else if(focusedItem == 3) {	// Cycle difficulty
 			Resources.getInstance().difficulty=(Resources.getInstance().difficulty+1)%3;
-		} else if(focusedItem == 5) {
+		} else if(focusedItem == 4) {	// Cycle theme
 			Resources.getInstance().theme = win.getDungeonPanel().pickTheme();
-		} else {
+		} else {						// Launch game
 			focusedItem=0;
-			if(win.isMainMenu()) {
-				win.showMainMenu();
-			} else {
-				win.showPauseMenu();
-			}
+			win.getDungeon().newGame();
+			win.showDungeon();
 		}
 		repaint();
 	}
@@ -54,22 +45,20 @@ public class OptionsMenu extends Menu {
 	@Override
 	protected void initPanel() {
 		items[0] = "Name : "+win.getMap().getPlayer();
+				
+		items[1] = "Commands help in game : "+((Resources.getInstance().commandsHelp)?"Yes":"No");
 		
-		items[1] = "Commands";
-		
-		items[2] = "Commands help in game : "+((Resources.getInstance().commandsHelp)?"Yes":"No");
-		
-		items[3] = "Resolution : "+Resources.getInstance().resolution*2+"x"+Resources.getInstance().resolution;
+		items[2] = "Resolution : "+Resources.getInstance().resolution*2+"x"+Resources.getInstance().resolution;
 		
 		String difficulty="";
 		if(Resources.getInstance().difficulty==0) { difficulty="Easy"; }
 		else if(Resources.getInstance().difficulty==1) { difficulty="Normal"; }
 		else if(Resources.getInstance().difficulty==2) { difficulty="Hard"; }
-		items[4] = "Difficulty : "+difficulty;
+		items[3] = "Difficulty : "+difficulty;
 		
-		items[5] = "Theme : ";
+		items[4] = "Theme : ";
 		
-		items[6] = "Back";
+		items[5] = "Play";
 	}
 
 	@Override
@@ -81,7 +70,7 @@ public class OptionsMenu extends Menu {
 		
 		initPanel();
 		
-		g.drawString("Options", getWidth()/2-45, getHeight()/2-87);
+		g.drawString("New game options", getWidth()/2-105, getHeight()/2-95);
 		
 		int offsetY=getHeight()/2-57;
 		for(int i=0; i<items.length; i++) {
@@ -92,7 +81,7 @@ public class OptionsMenu extends Menu {
 			offsetY+=25;
 		}
 		g.setColor(Resources.getInstance().theme);
-		g.fillRect(getWidth()/2+60, getHeight()/2+53, 20, 20);
+		g.fillRect(getWidth()/2+60, getHeight()/2+25, 20, 20);
 		
 		String commands=Character.toUpperCase(Resources.Commands.Up.getKey())+": Up, "+
 				Character.toUpperCase(Resources.Commands.Down.getKey())+": Down, "+

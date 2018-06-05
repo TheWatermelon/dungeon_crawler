@@ -57,26 +57,22 @@ public class InventoryMenuGrid extends Menu {
 	@Override
 	public void incFocusedItem() {
 		focusedItem++;
-		//while(focusedItem>=inv.getSize()&&focusedItem<inv.getMaxSize()) { focusedItem++; }
 		if(focusedItem==items.length) { focusedItem=0; }
 	}
 	
 	public void incLineFocusedItem() {
 		focusedItem+=columns;
-		//while(focusedItem>=inv.getSize()&&focusedItem<inv.getMaxSize()) { focusedItem++; }
 		if(focusedItem>=inv.getMaxSize()) { focusedItem = items.length-1; }
 	}
 	
 	@Override
 	public void decFocusedItem() {
 		focusedItem--;
-		//while(focusedItem>=inv.getSize()&&focusedItem<inv.getMaxSize()) { focusedItem--; }
 		if(focusedItem<0) { focusedItem = items.length-1; }
 	}
 	
 	public void decLineFocusedItem() {
 		focusedItem-=columns;
-		//while(focusedItem>=inv.getSize()&&focusedItem<inv.getMaxSize()) { focusedItem--; }
 		if(focusedItem<0) { focusedItem = items.length-1; }
 	}
 	

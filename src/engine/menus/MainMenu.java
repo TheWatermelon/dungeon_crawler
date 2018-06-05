@@ -29,11 +29,10 @@ public class MainMenu extends Menu {
 	@Override
 	public void selectFocusedItem() {
 		if(focusedItem==0) {
-			win.getDungeon().newGame();
-			win.showDungeon();
+			win.showOptionsMenuNewGame();
 		} else if(focusedItem==1) {
 			focusedItem=0;
-			win.showOptionsMenu();
+			win.showCommandsMenu();
 		} else {
 			System.exit(0);
 		}
@@ -44,7 +43,7 @@ public class MainMenu extends Menu {
 		focusedItem=0;
 		items = new String[3];
 		items[0] = "Play";
-		items[1] = "Options";
+		items[1] = "Commands";
 		items[2] = "Quit";
 	}
 	

@@ -23,7 +23,8 @@ public class Window extends JFrame {
 	private FadePanel rightPanel;
 	private JPanel mainMenu;
 	private JPanel pauseMenu;
-	private JPanel optionsMenu;
+	private JPanel optionsMenuNewGame;
+	private JPanel optionsMenuInGame;
 	private JPanel commandsMenu;
 	private JPanel inventoryMenu;
 	private JTextPane head;
@@ -64,9 +65,10 @@ public class Window extends JFrame {
 		
 		this.mainMenu = new MainMenu(this);
 		this.pauseMenu = new PauseMenu(this);
-		this.optionsMenu = new OptionsMenu(this);
+		this.optionsMenuNewGame = new OptionsMenuNewGame(this);
+		this.optionsMenuInGame = new OptionsMenuInGame(this);
 		this.commandsMenu = new CommandsMenu(this);
-		this.inventoryMenu = new InventoryMenuGrid(this);
+		this.inventoryMenu = new InventoryMenuList(this);
 		
 		this.global = new JPanel();
 		this.global.setLayout(new BorderLayout());
@@ -247,8 +249,9 @@ public class Window extends JFrame {
 		remove(focusedPanel);
 		add(inventoryMenu);
 		focusedPanel = inventoryMenu;
+		((InventoryMenuList) inventoryMenu).resetFocusedItem();
 		removeKeyListener(keyListener);
-		keyListener = new InventoryMenuGridKeyListener((InventoryMenuGrid) inventoryMenu);
+		keyListener = new InventoryMenuListKeyListener((InventoryMenuList) inventoryMenu);
 		addKeyListener(keyListener);
 		revalidate();
 		repaint();
@@ -265,12 +268,23 @@ public class Window extends JFrame {
 		repaint();
 	}
 	
-	public void showOptionsMenu() {
+	public void showOptionsMenuNewGame() {
 		remove(focusedPanel);
-		add(optionsMenu);
-		focusedPanel = optionsMenu;
+		add(optionsMenuNewGame);
+		focusedPanel = optionsMenuNewGame;
 		removeKeyListener(keyListener);
-		keyListener = new MenuKeyListener((engine.menus.Menu)optionsMenu);
+		keyListener = new MenuKeyListener((engine.menus.Menu)optionsMenuNewGame);
+		addKeyListener(keyListener);
+		revalidate();
+		repaint();
+	}
+
+	public void showOptionsMenuInGame() {
+		remove(focusedPanel);
+		add(optionsMenuInGame);
+		focusedPanel = optionsMenuInGame;
+		removeKeyListener(keyListener);
+		keyListener = new MenuKeyListener((engine.menus.Menu)optionsMenuInGame);
 		addKeyListener(keyListener);
 		revalidate();
 		repaint();

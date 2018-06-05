@@ -26,7 +26,11 @@ public class CommandsMenu extends Menu implements Observer {
 	@Override
 	public void exitMenu() {
 		focusedItem=0;
-		win.showOptionsMenu();
+		if(win.isMainMenu()) {
+			win.showMainMenu();
+		} else {
+			win.showDungeon();
+		}
 	}
 
 	@Override
@@ -39,7 +43,7 @@ public class CommandsMenu extends Menu implements Observer {
 			items[focusedItem]+=">"+key+"<";
 		} else {
 			focusedItem=0;
-			win.showOptionsMenu();
+			this.exitMenu();
 		}
 	}
 

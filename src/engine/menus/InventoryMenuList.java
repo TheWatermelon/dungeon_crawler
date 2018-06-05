@@ -8,22 +8,30 @@ import engine.Resources;
 import engine.Window;
 import objects.item.*;
 
-public class InventoryMenu extends Menu {
+public class InventoryMenuList extends Menu {
 	private static final long serialVersionUID = 1L;
 	
 	protected Inventory inv;
+	public boolean dropWanted;
+	private static final String dropText = "Press again to drop, other key to cancel";
 
-	public InventoryMenu(Window win) {
+	public InventoryMenuList(Window win) {
 		super(win);
+		dropWanted=false;
 		inv = win.getMap().getPlayer().getInventory();
 		items = new String[inv.getMaxSize()+1];
 		initPanel();
 	}
 	
 	public void dropItem() {
-		if(focusedItem<inv.getSize()) {
-			inv.dropItem(inv.get(focusedItem));
-			initPanel();
+		if(!dropWanted) {
+			dropWanted=true;
+		} else {
+			dropWanted=false;
+			if(focusedItem<inv.getSize()) {
+				inv.dropItem(inv.get(focusedItem));
+				initPanel();
+			}
 		}
 	}
 	
@@ -32,6 +40,19 @@ public class InventoryMenu extends Menu {
 			inv.repareItem(inv.get(focusedItem));
 			initPanel();
 		}
+	}
+	
+	public void focusedItemToQuickAction1() {
+		inv.setQuickItem1(inv.get(focusedItem));
+	}
+	
+	public void focusedItemToQuickAction2() {
+		inv.setQuickItem2(inv.get(focusedItem));
+	}
+	
+	public void resetFocusedItem() {
+		if(inv.getSize() != 0) { this.focusedItem = 0; }
+		else { this.focusedItem = inv.getMaxSize(); }
 	}
 	
 	@Override
@@ -85,6 +106,8 @@ public class InventoryMenu extends Menu {
 			}
 		}
 		items[inv.getMaxSize()]="Back";
+		
+		if(dropWanted && focusedItem != inv.getMaxSize()) { items[focusedItem] = dropText; }
 	}
 
 	@Override
@@ -136,11 +159,60 @@ public class InventoryMenu extends Menu {
 			offsetY+=25;
 		}
 		
+		// Quick action 1
+		g.setColor(Resources.white);
+		int QAoffsetX = getWidth()/2-(int)Math.round(4*35);
+		int QAoffsetY= getHeight()/2-87;
+		g.drawRect(QAoffsetX, QAoffsetY, 35, 35);
+		g.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		g.drawString(""+Character.toUpperCase(Resources.Commands.QuickAction1.getKey()), QAoffsetX-15, QAoffsetY+28);
+		if(inv.getQuickItem1()!=null) {
+			if(inv.getQuickItem1() instanceof Equipement &&
+					((Equipement)inv.getQuickItem1()).isEquiped()) {
+				g.setColor(Resources.darkerYellow);
+				g.fillRect(QAoffsetX+1, QAoffsetY+1, 34, 34);
+			}
+			g.setFont(new Font("Monospaced", Font.PLAIN, 20));
+			g.setColor(inv.getQuickItem1().getColor());
+			g.drawString(""+inv.getQuickItem1().getTile().getSymbol(), QAoffsetX+12, QAoffsetY+23);
+			g.setFont(new Font("Monospaced", Font.PLAIN, 10));
+			g.setColor(Resources.white);
+			if(inv.getQuickItem1() instanceof Equipement) {
+				g.drawString(""+((Equipement)inv.getQuickItem1()).getDurability(), QAoffsetX+20, QAoffsetY+30);
+			} else {
+				g.drawString(""+inv.getQuickItem1().getVal(), QAoffsetX+20, QAoffsetY+30);
+			}
+			g.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		}
+		// Quick action 2
+		QAoffsetX = getWidth()/2+(int)Math.round(3*35);
+		g.drawRect(QAoffsetX, QAoffsetY, 35, 35);
+		g.drawString(""+Character.toUpperCase(Resources.Commands.QuickAction2.getKey()), QAoffsetX+40, QAoffsetY+28);
+		if(inv.getQuickItem2()!=null) {
+			if(inv.getQuickItem2() instanceof Equipement &&
+					((Equipement)inv.getQuickItem2()).isEquiped()) {
+				g.setColor(Resources.darkerYellow);
+				g.fillRect(QAoffsetX+1, QAoffsetY+1, 34, 34);
+			}
+			g.setFont(new Font("Monospaced", Font.PLAIN, 20));
+			g.setColor(inv.getQuickItem2().getColor());
+			g.drawString(""+inv.getQuickItem2().getTile().getSymbol(), QAoffsetX+12, QAoffsetY+23);
+			g.setFont(new Font("Monospaced", Font.PLAIN, 10));
+			g.setColor(Resources.white);
+			if(inv.getQuickItem2() instanceof Equipement) {
+				g.drawString(""+((Equipement)inv.getQuickItem2()).getDurability(), QAoffsetX+20, QAoffsetY+30);
+			} else {
+				g.drawString(""+inv.getQuickItem2().getVal(), QAoffsetX+20, QAoffsetY+30);
+			}
+		}
+		
+		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
+		
 		String commands=Resources.Commands.Up.getKey()+": Up, "+
 						Resources.Commands.Down.getKey()+": Down, "+
 						Resources.Commands.Take.getKey()+": Use/Equip, "+
 						Resources.Commands.QuickAction1.getKey()+"/"+
-						Resources.Commands.QuickAction2.getKey()+": Repare, "+
+						Resources.Commands.QuickAction2.getKey()+": Quick Slot, "+
 						Resources.Commands.Left.getKey()+"/"+
 						Resources.Commands.Right.getKey()+": Drop";
 		g.setColor(Resources.white);

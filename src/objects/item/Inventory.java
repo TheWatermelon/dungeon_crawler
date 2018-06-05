@@ -30,11 +30,17 @@ public class Inventory {
 	
 	public Item get(int index) { return content.get(index); }
 
-	public void setQuickItem1(Item i) { this.quickItem1 = i; }
+	public void setQuickItem1(Item i) {
+		if(this.quickItem2 == i) { this.resetQuickItem2(); }
+		this.quickItem1 = i; 
+	}
 	public Item getQuickItem1() { return this.quickItem1; }
 	public void resetQuickItem1() { this.quickItem1 = null; }
 	
-	public void setQuickItem2(Item i) { this.quickItem2 = i; }
+	public void setQuickItem2(Item i) {
+		if(this.quickItem1 == i) { this.resetQuickItem1(); }
+		this.quickItem2 = i; 
+	}
 	public Item getQuickItem2() { return this.quickItem2; }
 	public void resetQuickItem2() { this.quickItem2 = null; }
 	
@@ -73,7 +79,10 @@ public class Inventory {
 	}
 	
 	public void dropItem(Item i) {
-		content.remove(i);
+		if(i instanceof Equipement && ((Equipement)i).isEquiped()) {
+			player.unequip(i);
+		}
+		this.removeItem(i);
 		i.pos.x=player.pos.x;
 		i.pos.y=player.pos.y;
 		player.getDungeon().getMap().getItems().add(i);

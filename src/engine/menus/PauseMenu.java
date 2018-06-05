@@ -25,7 +25,7 @@ public class PauseMenu extends Menu {
 			win.showDungeon();
 		} else if(focusedItem==1) {
 			focusedItem=0;
-			win.showOptionsMenu();
+			win.showOptionsMenuInGame();
 		} else {
 			focusedItem=0;
 			win.showMainMenu();
