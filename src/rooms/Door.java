@@ -3,7 +3,7 @@ package rooms;
 import java.awt.Point;
 
 import tiles.Tile;
-import tiles.TileDoor;
+import tiles.TileDoorClosed;
 import tiles.TileFactory;
 
 public class Door {
@@ -14,7 +14,7 @@ public class Door {
 	public Door(Point p) {
 		this.pos = p;
 		this.open = false;
-		this.floor = TileFactory.getInstance().createTileDoor(false);
+		this.floor = TileFactory.getInstance().createTileDoorClosed();
 	}
 	
 	public Door(Point p, Tile t) {
@@ -33,8 +33,8 @@ public class Door {
 	
 	public void open() {
 		this.open = true;
-		if(this.floor instanceof TileDoor) {
-			this.floor = TileFactory.getInstance().createTileDoor(true);
+		if(this.floor instanceof TileDoorClosed) {
+			this.floor = TileFactory.getInstance().createTileDoorOpened();
 		}
 	}
 	

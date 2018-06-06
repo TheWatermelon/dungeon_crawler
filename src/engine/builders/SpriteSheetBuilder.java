@@ -1,7 +1,9 @@
-package engine;
+package engine.builders;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import engine.SpriteSheet;
 
 public class SpriteSheetBuilder {
 

@@ -139,7 +139,10 @@ public class DungeonPanel extends JPanel implements Observer {
 		} else {
 			if(win.getMap().getPlayer().getHelmet().getMaxDurability()!=-1) {
 				looker[2]=win.getMap().getPlayer().getHelmet().getTile().getSymbol();
-				g2d.drawImage(Resources.getInstance().sprites.getSprite16((int)looker[2]), offsetX, offsetY-3, this);
+				g2d.drawImage(Resources.getInstance().sprites.getColoredSprite16(
+						Resources.getInstance().sprites.getSprite16((int)looker[2]),
+						win.getMap().getPlayer().getHelmet().getColor()),
+						offsetX, offsetY-3, this);
 				newBorderColor = win.getMap().getPlayer().getHelmet().getColor();
 				//g.setColor(win.getMap().getPlayer().getHelmet().getColor());
 				//g.drawChars(looker, 2, 1, offsetX, offsetY-3);

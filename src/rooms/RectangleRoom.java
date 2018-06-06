@@ -21,6 +21,17 @@ public class RectangleRoom extends Room {
 		this.floor = TileFactory.getInstance().createTileStone();
 		this.show = false;
 	}
+
+	public RectangleRoom(Point p1, Point p2, String desc, boolean show, Vector<Door> d, Vector<Point> moss, Vector<Point> dirt) {
+		this.description = desc;
+		this.p1 = p1;
+		this.p2 = p2;
+		this.door = d;
+		this.show = show;
+		this.floor = TileFactory.getInstance().createTileStone();
+		this.moss = moss;
+		this.dirt = dirt;
+	}
 	
 	public void checkMoss(int x, int y, Vector<Item> v) {
 		Point toCheck = new Point(x, y);

@@ -16,6 +16,15 @@ public class Corridor extends Room {
 		this.floor = TileFactory.getInstance().createTileStone();
 		this.show = false;
 	}
+
+	public Corridor(Point p1, Point p2, String desc, boolean show, Vector<Door> d) {
+		this.description = desc;
+		this.p1 = p1;
+		this.p2 = p2;
+		this.door = d;
+		this.show = show;
+		this.floor = TileFactory.getInstance().createTileStone();
+	}
 	
 	public void parsingFloor(Vector<Item> v) {
 		Random rnd = new Random();

@@ -335,6 +335,7 @@ public class Player extends Mob {
 		this.gold=0;
 		setWeapon(new Weapon());
 		setShield(new Shield());
+		setHelmet(new Helmet());
 		this.inventory.clear();
 		this.effect=new EffectNormal();
 		this.looker.hide();

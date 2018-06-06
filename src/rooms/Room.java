@@ -12,10 +12,8 @@ public abstract class Room {
 	public Point p1;
 	public Point p2;
 	public Vector<Door> door;
-	protected Point item;
 	protected boolean show;
 	protected Tile floor;
-	protected Tile[][] room;
 	
 	public final Tile getTile() { return this.floor; }
 	public final int getWidth() { return (this.p2.x - this.p1.x); }

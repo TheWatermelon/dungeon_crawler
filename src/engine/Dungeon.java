@@ -20,6 +20,15 @@ public class Dungeon {
 		win.setVisible(true);
 	}
 	
+	public Dungeon(ArrayList<Map> l, Player p, int currentL) {
+		this.levels = l;
+		this.player = p;
+		this.currentLevel = currentL;
+		this.log = new MessageLog();
+		this.win = new Window("Dungeon Crawler", this);
+		this.win.setVisible(true);
+	}
+	
 	public Player getPlayer() { return player; }
 	public Map getMap() { return levels.get(currentLevel); }
 	public Window getWin() { return win; }

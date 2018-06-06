@@ -4,8 +4,8 @@ public class TileFactory {
 	private static TileFactory fact = null;
 	
 	private TileDirt tileDirt = new TileDirt();
-	private TileDoor tileClosedDoor = new TileDoor(false);
-	private TileDoor tileOpenedDoor = new TileDoor(true);
+	private TileDoorClosed tileClosedDoor = new TileDoorClosed();
+	private TileDoorOpened tileOpenedDoor = new TileDoorOpened();
 	private TileWall tileWall = new TileWall();
 	private TileVoid tileVoid = new TileVoid();
 	private TileStone tileStone = new TileStone();
@@ -33,7 +33,8 @@ public class TileFactory {
 	}
 	
 	public TileDirt createTileDirt() { return tileDirt; }
-	public TileDoor createTileDoor(boolean o) { if(o) { return tileOpenedDoor; } else { return tileClosedDoor; } }
+	public TileDoorClosed createTileDoorClosed() { return tileClosedDoor; }
+	public TileDoorOpened createTileDoorOpened() { return tileOpenedDoor; }
 	public TileWall createTileWall() { return tileWall; }
 	public TileVoid createTileVoid() { return tileVoid; }
 	public TileStone createTileStone() { return tileStone; }

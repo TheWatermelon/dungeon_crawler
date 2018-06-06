@@ -18,14 +18,47 @@ public class Monster extends Mob {
 		this.vit = pickVit();
 		this.dead = false;
 		this.pos = new Point(x, y);
-		//this.looker = LookerFactory.getInstance().createLookerMob(x, y);
-		//this.looker.hide();
 		this.description = desc;
 		this.floor = TileFactory.getInstance().createTileMonster(this.symbol);
 		this.mobTile = TileFactory.getInstance().createTileMonster(this.symbol);
 		this.log=l;
 		this.effect = new EffectNormal();
 		this.effectSpreader = pickEffect();
+	}
+
+	public Monster(char s, 
+			String desc, 
+			Point p, 
+			boolean d, 
+			int maxHP, 
+			int hp, 
+			int atk,
+			int def,
+			int vit,
+			MessageLog l,
+			Effect e,
+			Effect eSpreader) {
+		this.symbol = s;
+		this.description = desc;
+		this.pos = p;
+		this.dead = d;
+		this.maxHealth = maxHP;
+		if(dead) { 
+			this.hp = this.atk = this.def = this.vit = 0; 
+			this.floor = TileFactory.getInstance().createTileCorpse();
+			this.mobTile = TileFactory.getInstance().createTileCorpse();
+		}
+		else { 
+			this.hp = hp; 
+			this.atk = atk;
+			this.def = def;
+			this.vit = vit;
+			this.floor = TileFactory.getInstance().createTileMonster(this.symbol);
+			this.mobTile = TileFactory.getInstance().createTileMonster(this.symbol);
+		}
+		this.log = l;
+		this.effect = e;
+		this.effectSpreader = eSpreader;
 	}
 	
 	protected int pickAtk() {
@@ -45,7 +78,7 @@ public class Monster extends Mob {
 	
 	protected Effect pickEffect() {
 		Random rnd = new Random();
-		int effectChance = (new Random()).nextInt(4);
+		int effectChance = (rnd).nextInt(4);
 		
 		if(rnd.nextInt(20)==0) {
 			if(effectChance==0) {

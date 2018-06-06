@@ -9,6 +9,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import engine.builders.SpriteSheetBuilder;
 import game.Main;
 
 public class Resources {
