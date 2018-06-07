@@ -1,7 +1,6 @@
 package engine;
 
 import java.awt.Point;
-import java.util.Random;
 import java.util.Vector;
 
 import objects.item.Item;

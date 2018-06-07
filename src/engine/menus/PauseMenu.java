@@ -26,6 +26,8 @@ public class PauseMenu extends Menu {
 		} else if(focusedItem==1) {
 			focusedItem=0;
 			win.showOptionsMenuInGame();
+		} else if(focusedItem==2) {
+			win.getDungeon().save();
 		} else {
 			focusedItem=0;
 			win.showMainMenu();
@@ -35,10 +37,11 @@ public class PauseMenu extends Menu {
 	@Override
 	protected void initPanel() {
 		focusedItem = 0;
-		items = new String[3];
+		items = new String[4];
 		items[0] = "Resume";
 		items[1] = "Options";
-		items[2] = "Quit";
+		items[2] = "Save";
+		items[3] = "Quit";
 	}
 	
 	@Override

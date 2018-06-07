@@ -387,6 +387,8 @@ public class Player extends Mob {
 	
 	public int getKills() {	return this.monstersKilled; }
 	
+	public int getPotionEffect() { return this.potionEffect; }
+	
 	public Equipement getWeapon() { return this.w; }
 	
 	public Shield getShield() { return this.s; }

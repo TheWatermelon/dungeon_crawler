@@ -97,4 +97,12 @@ public class Dungeon {
 		levels.get(currentLevel).generateDungeon();
 		start();
 	}
+	
+	/**
+	 * save : save the game to <player_name>.save
+	 */
+	public void save() {
+		Saver s = new Saver(this);
+		s.save(this.player.description+".save");
+	}
 }
