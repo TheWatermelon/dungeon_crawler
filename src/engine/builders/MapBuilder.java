@@ -11,10 +11,9 @@ import objects.mob.Boss;
 import objects.mob.Monster;
 import objects.mob.Player;
 import rooms.Room;
-import tiles.Tile;
 
 public class MapBuilder {
-	protected Tile[][] table;
+	protected int height, width;
 	protected Vector<Room> rooms;
 	protected Vector<Monster> monsters;
 	protected Vector<Item> items;
@@ -31,8 +30,9 @@ public class MapBuilder {
 		return this;
 	}
 	
-	public MapBuilder withTiles(Tile[][] t) {
-		this.table = t;
+	public MapBuilder withHeightWidth(int h, int w) {
+		this.height = h;
+		this.width = w;
 		return this;
 	}
 	
@@ -62,6 +62,6 @@ public class MapBuilder {
 	}
 
 	public Map build() {
-		return new Map(this.dungeon, this.table, this.rooms, this.monsters, this.items, this.stairUp, this.stairDown);
+		return new Map(this.dungeon, this.height, this.width, this.rooms, this.monsters, this.items, this.stairUp, this.stairDown);
 	}
 }

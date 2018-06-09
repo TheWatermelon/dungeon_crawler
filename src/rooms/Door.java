@@ -23,6 +23,16 @@ public class Door {
 		this.floor = t;
 	}
 	
+	public Door(Point p, boolean opened) {
+		this.pos = p;
+		if(opened) {
+			this.open();
+		} else {
+			this.open = false;
+			this.floor = TileFactory.getInstance().createTileDoorClosed();
+		}
+	}
+	
 	public int getX() { return this.pos.x; }
 	
 	public int getY() { return this.pos.y; }
@@ -41,5 +51,9 @@ public class Door {
 	public void close() {
 		this.open = false;
 	}
-
+	
+	@Override
+	public String toString() {
+		return "("+pos.x+","+pos.y+"):"+((open)?"opened":"closed");
+	}
 }

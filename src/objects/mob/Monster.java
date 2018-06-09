@@ -144,4 +144,8 @@ public class Monster extends Mob {
 	public int getDef() {
 		return this.def;
 	}
+	
+	public Effect getEffectSpreader() {
+		return this.effectSpreader;
+	}
 }

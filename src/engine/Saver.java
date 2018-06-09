@@ -7,6 +7,10 @@ import java.io.IOException;
 import objects.item.Equipement;
 import objects.item.Item;
 import objects.item.Weapon;
+import objects.mob.Monster;
+import rooms.Corridor;
+import rooms.RectangleRoom;
+import rooms.Room;
 
 public class Saver {
 	protected Dungeon dungeon;
@@ -96,13 +100,115 @@ public class Saver {
 				bw.append('\n');
 			}
 			
+			/* Dungeon */
+			bw.write(this.dungeon.currentLevel);
+			bw.write(this.dungeon.levels.size());
+			bw.append('\n');
+			
+			/* Maps */
+			for(int i=0; i<this.dungeon.levels.size(); i++) {
+				Map m = this.dungeon.levels.get(i);
+				
+				/* Rooms */
+				bw.write(m.rooms.size());
+				bw.append('\n');
+				for(int j=0; j<m.rooms.size(); j++) {
+					Room r = m.rooms.get(j);
+					if(r instanceof Corridor) { bw.write(0); }
+					else { 
+						bw.write(1); 
+						bw.write(((RectangleRoom)r).getMossSize());
+						for(int moss=0; moss < ((RectangleRoom)r).getMossSize(); moss++) {
+							bw.write(((RectangleRoom)r).getMossAt(moss).x);
+							bw.write(((RectangleRoom)r).getMossAt(moss).y);
+						}
+						bw.write(((RectangleRoom)r).getDirtSize());
+						for(int dirt=0; dirt < ((RectangleRoom)r).getDirtSize(); dirt++) {
+							bw.write(((RectangleRoom)r).getDirtAt(dirt).x);
+							bw.write(((RectangleRoom)r).getDirtAt(dirt).y);
+						}
+					}
+					bw.append('\n');
+					bw.write(r.toString()+'\n');
+					bw.write(r.p1.x);
+					bw.write(r.p1.y);
+					bw.write(r.p2.x);
+					bw.write(r.p2.y);
+					if(r.isVisible()) { bw.write(1); }
+					else { bw.write(0); }
+					bw.append('\n');
+					bw.write(r.door.size());
+					for(int door=0; door < r.door.size(); door++) {
+						bw.write(r.door.get(door).getX());
+						bw.write(r.door.get(door).getY());
+						if(r.door.get(door).isOpen()) { bw.write(1); }
+						else { bw.write(0); }
+					}
+					bw.append('\n');
+				}
+				
+				/* Monsters */
+				bw.write(m.monsters.size());
+				bw.append('\n');
+				for(int j=0; j<m.monsters.size(); j++) {
+					Monster monster = m.monsters.get(j);
+					
+					System.out.println(monster.getSymbol()+" ("+monster.pos.x+","+monster.pos.y+") "+((monster.isDead())?"dead":"alive"));
+					
+					bw.write(monster.description+"\n");
+					bw.write(monster.pos.x);
+					bw.write(monster.pos.y);
+					bw.write((monster.isDead())?1:0);
+					if(!monster.isDead()) {
+						bw.write(monster.hp);
+						bw.write(monster.maxHealth);
+						bw.write(monster.atk);
+						bw.write(monster.def);
+						bw.write(monster.vit);
+						bw.write(monster.getEffect().getId());
+						bw.write(monster.getEffectSpreader().getId());
+					}
+					bw.append('\n');
+				}
+				
+				/* Items */
+				bw.write(m.items.size());
+				bw.append('\n');
+				for(int j=0; j<m.items.size(); j++) {
+					Item item = m.items.get(j);
+					int itemId = Resources.getItemIdFrom(item);
+					bw.write(item.pos.x);
+					bw.write(item.pos.y);
+					bw.write(itemId);
+					if(itemId > 2 && itemId < 10) {
+						bw.write(((Equipement)item).getDurability());
+						bw.write(((Equipement)item).getMaxDurability());
+						bw.write(((Equipement)item).getEffect().getId());
+					}
+					bw.write(item.getVal());
+				}
+				bw.append('\n');
+				
+				/* Stairs */
+				bw.write(m.stairDown.x);
+				bw.write(m.stairDown.y);
+				bw.write(m.stairUp.x);
+				bw.write(m.stairUp.y);
+				bw.append('\n');
+				
+				/* Height and width */
+				bw.write(m.height);
+				bw.write(m.width);
+				bw.append('\n');
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		System.out.println("Saved !");
+		System.out.println("Saved "+filename+" !");
 		
-		Loader l = new Loader();
+		Loader l = new Loader(this.dungeon);
 		l.load(filename);
 	}
 }

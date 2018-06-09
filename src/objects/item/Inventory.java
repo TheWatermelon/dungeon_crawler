@@ -23,6 +23,15 @@ public class Inventory {
 		this.log = log;
 	}
 	
+	public Inventory(int size, MessageLog l, Player p, ArrayList<Item> i, Item QI1, Item QI2) {
+		this.size = size;
+		this.log = l;
+		this.player = p;
+		this.content = i;
+		this.quickItem1 = QI1;
+		this.quickItem2 = QI2;
+	}
+	
 	public void clear() { this.content.clear(); }
 	
 	public int getSize() { return content.size(); }

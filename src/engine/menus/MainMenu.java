@@ -32,6 +32,10 @@ public class MainMenu extends Menu {
 			win.showOptionsMenuNewGame();
 		} else if(focusedItem==1) {
 			focusedItem=0;
+			win.getDungeon().load(win.getDungeon().getPlayer().description+".save");
+			win.showDungeon();
+		} else if(focusedItem==2) {
+			focusedItem=0;
 			win.showCommandsMenu();
 		} else {
 			System.exit(0);
@@ -41,10 +45,11 @@ public class MainMenu extends Menu {
 	@Override
 	protected void initPanel() {
 		focusedItem=0;
-		items = new String[3];
-		items[0] = "Play";
-		items[1] = "Commands";
-		items[2] = "Quit";
+		items = new String[4];
+		items[0] = "New game";
+		items[1] = "Load";
+		items[2] = "Commands";
+		items[3] = "Quit";
 	}
 	
 	@Override

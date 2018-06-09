@@ -380,12 +380,14 @@ public class Player extends Mob {
 	}
 	
 	public int getGold() { return this.gold; }
+	public void setGold(int val) { this.gold = val; }
 	
 	public int getAtk() { return this.atk+this.bonusAtk+this.w.getVal(); }
 	
 	public int getDef() { return this.def+this.bonusDef+this.s.getVal(); }
 	
 	public int getKills() {	return this.monstersKilled; }
+	public void setKills(int val) { this.monstersKilled = val; }
 	
 	public int getPotionEffect() { return this.potionEffect; }
 	
@@ -396,6 +398,7 @@ public class Player extends Mob {
 	public Helmet getHelmet() { return this.h; }
 	
 	public Inventory getInventory() { return this.inventory; }
+	public void setInventory(Inventory i) { this.inventory = i; }
 	
 	public Dungeon getDungeon() { return this.dungeon; }
 	

@@ -33,6 +33,11 @@ public class RectangleRoom extends Room {
 		this.dirt = dirt;
 	}
 	
+	public int getMossSize() { return moss.size(); }
+	public Point getMossAt(int index) { return moss.get(index); }
+	public int getDirtSize() { return dirt.size(); }
+	public Point getDirtAt(int index) {	return dirt.get(index); }
+	
 	public void checkMoss(int x, int y, Vector<Item> v) {
 		Point toCheck = new Point(x, y);
 		if(moss.contains(toCheck)) {

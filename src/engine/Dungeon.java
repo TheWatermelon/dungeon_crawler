@@ -20,20 +20,14 @@ public class Dungeon {
 		win.setVisible(true);
 	}
 	
-	public Dungeon(ArrayList<Map> l, Player p, int currentL) {
-		this.levels = l;
-		this.player = p;
-		this.currentLevel = currentL;
-		this.log = new MessageLog();
-		this.win = new Window("Dungeon Crawler", this);
-		this.win.setVisible(true);
-	}
-	
 	public Player getPlayer() { return player; }
 	public Map getMap() { return levels.get(currentLevel); }
 	public Window getWin() { return win; }
 	public int getLevel() { return currentLevel; }
 	public MessageLog getLog() { return log; }
+	
+	protected void setLevels(ArrayList<Map> l) { this.levels = l; }
+	protected void setCurrentLevel(int currLvl) { this.currentLevel = currLvl; }
 	
 	public void start() {
 		win.setMap(getMap());
@@ -104,5 +98,14 @@ public class Dungeon {
 	public void save() {
 		Saver s = new Saver(this);
 		s.save(this.player.description+".save");
+	}
+	
+	/**
+	 * load : load the game saved in <filename> file
+	 * @param filename
+	 */
+	public void load(String filename) {
+		Loader l = new Loader(this);
+		l.load(filename);
 	}
 }

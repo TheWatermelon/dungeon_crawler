@@ -12,7 +12,6 @@ import tiles.TileGold;
 import tiles.TileMob;
 
 public abstract class Mob {
-	public Point pos;
 	protected boolean dead;
 	protected char symbol;
 	protected Looker looker;
@@ -20,6 +19,7 @@ public abstract class Mob {
 	protected Tile mobTile;
 	protected MessageLog log;
 
+	public Point pos;
 	public String description;
 	public int hp;
 	public int maxHealth;

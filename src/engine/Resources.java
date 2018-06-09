@@ -193,12 +193,15 @@ public class Resources {
 	}
 	
 	public static int getItemIdFrom(Item i) {
-		if(i instanceof Antidote) { return 1; }
+		if(i instanceof Antidote) 			{ return 1; }
 		else if(i instanceof HealingPotion) { return 2; }
-		else if(i instanceof Bow) { return 3; }
-		else if(i instanceof Weapon) { return 4; }
-		else if(i instanceof Shield) { return 5; }
-		else if(i instanceof Helmet) { return 6; }
+		else if(i instanceof Bow) 			{ return 3; }
+		else if(i instanceof Weapon) 		{ return 4; }
+		else if(i instanceof Shield) 		{ return 5; }
+		else if(i instanceof Helmet) 		{ return 6; }
+		else if(i instanceof Barrel) 		{ return 10; }
+		else if(i instanceof Fountain) 		{ return 11; }
+		else if(i instanceof Gold)			{ return 12; }
 		else { return 0; }
 	}
 	

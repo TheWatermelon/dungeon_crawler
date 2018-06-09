@@ -48,14 +48,14 @@ public class Map extends Observable {
 		this.oldString="";
 	}
 
-	public Map(Dungeon d, Tile[][] t, Vector<Room> r, Vector<Monster> m, Vector<Item> i, Point sU, Point sD) {
+	public Map(Dungeon d, int height, int width, Vector<Room> r, Vector<Monster> m, Vector<Item> i, Point sU, Point sD) {
 		this.dungeon = d;
 		this.log = this.dungeon.getLog();
 		this.jerry = this.dungeon.getPlayer();
 		this.level = this.dungeon.getLevel();
-		this.table = t;
-		this.height = this.table.length;
-		this.width = this.table[0].length;
+		this.height = height;
+		this.width = width;
+		this.table = new Tile[height][width];
 		this.rooms = r;
 		this.monsters = m;
 		this.items = i;
