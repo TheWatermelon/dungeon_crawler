@@ -20,6 +20,18 @@ public class Bow extends Equipement {
 		{ this.description = Resources.getEquipementAt(val)+" Bow"; } 
 		else { this.description = effect.name()+" "+Resources.getEquipementAt(val)+" Bow"; }
 	}
+	
+	public Bow(int x, int y, int val, boolean isEquiped, int itemDur, int itemMaxDur, Effect e) {
+		this.pos = new Point(x, y);
+		this.val = val;
+		this.durability = itemDur;
+		this.maxDurability = itemMaxDur;
+		this.effect = e;
+		this.isEquiped = isEquiped;
+		if(effect instanceof EffectNormal) 
+		{ this.description = Resources.getEquipementAt(val)+" Bow"; } 
+		else { this.description = effect.name()+" "+Resources.getEquipementAt(val)+" Bow"; }
+	}
 
 	@Override
 	public Color getColor() {

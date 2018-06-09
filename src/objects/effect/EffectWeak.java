@@ -6,7 +6,7 @@ import engine.Resources;
 import objects.mob.*;
 
 public class EffectWeak extends EffectEquipement {
-	public EffectWeak() { super("WEK");	}
+	public EffectWeak() { super("WEK"); this.id=9;	}
 
 	@Override
 	public String name() { return "Weak"; }

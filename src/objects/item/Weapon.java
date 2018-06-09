@@ -9,7 +9,6 @@ import tiles.TileFactory;
 import engine.Resources;
 
 public class Weapon extends Equipement {
-	
 	public Weapon() {
 		this.val=0;
 		this.maxDurability = -1;
@@ -24,6 +23,18 @@ public class Weapon extends Equipement {
 		this.maxDurability = val*10;
 		this.resetDurability();
 		this.effect = pickEffect();
+		if(effect instanceof EffectNormal) 
+		{ this.description = Resources.getEquipementAt(val)+" Sword"; } 
+		else { this.description = effect.name()+" "+Resources.getEquipementAt(val)+" Sword"; }
+	}
+	
+	public Weapon(int x, int y, int val, boolean isEquiped, int itemDur, int itemMaxDur, Effect e) {
+		this.pos = new Point(x, y);
+		this.val = val;
+		this.durability = itemDur;
+		this.maxDurability = itemMaxDur;
+		this.effect = e;
+		this.isEquiped = isEquiped;
 		if(effect instanceof EffectNormal) 
 		{ this.description = Resources.getEquipementAt(val)+" Sword"; } 
 		else { this.description = effect.name()+" "+Resources.getEquipementAt(val)+" Sword"; }

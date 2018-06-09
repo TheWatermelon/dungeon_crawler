@@ -33,6 +33,19 @@ public class Helmet extends Equipement {
 		this.description += Resources.getHelmetNameAt(val) + " " + this.type;
 	}
 	
+	public Helmet(int x, int y, int value, boolean isEquiped, int dur, int maxDur, Effect e) {
+		this.pos = new Point(0, 0);
+		this.val = value;
+		this.durability = dur;
+		this.maxDurability = maxDur;
+		this.effect = e;
+		this.isEquiped = isEquiped;
+		this.description = "";
+		if(!(effect instanceof EffectNormal))
+		{ this.description += effect.name() + " "; }
+		this.description += Resources.getHelmetNameAt(val) + " " + this.type;
+	}
+	
 	public String getType() {
 		return this.type;
 	}

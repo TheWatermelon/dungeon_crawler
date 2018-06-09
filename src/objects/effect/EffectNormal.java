@@ -6,7 +6,7 @@ import engine.Resources;
 import objects.mob.Mob;
 
 public class EffectNormal extends EffectSelf {
-	public EffectNormal() { super(""); }
+	public EffectNormal() { super(""); this.id=-1; }
 	@Override
 	public String name() { return ""; }
 	@Override

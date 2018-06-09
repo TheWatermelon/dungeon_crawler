@@ -7,7 +7,7 @@ import engine.Resources;
 import objects.mob.Mob;
 
 public class EffectParalyze extends EffectOther {
-	public EffectParalyze() { super("PAR"); maxDuration=50; }
+	public EffectParalyze() { super("PAR"); maxDuration=50; this.id=3; }
 
 	@Override
 	public String name() { return "Paralyze"; }

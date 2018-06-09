@@ -7,7 +7,7 @@ import engine.Resources;
 import objects.mob.*;
 
 public class EffectStrong extends EffectEquipement {
-	public EffectStrong() { super("STR"); }
+	public EffectStrong() { super("STR"); this.id=7; }
 	
 	@Override
 	public void start(Mob m) {

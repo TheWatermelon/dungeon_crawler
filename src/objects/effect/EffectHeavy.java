@@ -7,7 +7,7 @@ import engine.Resources;
 import objects.mob.Mob;
 
 public class EffectHeavy extends EffectSelf {
-	public EffectHeavy() { super("HVY"); }
+	public EffectHeavy() { super("HVY"); this.id=2; }
 
 	@Override
 	public String name() { return "Heavy"; }

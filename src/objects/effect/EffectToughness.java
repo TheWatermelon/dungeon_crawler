@@ -10,6 +10,7 @@ public class EffectToughness extends EffectSelf {
 	public EffectToughness() {
 		super("TGH");
 		this.duration = (new Random()).nextInt(5)+1;
+		this.id=8;
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import engine.Resources;
 import objects.mob.Mob;
 
 public class EffectFire extends EffectOther {
-	public EffectFire() { super("BRN"); maxDuration=duration=5; }
+	public EffectFire() { super("BRN"); maxDuration=duration=5; this.id=0; }
 
 	@Override
 	public String name() { return "Fire"; }

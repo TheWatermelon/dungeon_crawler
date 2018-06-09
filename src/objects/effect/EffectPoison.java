@@ -6,7 +6,7 @@ import engine.Resources;
 import objects.mob.Mob;
 
 public class EffectPoison extends EffectOther {
-	public EffectPoison() { super("PSN"); maxDuration=25; }
+	public EffectPoison() { super("PSN"); maxDuration=25; this.id=4; }
 	
 	@Override
 	public String name() { return "Poison"; }

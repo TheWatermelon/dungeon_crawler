@@ -10,6 +10,7 @@ public class EffectStrength extends EffectSelf {
 	public EffectStrength() {
 		super("STR");
 		this.duration = (new Random()).nextInt(5)+1;
+		this.id=6;
 	}
 	
 	@Override

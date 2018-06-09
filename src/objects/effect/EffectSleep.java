@@ -6,7 +6,7 @@ import engine.Resources;
 import objects.mob.Mob;
 
 public class EffectSleep extends EffectOther {
-	public EffectSleep() { super("ZzZ"); maxDuration=5; }
+	public EffectSleep() { super("ZzZ"); maxDuration=5; this.id=5; }
 
 	@Override
 	public String name() { return "Sleep"; }

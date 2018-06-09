@@ -11,6 +11,8 @@ import javax.imageio.ImageIO;
 
 import engine.builders.SpriteSheetBuilder;
 import game.Main;
+import objects.effect.*;
+import objects.item.*;
 
 public class Resources {
 	private static Resources res;
@@ -161,6 +163,43 @@ public class Resources {
 	
 	public static String getHelmetType() {
 		return helmetType[(new Random()).nextInt(helmetType.length)];
+	}
+	
+	public static Effect getEffectById(int id) {
+		switch(id) {
+			case 0:
+				return new EffectFire();
+			case 1:
+				return new EffectHeal();
+			case 2:
+				return new EffectHeavy();
+			case 3:
+				return new EffectParalyze();
+			case 4:
+				return new EffectPoison();
+			case 5:
+				return new EffectSleep();
+			case 6:
+				return new EffectStrength();
+			case 7:
+				return new EffectStrong();
+			case 8:
+				return new EffectToughness();
+			case 9:
+				return new EffectWeak();
+			default:
+				return new EffectNormal();
+		}
+	}
+	
+	public static int getItemIdFrom(Item i) {
+		if(i instanceof Antidote) { return 1; }
+		else if(i instanceof HealingPotion) { return 2; }
+		else if(i instanceof Bow) { return 3; }
+		else if(i instanceof Weapon) { return 4; }
+		else if(i instanceof Shield) { return 5; }
+		else if(i instanceof Helmet) { return 6; }
+		else { return 0; }
 	}
 	
 	public static int[][] drawCircle(int size) {

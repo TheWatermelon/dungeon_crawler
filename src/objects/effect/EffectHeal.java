@@ -6,7 +6,7 @@ import engine.Resources;
 import objects.mob.*;
 
 public class EffectHeal extends EffectSelf {
-	public EffectHeal() { super("HP+"); }
+	public EffectHeal() { super("HP+"); this.id=1; }
 	
 	@Override
 	public String name() { return "Healing"; }
