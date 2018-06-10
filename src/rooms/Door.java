@@ -45,6 +45,8 @@ public class Door {
 		this.open = true;
 		if(this.floor instanceof TileDoorClosed) {
 			this.floor = TileFactory.getInstance().createTileDoorOpened();
+		} else {
+			this.floor = TileFactory.getInstance().createTileStone();
 		}
 	}
 	

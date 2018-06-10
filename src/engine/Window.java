@@ -11,7 +11,6 @@ import engine.menus.*;
 public class Window extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
-	private Map map;
 	private Dungeon d;
 	
 	private KeyListener keyListener;
@@ -22,6 +21,8 @@ public class Window extends JFrame {
 	private FadePanel leftPanel;
 	private FadePanel rightPanel;
 	private JPanel mainMenu;
+	private JPanel loadMenu;
+	private JPanel saveMenu;
 	private JPanel pauseMenu;
 	private JPanel optionsMenuNewGame;
 	private JPanel optionsMenuInGame;
@@ -43,7 +44,6 @@ public class Window extends JFrame {
 	public Window(String title, Dungeon d) {
 		super(title);
 		this.d = d;
-		this.map = d.getMap();
 		this.setSize(820, 620);
 		this.setLocation(150, 100);
 		this.setResizable(true);
@@ -51,7 +51,7 @@ public class Window extends JFrame {
 
 		this.keyListener = new DungeonKeyListener(d, d.getMap(), this);
 		this.dungeon = new DungeonPanel(this);
-		this.map.addObserver(dungeon);
+		d.getMap().addObserver(dungeon);
 		addKeyListener(keyListener);
 
 		this.commands = Character.toUpperCase(Resources.Commands.Up.getKey())+","+
@@ -64,6 +64,8 @@ public class Window extends JFrame {
 				Character.toUpperCase(Resources.Commands.Pause.getKey())+": Pause  ";
 		
 		this.mainMenu = new MainMenu(this);
+		this.loadMenu = new LoadMenu(this);
+		this.saveMenu = new SaveMenu(this);
 		this.pauseMenu = new PauseMenu(this);
 		this.optionsMenuNewGame = new OptionsMenuNewGame(this);
 		this.optionsMenuInGame = new OptionsMenuInGame(this);
@@ -123,7 +125,7 @@ public class Window extends JFrame {
 		this.footPanel = new JPanel();
 		this.footPanel.setLayout(new BorderLayout());
 		// Inventory
-		this.foot = new QuickActionsPanel(map.getPlayer().getInventory());
+		this.foot = new QuickActionsPanel(d.getMap().getPlayer().getInventory());
 		this.foot.setPreferredSize(new Dimension(this.getWidth()/3, 75));
 		this.footPanel.add(this.foot, BorderLayout.WEST);
 		// Log
@@ -210,13 +212,11 @@ public class Window extends JFrame {
 		this.rightPanel.repaint();
 	}
 	
-	public Map getMap() { return map; }
+	public Map getMap() { return d.getMap(); }
 	
-	public void setMap(Map m) {
-		this.map = m;
-	}
 	public KeyListener getKeyListener() { return keyListener; }
 	public DungeonPanel getDungeonPanel() { return dungeon; }
+	public QuickActionsPanel getQuickActionPanel() { return (QuickActionsPanel)this.foot; }
 	public Dungeon getDungeon() { return d; }
 	
 	public boolean isMainMenu() { return isMainMenu; }
@@ -233,13 +233,35 @@ public class Window extends JFrame {
 		repaint();
 	}
 	
+	public void showLoadMenu() {
+		remove(focusedPanel);
+		add(loadMenu);
+		focusedPanel = loadMenu;
+		removeKeyListener(keyListener);
+		keyListener = new LoadMenuKeyListener((LoadMenu)loadMenu);
+		addKeyListener(keyListener);
+		revalidate();
+		repaint();
+	}
+	
+	public void showSaveMenu() {
+		remove(focusedPanel);
+		add(saveMenu);
+		focusedPanel = saveMenu;
+		removeKeyListener(keyListener);
+		keyListener = new SaveMenuKeyListener((SaveMenu)saveMenu);
+		addKeyListener(keyListener);
+		revalidate();
+		repaint();
+	}
+	
 	public void showDungeon() {
 		isMainMenu=false;
 		remove(focusedPanel);
 		add(global);
 		focusedPanel = global;
 		removeKeyListener(keyListener);
-		keyListener = new DungeonKeyListener(d, map, this);
+		keyListener = new DungeonKeyListener(d, d.getMap(), this);
 		addKeyListener(keyListener);
 		revalidate();
 		refresh();
@@ -249,6 +271,7 @@ public class Window extends JFrame {
 		remove(focusedPanel);
 		add(inventoryMenu);
 		focusedPanel = inventoryMenu;
+		((InventoryMenuList) inventoryMenu).setInventory(this.d.getPlayer().getInventory());
 		((InventoryMenuList) inventoryMenu).resetFocusedItem();
 		removeKeyListener(keyListener);
 		keyListener = new InventoryMenuListKeyListener((InventoryMenuList) inventoryMenu);
@@ -303,17 +326,30 @@ public class Window extends JFrame {
 	
 	public void refreshListener() {
 		if(keyListener instanceof DungeonKeyListener) {
-			((DungeonKeyListener)keyListener).refresh(this.map, this);
+			((DungeonKeyListener)keyListener).refresh(d.getMap(), this);
 		}
+	}
+	
+	public void refreshCommands() {
+		this.commands = Character.toUpperCase(Resources.Commands.Up.getKey())+","+
+				Character.toUpperCase(Resources.Commands.Left.getKey())+","+
+				Character.toUpperCase(Resources.Commands.Down.getKey())+","+
+				Character.toUpperCase(Resources.Commands.Right.getKey())+
+				": Move "+getMap().getPlayer()+"  \n"+
+				Character.toUpperCase(Resources.Commands.Take.getKey())+": Take/Use Bow  \n"+
+				Character.toUpperCase(Resources.Commands.Inventory.getKey())+": Inventory  \n"+
+				Character.toUpperCase(Resources.Commands.Pause.getKey())+": Pause  ";
 	}
 	
 	public void refresh() {
 		dungeon.setDirty(true);
-		if(!this.map.isPlayerDead()) {
-			this.map.printDungeon();
-			setLabel(this.map.getPlayer().getWeaponInfo(), this.map.getPlayer().getInfo(), this.map.getMobInfo(), this.map.getPrintableLevelInfo(), this.map.getLog());
+		if(!d.getMap().isPlayerDead()) {
+			d.getMap().printDungeon();
+			refreshCommands();
+			setLabel(d.getMap().getPlayer().getWeaponInfo(), d.getMap().getPlayer().getInfo(), d.getMap().getMobInfo(), d.getMap().getPrintableLevelInfo(), d.getMap().getLog());
 		} else {
-			setLabel(this.map.getPlayer().getWeaponInfo(), this.map.getPlayer().getInfo(), this.map.getMobInfo(), this.map.getPrintableLevelInfo(), this.map.getLog());
+			refreshCommands();
+			setLabel(d.getMap().getPlayer().getWeaponInfo(), d.getMap().getPlayer().getInfo(), d.getMap().getMobInfo(), d.getMap().getPrintableLevelInfo(), d.getMap().getLog());
 			leftPanel.setColor(Color.RED);
 			leftPanel.repaint();
 			rightPanel.setColor(Color.RED);

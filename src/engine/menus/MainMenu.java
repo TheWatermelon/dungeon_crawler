@@ -32,8 +32,7 @@ public class MainMenu extends Menu {
 			win.showOptionsMenuNewGame();
 		} else if(focusedItem==1) {
 			focusedItem=0;
-			win.getDungeon().load(win.getDungeon().getPlayer().description+".save");
-			win.showDungeon();
+			win.showLoadMenu();
 		} else if(focusedItem==2) {
 			focusedItem=0;
 			win.showCommandsMenu();

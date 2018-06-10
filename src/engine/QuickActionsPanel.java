@@ -24,6 +24,8 @@ public class QuickActionsPanel extends JPanel {
 	public void setInfoText(String s) { info = s; }
 	public String getInfoText() { return info; }
 	
+	public void setInventory(Inventory i) { this.inv = i; }
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.BLACK);

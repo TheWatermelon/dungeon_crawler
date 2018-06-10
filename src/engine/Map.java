@@ -63,6 +63,7 @@ public class Map extends Observable {
 		this.stairUp = sU;
 		this.rnd = new Random();
 		this.oldString="";
+		//this.printDungeon();
 	}
 	
 	public Tile[][] getTable() { return this.table; }

@@ -212,7 +212,7 @@ public class Player extends Mob {
 	}
 	
 	private void checkWeapon() {
-		if(this.w.getDurability()==0) {
+		if(this.w.getDurability()<=0) {
 			inventory.removeItem(this.w);
 			this.w.unequip();
 			if(this.w instanceof Weapon) {
@@ -225,7 +225,7 @@ public class Player extends Mob {
 	}
 	
 	private void checkShield() {
-		if(this.s.getDurability()==0) {
+		if(this.s.getDurability()<=0) {
 			inventory.removeItem(this.s);
 			this.s.unequip();
 			this.s = new Shield();
@@ -234,7 +234,7 @@ public class Player extends Mob {
 	}
 	
 	private void checkHelmet() {
-		if(this.h.getDurability()==0) {
+		if(this.h.getDurability()<=0) {
 			inventory.removeItem(this.h);
 			this.h.unequip();
 			log.appendMessage(this.h.getType()+" fell off!");

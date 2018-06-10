@@ -376,7 +376,7 @@ public class DungeonPanel extends JPanel implements Observer {
 	 */
 	protected void refreshTable() {
 		this.table="";
-		Tile[][] table = win.getMap().getTable();	
+		Tile[][] table = win.getMap().getTable();
 		for(int i=0; i<table.length; i++) {
 			for(int j=0; j<table[0].length; j++) {
 				this.table+=table[i][j].getSymbol();

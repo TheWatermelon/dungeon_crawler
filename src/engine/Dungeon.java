@@ -30,7 +30,6 @@ public class Dungeon {
 	protected void setCurrentLevel(int currLvl) { this.currentLevel = currLvl; }
 	
 	public void start() {
-		win.setMap(getMap());
 		win.getDungeonPanel().initPlayerRectangle();
 		win.refreshListener();
 		win.refresh();
@@ -40,6 +39,7 @@ public class Dungeon {
 	 * levelUp : ascend one level
 	 */
 	public void levelUp() {
+		if(currentLevel-1<0) { log.appendMessage("You can't escape..."); return; }
 		log.appendMessage("Going up...");
 		currentLevel--;
 		if(currentLevel%5==0 && currentLevel!=0) { 
@@ -105,7 +105,11 @@ public class Dungeon {
 	 * @param filename
 	 */
 	public void load(String filename) {
+		this.log.clear();
 		Loader l = new Loader(this);
 		l.load(filename);
+		this.win.getDungeonPanel().initPlayerRectangle();
+		this.win.getQuickActionPanel().setInventory(this.player.getInventory());
+		this.log.appendMessage("Welcome back "+this.getPlayer()+" !");
 	}
 }

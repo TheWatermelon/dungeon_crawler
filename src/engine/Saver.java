@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import objects.item.Equipement;
+import objects.item.Helmet;
 import objects.item.Item;
 import objects.item.Weapon;
 import objects.mob.Monster;
@@ -56,6 +57,7 @@ public class Saver {
 			bw.write(this.dungeon.getPlayer().getKills());
 			bw.write(this.dungeon.getPlayer().getPotionEffect());
 			bw.write(this.dungeon.getPlayer().getEffect().getId());
+			bw.write(this.dungeon.getPlayer().getEffect().getDuration());
 			bw.append('\n');
 			/* Player's helmet */
 			bw.write(this.dungeon.getPlayer().getHelmet().getType()+'\n');
@@ -63,6 +65,7 @@ public class Saver {
 			bw.write(this.dungeon.getPlayer().getHelmet().getDurability());
 			bw.write(this.dungeon.getPlayer().getHelmet().getMaxDurability());
 			bw.write(this.dungeon.getPlayer().getHelmet().getEffect().getId());
+			bw.write(this.dungeon.getPlayer().getHelmet().getEffect().getDuration());
 			bw.append('\n');
 			/* Player's weapon */
 			if(this.dungeon.getPlayer().getWeapon() instanceof Weapon) { bw.write(1); }
@@ -71,12 +74,14 @@ public class Saver {
 			bw.write(this.dungeon.getPlayer().getWeapon().getDurability());
 			bw.write(this.dungeon.getPlayer().getWeapon().getMaxDurability());
 			bw.write(this.dungeon.getPlayer().getWeapon().getEffect().getId());
+			bw.write(this.dungeon.getPlayer().getWeapon().getEffect().getDuration());
 			bw.append('\n');
 			/* Player's shield */
 			bw.write(this.dungeon.getPlayer().getShield().getVal());
 			bw.write(this.dungeon.getPlayer().getShield().getDurability());
 			bw.write(this.dungeon.getPlayer().getShield().getMaxDurability());
 			bw.write(this.dungeon.getPlayer().getShield().getEffect().getId());
+			bw.write(this.dungeon.getPlayer().getShield().getEffect().getDuration());
 			bw.append('\n');
 			/* Player inventory */
 			bw.write(this.dungeon.getPlayer().getInventory().getMaxSize());
@@ -92,8 +97,13 @@ public class Saver {
 					bw.write(((Equipement)current).getDurability());
 					bw.write(((Equipement)current).getMaxDurability());
 					bw.write(((Equipement)current).getEffect().getId());
+					bw.write(((Equipement)current).getEffect().getDuration());
 				}
 				bw.write(current.getVal());
+				if(itemId == 6) { 
+					bw.append('\n'); 
+					bw.write(((Helmet)current).getType()+"\n"); 
+				}
 				if(current == this.dungeon.getPlayer().getInventory().getQuickItem1()) { bw.write(1); }
 				else if(current == this.dungeon.getPlayer().getInventory().getQuickItem2()) { bw.write(2); }
 				else { bw.write(0); }
@@ -153,8 +163,6 @@ public class Saver {
 				for(int j=0; j<m.monsters.size(); j++) {
 					Monster monster = m.monsters.get(j);
 					
-					System.out.println(monster.getSymbol()+" ("+monster.pos.x+","+monster.pos.y+") "+((monster.isDead())?"dead":"alive"));
-					
 					bw.write(monster.description+"\n");
 					bw.write(monster.pos.x);
 					bw.write(monster.pos.y);
@@ -166,7 +174,9 @@ public class Saver {
 						bw.write(monster.def);
 						bw.write(monster.vit);
 						bw.write(monster.getEffect().getId());
+						bw.write(monster.getEffect().getDuration());
 						bw.write(monster.getEffectSpreader().getId());
+						bw.write(monster.getEffectSpreader().getDuration());
 					}
 					bw.append('\n');
 				}
@@ -184,8 +194,13 @@ public class Saver {
 						bw.write(((Equipement)item).getDurability());
 						bw.write(((Equipement)item).getMaxDurability());
 						bw.write(((Equipement)item).getEffect().getId());
+						bw.write(((Equipement)item).getEffect().getDuration());
 					}
 					bw.write(item.getVal());
+					if(itemId == 6) { 
+						bw.append('\n'); 
+						bw.write(((Helmet)item).getType()+"\n"); 
+					}
 				}
 				bw.append('\n');
 				
@@ -205,10 +220,5 @@ public class Saver {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println("Saved "+filename+" !");
-		
-		Loader l = new Loader(this.dungeon);
-		l.load(filename);
 	}
 }

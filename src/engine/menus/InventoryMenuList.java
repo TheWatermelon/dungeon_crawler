@@ -23,6 +23,8 @@ public class InventoryMenuList extends Menu {
 		initPanel();
 	}
 	
+	public void setInventory(Inventory i) { this.inv = i; }
+	
 	public void dropItem() {
 		if(!dropWanted) {
 			dropWanted=true;
