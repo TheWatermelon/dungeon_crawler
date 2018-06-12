@@ -1,6 +1,7 @@
 package engine;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -18,6 +19,9 @@ public class Saver {
 	
 	public Saver(Dungeon d) {
 		this.dungeon = d;
+		
+		File f = new File("saves");
+		if(!f.exists()) { f.mkdir(); }
 	}
 	
 	public void save(String filename) {

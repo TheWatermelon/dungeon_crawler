@@ -54,7 +54,8 @@ public class InventoryMenuListKeyListener extends MenuKeyListener {
 			} else {
 				((InventoryMenuList)menu).focusedItemToQuickAction2();
 			}
-		} else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+		} else if(e.getKeyCode() == KeyEvent.VK_ESCAPE ||
+				e.getKeyChar() == Resources.Commands.Inventory.getKey()) {
 			if(((InventoryMenuList)menu).dropWanted) { 
 				((InventoryMenuList)menu).dropWanted = false; 
 			} else {

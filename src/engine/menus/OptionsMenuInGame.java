@@ -12,23 +12,27 @@ public class OptionsMenuInGame extends Menu {
 	public OptionsMenuInGame(Window win) {
 		super(win);
 		focusedItem=0;
-		items = new String[4];
+		items = new String[5];
 		initPanel();
 	}
 	
 	@Override
 	public void exitMenu() {
+		Resources.playExitMenuSound();
 		focusedItem=0;
 		win.showPauseMenu();
 	}
 
 	@Override
 	public void selectFocusedItem() {
+		Resources.playSelectMenuSound();
 		if(focusedItem == 0) {			// Show commands menu
 			win.showCommandsMenu();
 		} else if(focusedItem == 1) { 	// Toggle commands help in game
 			Resources.getInstance().commandsHelp = !Resources.getInstance().commandsHelp;
-		} else if(focusedItem == 2) {	// Cycle theme
+		} else if(focusedItem == 2) { 	// Toggle sounds
+			Resources.getInstance().music = !Resources.getInstance().music;
+		} else if(focusedItem == 3) {	// Cycle theme
 			Resources.getInstance().theme = win.getDungeonPanel().pickTheme();
 		} else {						// Exit game
 			this.exitMenu();
@@ -39,12 +43,14 @@ public class OptionsMenuInGame extends Menu {
 	@Override
 	protected void initPanel() {
 		items[0] = "Commands";
-				
+		
 		items[1] = "Commands help in game : "+((Resources.getInstance().commandsHelp)?"Yes":"No");
 		
-		items[2] = "Theme : ";
+		items[2] = "Sounds : "+((Resources.getInstance().music)?"Yes":"No");
 		
-		items[3] = "Back";
+		items[3] = "Theme : ";
+		
+		items[4] = "Back";
 	}
 
 	@Override
@@ -67,7 +73,7 @@ public class OptionsMenuInGame extends Menu {
 			offsetY+=25;
 		}
 		g.setColor(Resources.getInstance().theme);
-		g.fillRect(getWidth()/2+55, getHeight()/2-23, 20, 20);
+		g.fillRect(getWidth()/2+55, getHeight()/2+2, 20, 20);
 		
 		String commands=Character.toUpperCase(Resources.Commands.Up.getKey())+": Up, "+
 				Character.toUpperCase(Resources.Commands.Down.getKey())+": Down, "+

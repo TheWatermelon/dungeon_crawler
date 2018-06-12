@@ -16,11 +16,13 @@ public class PauseMenu extends Menu {
 	@Override
 	public void exitMenu() {
 		focusedItem=0;
+		Resources.playExitMenuSound();
 		win.showDungeon();
 	}
 	
 	@Override
 	public void selectFocusedItem() {
+		Resources.playSelectMenuSound();
 		if(focusedItem==0) {
 			win.showDungeon();
 		} else if(focusedItem==1) {

@@ -520,6 +520,10 @@ public class Map extends Observable {
 			} else if(content == 2) {
 				log.appendMessage("Open Barrel... Boom!");
 				this.jerry.harm(25);
+			} else if(content == 3) {
+				Monster m = new Monster(i.pos.x, i.pos.y, Resources.getLetterAt(level), Resources.getNameAt(level), log);
+				this.monsters.add(m);
+				log.appendMessage("A "+m.description+" popped out the barrel !");
 			} else {
 				log.appendMessage("Open Barrel... Nothing!");
 			}
@@ -538,6 +542,7 @@ public class Map extends Observable {
 			this.jerry.addGold(i.getVal());
 			items.remove(i);
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerGold(this.jerry.pos.x, this.jerry.pos.y));
+			SoundPlayer.play("resources/sounds/01_gold.wav");
 		}
 		else if(i instanceof Fountain) {
 			if(!jerry.isFullHealth()) {
@@ -582,7 +587,11 @@ public class Map extends Observable {
 		} else {
 			if(jerry.getWeapon() instanceof Bow) {
 				fireMode = true;
-				firePoint = new Point(jerry.pos.x, jerry.pos.y);
+				if(this.focusedMonster != null) {
+					firePoint = new Point(this.focusedMonster.pos.x, this.focusedMonster.pos.y);
+				} else {
+					firePoint = new Point(jerry.pos.x, jerry.pos.y);
+				}
 			}
 		}
 	}

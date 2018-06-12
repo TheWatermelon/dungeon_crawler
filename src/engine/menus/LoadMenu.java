@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.io.File;
+import java.util.ArrayList;
 
 import engine.Resources;
 import engine.Window;
@@ -34,6 +35,7 @@ public class LoadMenu extends Menu {
 
 	@Override
 	public void selectFocusedItem() {
+		Resources.playSelectMenuSound();
 		if(focusedItem<5) {
 			if(!this.shortFilenames[this.focusedItem].equals("empty")) {
 				this.win.getDungeon().load(this.shortFilenames[this.focusedItem]+".save");
@@ -47,17 +49,22 @@ public class LoadMenu extends Menu {
 
 	@Override
 	public void exitMenu() {
+		Resources.playExitMenuSound();
 		this.win.showMainMenu();
 	}
 
 	@Override
 	protected void initPanel() {
 		File saveDir = new File("saves");
-		File[] fList = saveDir.listFiles();
+		if(!saveDir.exists()) { saveDir.mkdir(); }
+		File[] tempFilesList = saveDir.listFiles();
+		ArrayList<String> fList = new ArrayList<String>();
+		
+		for(File f : tempFilesList) { if(f.getName().endsWith(".save")) fList.add(f.getName()); }
 		
 		for(int i=0; i<5; i++) {
-			if(fList.length > i) {
-				shortFilenames[i] = fList[i].getName().substring(0, fList[i].getName().length()-5);
+			if(fList.size() > i) {
+				shortFilenames[i] = fList.get(i).substring(0, fList.get(i).length()-5);
 			} else {
 				shortFilenames[i] = "empty";
 			}

@@ -45,10 +45,12 @@ public class InventoryMenuList extends Menu {
 	}
 	
 	public void focusedItemToQuickAction1() {
+		Resources.playSelectMenuSound();
 		inv.setQuickItem1(inv.get(focusedItem));
 	}
 	
 	public void focusedItemToQuickAction2() {
+		Resources.playSelectMenuSound();
 		inv.setQuickItem2(inv.get(focusedItem));
 	}
 	
@@ -62,6 +64,7 @@ public class InventoryMenuList extends Menu {
 		focusedItem++;
 		while(focusedItem>=inv.getSize()&&focusedItem<inv.getMaxSize()) { focusedItem++; }
 		if(focusedItem==items.length) { focusedItem=0; }
+		Resources.playCycleMenuSound();
 	}
 	
 	@Override
@@ -69,16 +72,19 @@ public class InventoryMenuList extends Menu {
 		focusedItem--;
 		while(focusedItem>=inv.getSize()&&focusedItem<inv.getMaxSize()) { focusedItem--; }
 		if(focusedItem<0) { focusedItem = items.length-1; }
+		Resources.playCycleMenuSound();
 	}
 	
 	@Override
 	public void exitMenu() {
+		Resources.playExitMenuSound();
 		focusedItem=0;
 		win.showDungeon();
 	}
 
 	@Override
 	public void selectFocusedItem() {
+		Resources.playSelectMenuSound();
 		if(focusedItem<inv.getSize()) {
 			inv.use(inv.get(focusedItem));
 			initPanel();

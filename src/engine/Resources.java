@@ -61,6 +61,8 @@ public class Resources {
 	
 	public boolean commandsHelp = true;
 	
+	public boolean music = true;
+	
 	public SpriteSheet sprites;
 	
 	public enum Commands {
@@ -298,6 +300,15 @@ public class Resources {
 			return new Point(x, -y);
 		default:
 			return new Point(x, y);
+		}
 	}
-}
+	
+	public static void playCycleMenuSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/00_cycle_menu.wav"); }
+	public static void playSelectMenuSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/00_select_menu.wav"); }
+	public static void playExitMenuSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/00_exit_menu.wav"); }
+	public static void playGoldSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/01_gold.wav"); }
+	public static void playFountainSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/01_fountain.wav"); }
+	public static void playBarrelSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/01_barrel.wav"); }
+	public static void playDoorSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/01_door.wav"); }
+	public static void playPickupSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/01_pickup.wav"); }
 }

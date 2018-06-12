@@ -25,6 +25,7 @@ public class CommandsMenu extends Menu implements Observer {
 	
 	@Override
 	public void exitMenu() {
+		Resources.playExitMenuSound();
 		focusedItem=0;
 		if(win.isMainMenu()) {
 			win.showMainMenu();
@@ -35,6 +36,7 @@ public class CommandsMenu extends Menu implements Observer {
 
 	@Override
 	public void selectFocusedItem() {
+		Resources.playSelectMenuSound();
 		if(focusedItem<10) { // Commands
 			cmd=(cmd==-1)?focusedItem:-1;
 			if(cmd==-1) { initPanel(); return; }

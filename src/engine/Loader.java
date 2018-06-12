@@ -2,6 +2,7 @@ package engine;
 
 import java.awt.Point;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ public class Loader {
 	
 	public Loader(Dungeon d) {
 		this.dungeon = d;
+		
+		File f = new File("saves");
+		if(!f.exists()) { f.mkdir(); }
 	}
 	
 	private int convertNeg(int val) {

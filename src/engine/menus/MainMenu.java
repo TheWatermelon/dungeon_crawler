@@ -23,11 +23,13 @@ public class MainMenu extends Menu {
 	
 	@Override
 	public void exitMenu() {
+		Resources.playExitMenuSound();
 		System.exit(0);
 	}
 
 	@Override
 	public void selectFocusedItem() {
+		Resources.playSelectMenuSound();
 		if(focusedItem==0) {
 			win.showOptionsMenuNewGame();
 		} else if(focusedItem==1) {
