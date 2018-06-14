@@ -57,8 +57,10 @@ public abstract class Room {
 		
 		for(int i=0; i<this.door.size(); i++) {
 			if(x == this.door.get(i).getX() && y == this.door.get(i).getY()) { 
-				this.door.get(i).open();
-				show();
+				if(!this.door.get(i).isOpen()) {
+					this.door.get(i).open();
+					show();
+				}
 				ret =  true;
 			}
 		}

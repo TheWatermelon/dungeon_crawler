@@ -9,10 +9,15 @@ import engine.*;
 public class OptionsMenuInGame extends Menu {
 	private static final long serialVersionUID = 1L;
 	
+	private String[] volumeSettings = {"No", "100%", "80%", "60%", "40%", "20%"};
+	private int musicIndex, soundIndex;
+	
 	public OptionsMenuInGame(Window win) {
 		super(win);
 		focusedItem=0;
-		items = new String[5];
+		items = new String[6];
+		musicIndex = 0;
+		soundIndex = 1;
 		initPanel();
 	}
 	
@@ -30,9 +35,27 @@ public class OptionsMenuInGame extends Menu {
 			win.showCommandsMenu();
 		} else if(focusedItem == 1) { 	// Toggle commands help in game
 			Resources.getInstance().commandsHelp = !Resources.getInstance().commandsHelp;
-		} else if(focusedItem == 2) { 	// Toggle sounds
-			Resources.getInstance().music = !Resources.getInstance().music;
-		} else if(focusedItem == 3) {	// Cycle theme
+		} else if(focusedItem == 2) { 	// Cycle music settings
+			musicIndex = (musicIndex+1) % 6;
+			if(musicIndex==0) {
+				Resources.getInstance().music = false;
+				Resources.getInstance().musicVolume = 0.0f;
+			} else if(musicIndex==1) {
+				Resources.getInstance().music = true;
+			} else {
+				Resources.getInstance().musicVolume-=16.0f;
+			}
+		} else if(focusedItem == 3) { 	// Cycle sounds settings
+			soundIndex = (soundIndex+1) % 6;
+			if(soundIndex==0) {
+				Resources.getInstance().sound = false;
+				Resources.getInstance().soundVolume = 0.0f;
+			} else if(soundIndex==1) {
+				Resources.getInstance().sound = true;
+			} else {
+				Resources.getInstance().soundVolume-=16.0f;
+			}
+		} else if(focusedItem == 4) {	// Cycle theme
 			Resources.getInstance().theme = win.getDungeonPanel().pickTheme();
 		} else {						// Exit game
 			this.exitMenu();
@@ -45,12 +68,14 @@ public class OptionsMenuInGame extends Menu {
 		items[0] = "Commands";
 		
 		items[1] = "Commands help in game : "+((Resources.getInstance().commandsHelp)?"Yes":"No");
+
+		items[2] = "Music : "+volumeSettings[musicIndex];
+
+		items[3] = "Sounds : "+volumeSettings[soundIndex];
 		
-		items[2] = "Sounds : "+((Resources.getInstance().music)?"Yes":"No");
+		items[4] = "Theme : ";
 		
-		items[3] = "Theme : ";
-		
-		items[4] = "Back";
+		items[5] = "Back";
 	}
 
 	@Override
@@ -73,7 +98,7 @@ public class OptionsMenuInGame extends Menu {
 			offsetY+=25;
 		}
 		g.setColor(Resources.getInstance().theme);
-		g.fillRect(getWidth()/2+55, getHeight()/2+2, 20, 20);
+		g.fillRect(getWidth()/2+55, getHeight()/2+27, 20, 20);
 		
 		String commands=Character.toUpperCase(Resources.Commands.Up.getKey())+": Up, "+
 				Character.toUpperCase(Resources.Commands.Down.getKey())+": Down, "+

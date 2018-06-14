@@ -3,6 +3,7 @@ package objects.item;
 import java.util.ArrayList;
 
 import engine.MessageLog;
+import engine.Resources;
 import objects.effect.EffectNormal;
 import objects.mob.Player;
 
@@ -127,6 +128,7 @@ public class Inventory {
 				}
 			}
 			player.stuffLooker();
+			Resources.playEquipSound();
 		} else if(i instanceof Potion) {
 			if(i instanceof Antidote) {
 				if(!(player.getEffect() instanceof EffectNormal)) {

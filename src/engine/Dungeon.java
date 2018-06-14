@@ -40,6 +40,7 @@ public class Dungeon {
 	 */
 	public void levelUp() {
 		if(currentLevel-1<0) { log.appendMessage("You can't escape..."); return; }
+		Resources.playStairUpSound();
 		log.appendMessage("Going up...");
 		currentLevel--;
 		if(currentLevel%5==0 && currentLevel!=0) { 
@@ -53,6 +54,7 @@ public class Dungeon {
 	 * levelDown : descend one level
 	 */
 	public void levelDown() {
+		Resources.playStairDownSound();
 		if(currentLevel+1<levels.size()) {
 			log.appendMessage("Going down...");
 			currentLevel++;

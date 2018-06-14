@@ -2,6 +2,7 @@ package rooms;
 
 import java.awt.Point;
 
+import engine.Resources;
 import tiles.Tile;
 import tiles.TileDoorClosed;
 import tiles.TileFactory;
@@ -45,6 +46,7 @@ public class Door {
 		this.open = true;
 		if(this.floor instanceof TileDoorClosed) {
 			this.floor = TileFactory.getInstance().createTileDoorOpened();
+			Resources.playDoorSound();
 		} else {
 			this.floor = TileFactory.getInstance().createTileStone();
 		}

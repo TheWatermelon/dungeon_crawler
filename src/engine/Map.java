@@ -527,6 +527,8 @@ public class Map extends Observable {
 			} else {
 				log.appendMessage("Open Barrel... Nothing!");
 			}
+			if(content == 2) { Resources.playBarrelExplodeSound(); }
+			else { Resources.playBarrelSound(); }
 		}
 	}
 	
@@ -542,10 +544,11 @@ public class Map extends Observable {
 			this.jerry.addGold(i.getVal());
 			items.remove(i);
 			this.jerry.setLooker(LookerFactory.getInstance().createLookerGold(this.jerry.pos.x, this.jerry.pos.y));
-			SoundPlayer.play("resources/sounds/01_gold.wav");
+			Resources.playGoldSound();
 		}
 		else if(i instanceof Fountain) {
 			if(!jerry.isFullHealth()) {
+				Resources.playFountainSound();
 				if(i.getVal()-1>=0) {
 					this.jerry.cure();
 					this.jerry.setLooker(LookerFactory.getInstance().createLookerHealth(x, y));
@@ -561,6 +564,7 @@ public class Map extends Observable {
 		else if(i instanceof Equipement ||
 				i instanceof Potion) {
 			if(this.jerry.getInventory().addItem(i)) {
+				Resources.playPickupSound();
 				items.remove(i);	
 				this.jerry.setFloor(TileFactory.getInstance().createTileStone());
 				this.jerry.setLooker(LookerFactory.getInstance().createLookerEquip(this.jerry.pos.x, this.jerry.pos.y));
@@ -579,6 +583,7 @@ public class Map extends Observable {
 				playerIn(firePoint.x, firePoint.y);
 				moveAllMonsters();
 				jerry.useWeapon();
+				Resources.playFireBowSound();
 			}
 			if(jerry.pos.x==firePoint.x &&
 					jerry.pos.y==firePoint.y) {
@@ -592,6 +597,7 @@ public class Map extends Observable {
 				} else {
 					firePoint = new Point(jerry.pos.x, jerry.pos.y);
 				}
+				Resources.playReadyBowSound();
 			}
 		}
 	}
@@ -681,6 +687,7 @@ public class Map extends Observable {
 				} else if(!monsterKilled) {
 					this.focusedMonster = this.monsters.get(i);
 				}
+				Resources.playMonsterSound();
 			}
 			// Check if another monster is facing the player
 			String tmp=monsterAttack(monsters.get(i));

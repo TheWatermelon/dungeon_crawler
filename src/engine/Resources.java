@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 
 import engine.builders.SpriteSheetBuilder;
 import game.Main;
@@ -61,7 +62,10 @@ public class Resources {
 	
 	public boolean commandsHelp = true;
 	
-	public boolean music = true;
+	public boolean music = false;
+	public float musicVolume = 0.0f;
+	public boolean sound = true;
+	public float soundVolume = 0.0f;
 	
 	public SpriteSheet sprites;
 	
@@ -108,16 +112,6 @@ public class Resources {
 	
 	public static Font getDungeonFont() {
 		if(dungeonFont == null) {
-			/*
-			try {
-			     GraphicsEnvironment ge = 
-			         GraphicsEnvironment.getLocalGraphicsEnvironment();
-			     dungeonFont = Font.createFont(Font.TRUETYPE_FONT, new File("/Consolas.ttf"));
-			     ge.registerFont(dungeonFont);
-			} catch (IOException|FontFormatException e) {
-			     //Handle exception
-			}
-			*/
 			dungeonFont = new Font("Monospaced", Font.PLAIN, 16);
 		}
 	    return dungeonFont;
@@ -303,12 +297,27 @@ public class Resources {
 		}
 	}
 	
-	public static void playCycleMenuSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/00_cycle_menu.wav"); }
-	public static void playSelectMenuSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/00_select_menu.wav"); }
-	public static void playExitMenuSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/00_exit_menu.wav"); }
-	public static void playGoldSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/01_gold.wav"); }
-	public static void playFountainSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/01_fountain.wav"); }
-	public static void playBarrelSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/01_barrel.wav"); }
-	public static void playDoorSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/01_door.wav"); }
-	public static void playPickupSound() { if(Resources.getInstance().music) SoundPlayer.play("resources/sounds/01_pickup.wav"); }
+	public static void playOpenMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/00_open_menu.wav"); }
+	public static void playCycleMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/00_cycle_menu.wav"); }
+	public static void playSelectMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/00_select_menu.wav"); }
+	public static void playExitMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/00_exit_menu.wav"); }
+	
+	public static void playGoldSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_gold.wav"); }
+	public static void playFountainSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_fountain.wav"); }
+	public static void playBarrelSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_barrel.wav"); }
+	public static void playBarrelExplodeSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_barrel_explode.wav"); }
+	public static void playDoorSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_door.wav"); }
+	public static void playStairUpSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_stairUp_alt.wav"); }
+	public static void playStairDownSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_stairDown_alt.wav"); }
+	
+	public static void playPickupSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_pickup.wav"); }
+	public static void playEquipSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/00_equip.wav"); }
+	public static void playWhooshSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_whoosh.wav"); }
+	public static void playReadyBowSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_drawing_bow.wav"); }
+	public static void playFireBowSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_bow_fire.wav"); }
+	public static void playWeaponWornOutSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_weapon_worn_out.wav"); }
+	
+	public static void playMonsterSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_monster_00.wav"); }
+	
+	public static Clip playDungeonMusic() { if(Resources.getInstance().music) return SoundPlayer.playMusic("resources/sounds/01_dungeon_music.wav"); return null; }
 }

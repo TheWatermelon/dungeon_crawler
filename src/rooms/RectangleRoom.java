@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.Random;
 import java.util.Vector;
 
+import engine.Resources;
 import objects.item.*;
 import tiles.*;
 
@@ -41,6 +42,7 @@ public class RectangleRoom extends Room {
 	public void checkMoss(int x, int y, Vector<Item> v) {
 		Point toCheck = new Point(x, y);
 		if(moss.contains(toCheck)) {
+			Resources.playWhooshSound();
 			Point cutMoss = moss.remove(moss.indexOf(toCheck));
 			dirt.add(cutMoss);
 			if((new Random()).nextInt(20)==0) { v.addElement(new Gold(x, y)); }
