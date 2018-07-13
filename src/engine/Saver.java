@@ -120,7 +120,7 @@ public class Saver {
 			bw.append('\n');
 			
 			/* Maps */
-			for(int i=0; i<this.dungeon.levels.size(); i++) {
+			for(int i=1; i<this.dungeon.levels.size(); i++) {
 				Map m = this.dungeon.levels.get(i);
 				
 				/* Rooms */

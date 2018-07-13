@@ -89,8 +89,10 @@ public class Dungeon {
 		levels.clear();
 		currentLevel=0;
 		player.reset();
-		levels.add(new Map(Resources.getInstance().resolution*2, Resources.getInstance().resolution, this));
-		levels.get(currentLevel).generateDungeon();
+		player.pos.x = Resources.getInstance().resolution;
+		player.pos.y = Resources.getInstance().resolution/2;
+		levels.add(Resources.createVillage(this));
+		//levels.get(currentLevel).generateDungeon();
 		start();
 	}
 	

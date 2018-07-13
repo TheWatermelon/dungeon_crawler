@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.Clip;
@@ -14,6 +15,9 @@ import engine.builders.SpriteSheetBuilder;
 import game.Main;
 import objects.effect.*;
 import objects.item.*;
+import objects.mob.Monster;
+import rooms.*;
+import tiles.Tile;
 
 public class Resources {
 	private static Resources res;
@@ -276,25 +280,33 @@ public class Resources {
 	
 	public static Point switchToOctantZeroFrom(int octant, int x, int y) {
 		switch(octant) {
-		case 0:
-			return new Point(x, y);
-		case 1:
-			return new Point(y, x);
-		case 2:
-			return new Point(y, -x);
-		case 3:
-			return new Point(-x, y);
-		case 4:
-			return new Point(-x, -y);
-		case 5:
-			return new Point(-y, -x);
-		case 6:
-			return new Point(-y, x);
-		case 7:
-			return new Point(x, -y);
-		default:
-			return new Point(x, y);
+			case 0:
+				return new Point(x, y);
+			case 1:
+				return new Point(y, x);
+			case 2:
+				return new Point(y, -x);
+			case 3:
+				return new Point(-x, y);
+			case 4:
+				return new Point(-x, -y);
+			case 5:
+				return new Point(-y, -x);
+			case 6:
+				return new Point(-y, x);
+			case 7:
+				return new Point(x, -y);
+			default:
+				return new Point(x, y);
 		}
+	}
+	
+	public static Map createVillage(Dungeon d) {
+		Tile[][] t = new Tile[getInstance().resolution*2][getInstance().resolution*2];
+		Vector<Room> r = new Vector<Room>();
+		Village v = new Village();
+		r.add(v);
+		return new Map(d, t, r, new Vector<Monster>(), new Vector<Item>(), new Point(0, 0), new Point(v.p1.x+16,v.p1.y+16));
 	}
 	
 	public static void playOpenMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/00_open_menu.wav"); }

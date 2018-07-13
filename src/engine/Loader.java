@@ -246,13 +246,14 @@ public class Loader {
 			/* Dungeon */
 			//System.out.println("\n[Dungeon]");
 			ArrayList<Map> mapList = new ArrayList<Map>();
+			mapList.add(Resources.createVillage(this.dungeon));
 			int currLvl = br.read();
 			this.dungeon.setCurrentLevel(currLvl);
 			//System.out.println("currentLevel: "+currLvl);
 			int lvlSize = br.read();
 			br.readLine();
 			/* Maps */
-			for(int i=0; i<lvlSize; i++) {
+			for(int i=1; i<lvlSize; i++) {
 				//System.out.println("\n[Map "+i+"]");
 				int roomSize = br.read();
 				br.readLine();
