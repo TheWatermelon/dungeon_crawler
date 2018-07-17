@@ -5,6 +5,7 @@ import java.util.Random;
 
 import objects.effect.*;
 import engine.MessageLog;
+import engine.Resources;
 import tiles.TileFactory;
 
 public class Monster extends Mob {
@@ -104,6 +105,7 @@ public class Monster extends Mob {
 			this.hp=0;
 			this.log.appendMessage(description+" fainted");
 			this.mobTile = TileFactory.getInstance().createTileCorpse();
+			Resources.playMonsterDeadSound();
 		}
 	}
 	

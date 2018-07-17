@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 import engine.builders.SpriteSheetBuilder;
 import game.Main;
@@ -66,10 +67,13 @@ public class Resources {
 	
 	public boolean commandsHelp = true;
 	
-	public boolean music = false;
+	public boolean music = true;
 	public float musicVolume = 0.0f;
 	public boolean sound = true;
 	public float soundVolume = 0.0f;
+	
+	public Clip dungeonMusic;
+	public Clip menuMusic;
 	
 	public SpriteSheet sprites;
 	
@@ -302,7 +306,7 @@ public class Resources {
 	}
 	
 	public static Map createVillage(Dungeon d) {
-		Tile[][] t = new Tile[getInstance().resolution*2][getInstance().resolution*2];
+		Tile[][] t = new Tile[getInstance().resolution][getInstance().resolution*2];
 		Vector<Room> r = new Vector<Room>();
 		Village v = new Village();
 		r.add(v);
@@ -322,14 +326,51 @@ public class Resources {
 	public static void playStairUpSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_stairUp_alt.wav"); }
 	public static void playStairDownSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_stairDown_alt.wav"); }
 	
-	public static void playPickupSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_pickup.wav"); }
+	public static void playPickupSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_pickup_alt.wav"); }
 	public static void playEquipSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/00_equip.wav"); }
+	public static void playMossSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_cut_moss.wav"); }
 	public static void playWhooshSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_whoosh.wav"); }
 	public static void playReadyBowSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_drawing_bow.wav"); }
 	public static void playFireBowSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_bow_fire.wav"); }
 	public static void playWeaponWornOutSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_weapon_worn_out.wav"); }
+
+	public static void playMonsterHurtSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_monster_00.wav"); }
+	public static void playMonsterDeadSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_monster_00.wav"); }
+
+	public static void playGameOverSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_game_over.wav"); }
+
+	public static void playDungeonMusic() { 
+		if(Resources.getInstance().music) {
+			if(Resources.getInstance().dungeonMusic != null) {
+				Resources.resumeClip(Resources.getInstance().dungeonMusic);
+			} else {
+				Resources.getInstance().dungeonMusic = SoundPlayer.playMusic("resources/sounds/01_dungeon_music.wav"); 
+			}
+		}
+	}
 	
-	public static void playMonsterSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_monster_00.wav"); }
+	public static void pauseDungeonMusic() {
+		if(Resources.getInstance().dungeonMusic != null) Resources.getInstance().dungeonMusic.stop();
+	}
 	
-	public static Clip playDungeonMusic() { if(Resources.getInstance().music) return SoundPlayer.playMusic("resources/sounds/01_dungeon_music.wav"); return null; }
+	public static void playMenuMusic() { 
+		if(Resources.getInstance().music) {
+			if(Resources.getInstance().menuMusic != null) {
+				Resources.resumeClip(Resources.getInstance().menuMusic);
+			} else {
+				Resources.getInstance().menuMusic = SoundPlayer.playMusic("resources/sounds/01_menu_music.wav");
+			}
+		}  
+	}
+	
+	public static void pauseMenuMusic() {
+		if(Resources.getInstance().menuMusic != null) Resources.getInstance().menuMusic.stop();
+	}
+	
+	public static void resumeClip(Clip clip) {
+		FloatControl gainControl = 
+        	    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(Resources.getInstance().musicVolume);
+        clip.start();
+	}
 }

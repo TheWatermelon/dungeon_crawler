@@ -130,12 +130,6 @@ public class DungeonPanel extends JPanel implements Observer {
 			g2d.drawImage(Resources.getInstance().sprites.getSprite16((int)looker[1]), offsetX+(fontSize/2+1), offsetY, this);
 			g2d.drawImage(Resources.getInstance().sprites.getSprite16((int)looker[2]), offsetX, offsetY-3, this);
 			newBorderColor = Color.BLACK;
-			/*
-			g.setColor(Color.BLACK);
-			g.drawChars(looker, 0, 1, offsetX-(fontSize/2-1), offsetY);
-			g.drawChars(looker, 1, 1, offsetX+(fontSize/2+1), offsetY);
-			g.drawChars(looker, 2, 1, offsetX, offsetY-3);
-			*/
 		} else {
 			if(win.getMap().getPlayer().getHelmet().getMaxDurability()!=-1) {
 				looker[2]=win.getMap().getPlayer().getHelmet().getTile().getSymbol();
@@ -144,8 +138,6 @@ public class DungeonPanel extends JPanel implements Observer {
 						win.getMap().getPlayer().getHelmet().getColor()),
 						offsetX, offsetY-3, this);
 				newBorderColor = win.getMap().getPlayer().getHelmet().getColor();
-				//g.setColor(win.getMap().getPlayer().getHelmet().getColor());
-				//g.drawChars(looker, 2, 1, offsetX, offsetY-3);
 			}
 			looker[0]=win.getMap().getPlayer().getLooker().getLeft();
 			g2d.drawImage(
@@ -158,8 +150,6 @@ public class DungeonPanel extends JPanel implements Observer {
 				this
 			);
 			newBorderColor = win.getMap().getPlayer().getLooker().getLeftColor();
-			//g.setColor(win.getMap().getPlayer().getLooker().getLeftColor());
-			//g.drawChars(looker, 0, 1, offsetX-(fontSize/2-1), offsetY);
 			looker[1]=win.getMap().getPlayer().getLooker().getRight();
 			g2d.drawImage(
 				Resources.getInstance().sprites.getColoredSprite16(
@@ -171,8 +161,6 @@ public class DungeonPanel extends JPanel implements Observer {
 				this
 			);
 			newBorderColor = win.getMap().getPlayer().getLooker().getRightColor();
-			//g.setColor(win.getMap().getPlayer().getLooker().getRightColor());
-			//g.drawChars(looker, 1, 1, offsetX+(fontSize/2+1), offsetY);
 		}
 		// Mise a jour de la bordure du cadre de jeu
 		newBorderColor = (win.getMap().getPlayer().getLooker() instanceof LookerStuff || newBorderColor==Color.black)?Resources.white:newBorderColor;
@@ -436,6 +424,9 @@ public class DungeonPanel extends JPanel implements Observer {
 		if(Resources.getInstance().commandsHelp) {
 			printCommandsHelp(g, playerOffsetX, playerOffsetY);
 		}
+		
+		if(win.getDungeon().getPlayer().isDead()) setBorder(BorderFactory.createLineBorder(Color.RED));
+		else setBorder(BorderFactory.createLineBorder(win.getMap().getPlayer().getEffect().getColor()));
 	}
 
 	@Override

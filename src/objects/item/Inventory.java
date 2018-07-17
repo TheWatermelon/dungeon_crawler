@@ -144,6 +144,7 @@ public class Inventory {
 			if(i.getVal()==0) { 
 				this.removeItem(i); 
 			}
+			Resources.playFountainSound();
 		}
 	}
 }

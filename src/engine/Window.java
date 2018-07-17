@@ -3,7 +3,6 @@ package engine;
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -41,8 +40,6 @@ public class Window extends JFrame {
 	private boolean isMainMenu;
 	
 	private String commands;
-	
-	private Clip dungeonMusic;
 	
 	public Window(String title, Dungeon d) {
 		super(title);
@@ -232,6 +229,7 @@ public class Window extends JFrame {
 		removeKeyListener(keyListener);
 		keyListener = new MenuKeyListener((engine.menus.Menu)mainMenu);
 		addKeyListener(keyListener);
+		Resources.playMenuMusic();
 		revalidate();
 		repaint();
 	}
@@ -266,7 +264,8 @@ public class Window extends JFrame {
 		removeKeyListener(keyListener);
 		keyListener = new DungeonKeyListener(d, d.getMap(), this);
 		addKeyListener(keyListener);
-		this.dungeonMusic = Resources.playDungeonMusic();
+		Resources.pauseMenuMusic();
+		Resources.playDungeonMusic();
 		revalidate();
 		refresh();
 	}
@@ -280,8 +279,9 @@ public class Window extends JFrame {
 		removeKeyListener(keyListener);
 		keyListener = new InventoryMenuListKeyListener((InventoryMenuList) inventoryMenu);
 		addKeyListener(keyListener);
-		if(this.dungeonMusic != null) { this.dungeonMusic.stop(); }
+		Resources.pauseDungeonMusic();
 		Resources.playOpenMenuSound();
+		Resources.playMenuMusic();
 		revalidate();
 		repaint();
 	}
@@ -293,8 +293,9 @@ public class Window extends JFrame {
 		removeKeyListener(keyListener);
 		keyListener = new MenuKeyListener((engine.menus.Menu)pauseMenu);
 		addKeyListener(keyListener);
-		if(this.dungeonMusic != null) { this.dungeonMusic.stop(); }
+		Resources.pauseDungeonMusic();
 		Resources.playOpenMenuSound();
+		Resources.playMenuMusic();
 		revalidate();
 		repaint();
 	}
@@ -358,10 +359,6 @@ public class Window extends JFrame {
 		} else {
 			refreshCommands();
 			setLabel(d.getMap().getPlayer().getWeaponInfo(), d.getMap().getPlayer().getInfo(), d.getMap().getMobInfo(), d.getMap().getPrintableLevelInfo(), d.getMap().getLog());
-			leftPanel.setColor(Color.RED);
-			leftPanel.repaint();
-			rightPanel.setColor(Color.RED);
-			rightPanel.repaint();
 		}
 		refreshListener();
 		revalidate();

@@ -26,7 +26,7 @@ public class Corridor extends Room {
 		this.floor = TileFactory.getInstance().createTileStone();
 	}
 	
-	public void parsingFloor(Vector<Item> v) {
+	public void parsingFloor(Vector<Item> v, int level) {
 		Random rnd = new Random();
 		int parsingChance = rnd.nextInt(4), floorType = rnd.nextInt(5), height=0, width=0;
 		
@@ -39,16 +39,18 @@ public class Corridor extends Room {
 				height=rnd.nextInt(getHeight()-1)+1;
 			}
 			
+			int itemValue = rnd.nextInt((level-1)%5+1);
+			
 			if(floorType==0) {
 				v.add(new Gold(width+this.p1.x, height+this.p1.y));
 			} else if(floorType==1) {
-				v.add(new Weapon(width+this.p1.x, height+this.p1.y));
+				v.add(new Weapon(width+this.p1.x, height+this.p1.y, itemValue));
 			} else if(floorType==2) {
-				v.add(new Shield(width+this.p1.x, height+this.p1.y));
+				v.add(new Shield(width+this.p1.x, height+this.p1.y, itemValue));
 			} else if(floorType==3) {
-				v.add(new Bow(width+this.p1.x, height+this.p1.y));
+				v.add(new Bow(width+this.p1.x, height+this.p1.y, itemValue));
 			} else if(floorType==4) {
-				v.add(new Helmet(width+this.p1.x, height+this.p1.y));
+				v.add(new Helmet(width+this.p1.x, height+this.p1.y, itemValue));
 			}
 		}
 	}

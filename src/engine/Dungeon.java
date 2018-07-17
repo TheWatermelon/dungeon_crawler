@@ -15,7 +15,7 @@ public class Dungeon {
 		log = new MessageLog();
 		levels = new ArrayList<Map>();
 		player = new Player(Resources.getInstance().resolution, Resources.getInstance().resolution/2, log, this);
-		levels.add(new Map(Resources.getInstance().resolution*2, Resources.getInstance().resolution, this));
+		levels.add(Resources.createVillage(this));
 		win = new Window("Dungeon Crawler", this);
 		win.setVisible(true);
 	}
@@ -92,7 +92,6 @@ public class Dungeon {
 		player.pos.x = Resources.getInstance().resolution;
 		player.pos.y = Resources.getInstance().resolution/2;
 		levels.add(Resources.createVillage(this));
-		//levels.get(currentLevel).generateDungeon();
 		start();
 	}
 	

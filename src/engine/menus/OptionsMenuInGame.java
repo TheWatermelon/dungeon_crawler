@@ -16,7 +16,7 @@ public class OptionsMenuInGame extends Menu {
 		super(win);
 		focusedItem=0;
 		items = new String[6];
-		musicIndex = 0;
+		musicIndex = 1;
 		soundIndex = 1;
 		initPanel();
 	}
@@ -25,7 +25,11 @@ public class OptionsMenuInGame extends Menu {
 	public void exitMenu() {
 		Resources.playExitMenuSound();
 		focusedItem=0;
-		win.showPauseMenu();
+		if(this.win.isMainMenu()) {
+			this.win.showMainMenu();
+		} else {
+			this.win.showPauseMenu();
+		}
 	}
 
 	@Override
@@ -45,6 +49,8 @@ public class OptionsMenuInGame extends Menu {
 			} else {
 				Resources.getInstance().musicVolume-=16.0f;
 			}
+			Resources.pauseMenuMusic();
+			Resources.playMenuMusic();
 		} else if(focusedItem == 3) { 	// Cycle sounds settings
 			soundIndex = (soundIndex+1) % 6;
 			if(soundIndex==0) {

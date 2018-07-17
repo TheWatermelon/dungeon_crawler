@@ -63,7 +63,6 @@ public class Map extends Observable {
 		this.stairUp = sU;
 		this.rnd = new Random();
 		this.oldString="";
-		//this.printDungeon();
 	}
 	
 	public Map(Dungeon d, Tile[][] t, Vector<Room> r, Vector<Monster> m, Vector<Item> i, Point sU, Point sD) {
@@ -81,7 +80,6 @@ public class Map extends Observable {
 		this.stairUp = sU;
 		this.rnd = new Random();
 		this.oldString="";
-		//this.printDungeon();
 	}
 	
 	public Tile[][] getTable() { return this.table; }
@@ -329,7 +327,7 @@ public class Map extends Observable {
 	 */
 	protected void generateItems() {
 		for(int i=0; i<rooms.size(); i++) {
-			rooms.get(i).parsingFloor(items);
+			rooms.get(i).parsingFloor(items, level);
 		}
 	}
 	
@@ -520,16 +518,21 @@ public class Map extends Observable {
 						items.add(new Antidote(x, y));
 					}
 				} else {
-					int itemChance = rnd.nextInt(3);
+					int itemChance = rnd.nextInt(4);
+					int itemValue = rnd.nextInt((level-1)%5+1);
+					if (itemValue==0) itemValue++;
 					if(itemChance==0) {
 						log.appendMessage("Open Barrel... Weapon!");
-						items.add(new Weapon(x, y));
+						items.add(new Weapon(x, y, itemValue));
 					} else if(itemChance==1) {
 						log.appendMessage("Open Barrel... Shield!");
-						items.add(new Shield(x, y));
+						items.add(new Shield(x, y, itemValue));
 					} else if(itemChance==2) {
 						log.appendMessage("Open Barrel... Bow!");
-						items.add(new Bow(x, y));
+						items.add(new Bow(x, y, itemValue));
+					} else if(itemChance==3) {
+						log.appendMessage("Open Barrel... Helmet!");
+						items.add(new Helmet(x, y, itemValue));
 					}
 				}
 			} else if(content==1) {
@@ -539,7 +542,7 @@ public class Map extends Observable {
 				log.appendMessage("Open Barrel... Boom!");
 				this.jerry.harm(25);
 			} else if(content == 3) {
-				Monster m = new Monster(i.pos.x, i.pos.y, Resources.getLetterAt(level), Resources.getNameAt(level), log);
+				Monster m = new Monster(i.pos.x, i.pos.y, Resources.getLetterAt(level-1), Resources.getNameAt(level-1), log);
 				this.monsters.add(m);
 				log.appendMessage("A "+m.description+" popped out the barrel !");
 			} else {
@@ -674,15 +677,19 @@ public class Map extends Observable {
 	protected void monsterDropItem(Monster m) {
 		Random rnd = new Random();
 		if(rnd.nextInt(4)==0) {
-			int itemDrop = rnd.nextInt(5);
+			int itemDrop = rnd.nextInt(6);
+			int itemValue = rnd.nextInt((level-1)%5+1);
+			if (itemValue==0) itemValue++;
 			if(itemDrop==0) {
 				this.items.add(new Gold(m.pos.x, m.pos.y, 5+rnd.nextInt(this.level)));
 			} else if(itemDrop==1) {
-				this.items.add(new Weapon(m.pos.x, m.pos.y, (this.level-1)%5));
+				this.items.add(new Weapon(m.pos.x, m.pos.y, itemValue));
 			} else if(itemDrop==2) {
-				this.items.add(new Shield(m.pos.x, m.pos.y, (this.level-1)%5));
+				this.items.add(new Shield(m.pos.x, m.pos.y, itemValue));
 			} else if(itemDrop==3) {
-				this.items.add(new Bow(m.pos.x, m.pos.y, (this.level-1)%5));
+				this.items.add(new Bow(m.pos.x, m.pos.y, itemValue));
+			} else if(itemDrop==4) {
+				this.items.add(new Helmet(m.pos.x, m.pos.y, itemValue));
 			} else {
 				if(rnd.nextInt(2)==0) 
 				{ this.items.add(new HealingPotion(m.pos.x, m.pos.y)); } 
@@ -709,7 +716,6 @@ public class Map extends Observable {
 				} else if(!monsterKilled) {
 					this.focusedMonster = this.monsters.get(i);
 				}
-				Resources.playMonsterSound();
 			}
 			// Check if another monster is facing the player
 			String tmp=monsterAttack(monsters.get(i));

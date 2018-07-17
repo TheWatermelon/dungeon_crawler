@@ -47,6 +47,7 @@ public class Player extends Mob {
 		this.dead = true;
 		this.hp=0;
 		log.appendMessage("Dead! Press "+Resources.Commands.Restart.getKey()+" to restart");
+		Resources.playGameOverSound();
 	}
 	
 	public boolean fight(Monster m) {
@@ -76,11 +77,13 @@ public class Player extends Mob {
 		if(deg==0) { 
 			battleLog+=description+" miss ";
 			setLooker(LookerFactory.getInstance().createLookerMiss(pos.x, pos.y));
+			Resources.playWhooshSound();
 		} else if(deg==1) { 
 			dmg=(deg*this.getAtk())-m.getDef();
 			if(dmg<=0) {
 				battleLog+=m.description+" dodged "; 
 				setLooker(LookerFactory.getInstance().createLookerMiss(pos.x, pos.y));
+				Resources.playWhooshSound();
 			} else {
 				m.hp -= dmg;
 				battleLog+=description+" deals "+dmg+" to "+m.description+" ";
@@ -89,6 +92,7 @@ public class Player extends Mob {
 				else if(w.getEffect() instanceof EffectEquipement) { this.w.getEffect().apply(); }
 				useWeapon();
 				setLooker(LookerFactory.getInstance().createLookerMob(pos.x, pos.y, dmg));
+				Resources.playMonsterHurtSound();
 			}
 		} else if(deg==2) {
 			dmg=deg*this.getAtk();
@@ -99,6 +103,7 @@ public class Player extends Mob {
 			else if(w.getEffect() instanceof EffectEquipement) { this.w.getEffect().apply(); }
 			useWeapon();
 			setLooker(LookerFactory.getInstance().createLookerMob(pos.x, pos.y, dmg));
+			Resources.playMonsterHurtSound();
 		}
 		
 		return battleLog;
@@ -338,7 +343,7 @@ public class Player extends Mob {
 		setHelmet(new Helmet());
 		this.inventory.clear();
 		this.effect=new EffectNormal();
-		this.looker.hide();
+		stuffLooker();
 		this.monstersKilled=0;
 		this.dead=false;
 	}

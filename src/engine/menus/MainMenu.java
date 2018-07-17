@@ -37,7 +37,7 @@ public class MainMenu extends Menu {
 			win.showLoadMenu();
 		} else if(focusedItem==2) {
 			focusedItem=0;
-			win.showCommandsMenu();
+			win.showOptionsMenuInGame();
 		} else {
 			System.exit(0);
 		}
@@ -49,7 +49,7 @@ public class MainMenu extends Menu {
 		items = new String[4];
 		items[0] = "New game";
 		items[1] = "Load";
-		items[2] = "Commands";
+		items[2] = "Options";
 		items[3] = "Quit";
 	}
 	

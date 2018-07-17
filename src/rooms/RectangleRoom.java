@@ -42,7 +42,7 @@ public class RectangleRoom extends Room {
 	public void checkMoss(int x, int y, Vector<Item> v) {
 		Point toCheck = new Point(x, y);
 		if(moss.contains(toCheck)) {
-			Resources.playWhooshSound();
+			Resources.playMossSound();
 			Point cutMoss = moss.remove(moss.indexOf(toCheck));
 			dirt.add(cutMoss);
 			if((new Random()).nextInt(20)==0) { v.addElement(new Gold(x, y)); }
@@ -71,7 +71,7 @@ public class RectangleRoom extends Room {
 		}
 	}
 	
-	public void parsingFloor(Vector<Item> v) {
+	public void parsingFloor(Vector<Item> v, int level) {
 		Random rnd = new Random();
 		int placingChance = rnd.nextInt(6), floorChance;
 		
