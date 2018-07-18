@@ -313,38 +313,38 @@ public class Resources {
 		return new Map(d, t, r, new Vector<Monster>(), new Vector<Item>(), new Point(0, 0), new Point(v.p1.x+16,v.p1.y+16));
 	}
 	
-	public static void playOpenMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/00_open_menu.wav"); }
-	public static void playCycleMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/00_cycle_menu.wav"); }
-	public static void playSelectMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/00_select_menu.wav"); }
-	public static void playExitMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/00_exit_menu.wav"); }
+	public static void playOpenMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("/sounds/00_open_menu.wav")); }
+	public static void playCycleMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("/sounds/00_cycle_menu.wav")); }
+	public static void playSelectMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("/sounds/00_select_menu.wav")); }
+	public static void playExitMenuSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("/sounds/00_exit_menu.wav")); }
 	
-	public static void playGoldSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_gold.wav"); }
-	public static void playFountainSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_fountain.wav"); }
-	public static void playBarrelSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_barrel.wav"); }
-	public static void playBarrelExplodeSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_barrel_explode.wav"); }
-	public static void playDoorSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_door.wav"); }
-	public static void playStairUpSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_stairUp_alt.wav"); }
-	public static void playStairDownSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_stairDown_alt.wav"); }
+	public static void playGoldSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_gold.wav")); }
+	public static void playFountainSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_fountain.wav")); }
+	public static void playBarrelSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_barrel.wav")); }
+	public static void playBarrelExplodeSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_barrel_explode.wav")); }
+	public static void playDoorSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_door.wav")); }
+	public static void playStairUpSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_stairUp_alt.wav")); }
+	public static void playStairDownSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_stairDown_alt.wav")); }
 	
-	public static void playPickupSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_pickup_alt.wav"); }
-	public static void playEquipSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/00_equip.wav"); }
-	public static void playMossSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_cut_moss.wav"); }
-	public static void playWhooshSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_whoosh.wav"); }
-	public static void playReadyBowSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_drawing_bow.wav"); }
-	public static void playFireBowSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_bow_fire.wav"); }
-	public static void playWeaponWornOutSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_weapon_worn_out.wav"); }
+	public static void playPickupSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_pickup_alt.wav")); }
+	public static void playEquipSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/00_equip.wav")); }
+	public static void playMossSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_cut_moss.wav")); }
+	public static void playWhooshSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_whoosh.wav")); }
+	public static void playReadyBowSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_drawing_bow.wav")); }
+	public static void playFireBowSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_bow_fire.wav")); }
+	public static void playWeaponWornOutSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_weapon_worn_out.wav")); }
 
-	public static void playMonsterHurtSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_monster_00.wav"); }
-	public static void playMonsterDeadSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_monster_00.wav"); }
+	public static void playMonsterHurtSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_monster_00.wav")); }
+	public static void playMonsterDeadSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_monster_00.wav")); }
 
-	public static void playGameOverSound() { if(Resources.getInstance().sound) SoundPlayer.playSound("resources/sounds/01_game_over.wav"); }
+	public static void playGameOverSound() { if(Resources.getInstance().sound) SoundPlayer.playSound(Main.class.getResource("sounds/01_game_over.wav")); }
 
 	public static void playDungeonMusic() { 
 		if(Resources.getInstance().music) {
 			if(Resources.getInstance().dungeonMusic != null) {
 				Resources.resumeClip(Resources.getInstance().dungeonMusic);
 			} else {
-				Resources.getInstance().dungeonMusic = SoundPlayer.playMusic("resources/sounds/01_dungeon_music.wav"); 
+				Resources.getInstance().dungeonMusic = SoundPlayer.playMusic(Main.class.getResource("/sounds/01_dungeon_music.wav"));
 			}
 		}
 	}
@@ -358,7 +358,7 @@ public class Resources {
 			if(Resources.getInstance().menuMusic != null) {
 				Resources.resumeClip(Resources.getInstance().menuMusic);
 			} else {
-				Resources.getInstance().menuMusic = SoundPlayer.playMusic("resources/sounds/01_menu_music.wav");
+				Resources.getInstance().menuMusic = SoundPlayer.playMusic(Main.class.getResource("/sounds/01_menu_music.wav"));
 			}
 		}  
 	}
