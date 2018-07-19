@@ -426,7 +426,10 @@ public class DungeonPanel extends JPanel implements Observer {
 		}
 		
 		if(win.getDungeon().getPlayer().isDead()) setBorder(BorderFactory.createLineBorder(Color.RED));
-		else setBorder(BorderFactory.createLineBorder(win.getMap().getPlayer().getEffect().getColor()));
+		else {
+			if(win.getMap().getPlayer().getEffect() instanceof EffectNormal) setBorder(BorderFactory.createLineBorder(Color.BLACK)); 
+			else setBorder(BorderFactory.createLineBorder(win.getMap().getPlayer().getEffect().getColor()));
+		}
 	}
 
 	@Override

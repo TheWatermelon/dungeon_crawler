@@ -65,11 +65,13 @@ public class Resources {
 	
 	public int resolution=30;
 	
+	public int msgLength = 75;
+	
 	public boolean commandsHelp = true;
 	
-	public boolean music = true;
+	public boolean music = false;
 	public float musicVolume = 0.0f;
-	public boolean sound = true;
+	public boolean sound = false;
 	public float soundVolume = 0.0f;
 	
 	public Clip dungeonMusic;

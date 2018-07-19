@@ -10,7 +10,11 @@ public class MessageLog {
 	}
 	
 	public void appendMessage(String msg) {
-		this.log.add(msg);
+		if(msg.length()>Resources.getInstance().msgLength) {
+			msg = msg.substring(0, Resources.getInstance().msgLength);
+			msg += "...";
+		}
+		this.log.add("  "+msg);
 	}
 	
 	public String getLast(int lines) {

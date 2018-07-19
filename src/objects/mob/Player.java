@@ -50,10 +50,10 @@ public class Player extends Mob {
 		Resources.playGameOverSound();
 	}
 	
-	public boolean fight(Monster m) {
-		String battleLog="";
+	public String fight(Monster m) {		
+		if(!effect.apply()) { return ""; }
 		
-		if(!effect.apply()) { return false; }
+		String battleLog = "";
 		
 		// Player attacks once
 		battleLog+=fightTurn(m);
@@ -61,11 +61,8 @@ public class Player extends Mob {
 			log.appendMessage(battleLog);
 			m.murder(); 
 			this.monstersKilled++;
-			return true;
 		}
-		
-		if(!battleLog.equals("")) { log.appendMessage(battleLog); }
-		return false;
+		return battleLog;
 	}
 	
 	private String fightTurn(Monster m) {
@@ -75,18 +72,18 @@ public class Player extends Mob {
 		
 		deg = rnd.nextInt(3);
 		if(deg==0) { 
-			battleLog+=description+" miss ";
+			battleLog+=description+" miss";
 			setLooker(LookerFactory.getInstance().createLookerMiss(pos.x, pos.y));
 			Resources.playWhooshSound();
 		} else if(deg==1) { 
 			dmg=(deg*this.getAtk())-m.getDef();
 			if(dmg<=0) {
-				battleLog+=m.description+" dodged "; 
+				battleLog+=m.description+" dodged"; 
 				setLooker(LookerFactory.getInstance().createLookerMiss(pos.x, pos.y));
 				Resources.playWhooshSound();
 			} else {
 				m.hp -= dmg;
-				battleLog+=description+" deals "+dmg+" to "+m.description+" ";
+				battleLog+=description+" deals "+dmg+" to "+m.description;
 				if(w.getEffect() instanceof EffectOther) { this.w.getEffect().start(m); }
 				else if(w.getEffect() instanceof EffectSelf) { this.w.getEffect().apply(); }
 				else if(w.getEffect() instanceof EffectEquipement) { this.w.getEffect().apply(); }
@@ -97,7 +94,7 @@ public class Player extends Mob {
 		} else if(deg==2) {
 			dmg=deg*this.getAtk();
 			m.hp -= dmg;
-			battleLog+=description+" deals !"+dmg+"! to "+m.description+" "; 
+			battleLog+=description+" deals !"+dmg+"! to "+m.description; 
 			if(w.getEffect() instanceof EffectOther) { this.w.getEffect().start(m); }
 			else if(w.getEffect() instanceof EffectSelf) { this.w.getEffect().apply(); }
 			else if(w.getEffect() instanceof EffectEquipement) { this.w.getEffect().apply(); }

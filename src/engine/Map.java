@@ -709,7 +709,10 @@ public class Map extends Observable {
 			if(this.jerry.isDead()) { return; }
 			// The player attacks the monster he is facing
 			if((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y)) {
-				monsterKilled=this.jerry.fight(this.monsters.get(i));
+				System.out.print("before: ["+battleLog+"]");
+				battleLog=this.jerry.fight(this.monsters.get(i));
+				System.out.println(" after : ["+battleLog+"]");
+				monsterKilled = monsters.get(i).isDead();
 				if(monsterKilled && !(monsters.get(i) instanceof Boss)) {
 					monsterDropItem(monsters.get(i));
 					this.focusedMonster = null;

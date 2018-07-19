@@ -55,8 +55,8 @@ public class Dungeon {
 	 */
 	public void levelDown() {
 		Resources.playStairDownSound();
+		log.appendMessage("Going down...");
 		if(currentLevel+1<levels.size()) {
-			log.appendMessage("Going down...");
 			currentLevel++;
 			if(currentLevel%5==0 && currentLevel!=0) { 
 				win.getDungeonPanel().hideLight(); 
