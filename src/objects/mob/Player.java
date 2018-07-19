@@ -217,34 +217,36 @@ public class Player extends Mob {
 	}
 	
 	private void checkWeapon() {
-		if(this.w.getDurability()<=0) {
+		if(this.w.getDurability()==0) {
 			inventory.removeItem(this.w);
 			this.w.unequip();
+			this.w = new Weapon();
 			if(this.w instanceof Weapon) {
 				log.appendMessage("Weapon broke!");
 			} else if(this.w  instanceof Bow) {
 				log.appendMessage("Bow broke!");
 			}
-			this.w = new Weapon();
+			Resources.playWeaponWornOutSound();
 		}
 	}
 	
 	private void checkShield() {
-		if(this.s.getDurability()<=0) {
+		if(this.s.getDurability()==0) {
 			inventory.removeItem(this.s);
 			this.s.unequip();
 			this.s = new Shield();
 			log.appendMessage("Shield broke!");
+			Resources.playWeaponWornOutSound();
 		}
 	}
 	
 	private void checkHelmet() {
-		if(this.h.getDurability()<=0) {
+		if(this.h.getDurability()==0) {
 			inventory.removeItem(this.h);
 			this.h.unequip();
-			log.appendMessage(this.h.getType()+" fell off!");
 			this.h = new Helmet();
-			resetBonuses();
+			log.appendMessage(this.h.getType()+" fell off!");
+			Resources.playWeaponWornOutSound();
 		}
 	}
 	

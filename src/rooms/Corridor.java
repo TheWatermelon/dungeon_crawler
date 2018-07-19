@@ -40,6 +40,7 @@ public class Corridor extends Room {
 			}
 			
 			int itemValue = rnd.nextInt((level-1)%5+1);
+			if(itemValue==0) itemValue++;
 			
 			if(floorType==0) {
 				v.add(new Gold(width+this.p1.x, height+this.p1.y));

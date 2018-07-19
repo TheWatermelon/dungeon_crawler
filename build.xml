@@ -1,19 +1,23 @@
-<project name="dungeon_crawler" default="run" basedir=".">
+<project name="dungeon_crawler" default="compile" basedir=".">
    <target name="init">
       <property name="sourceDir" value="src" />
       <property name="resourcesDir" value="resources" />
       <property name="outputDir" value="bin" />
    </target>
+	
    <target name="clean" depends="init">
       <delete dir="${outputDir}" />
    </target>
+	
    <target name="prepare" depends="clean">
       <mkdir dir="${outputDir}" />
    </target>
+   
    <target name="compile" depends="prepare">
       <javac srcdir="${sourceDir}" destdir="${outputDir}" />
       <copydir src="${resourcesDir}" dest="${outputDir}" />
    </target>
+	
    <target name="build-jar" depends="compile">
       <jar destfile="dungeonCrawler.jar" 
 	 basedir="${outputDir}">
