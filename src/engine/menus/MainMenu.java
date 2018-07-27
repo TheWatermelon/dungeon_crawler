@@ -3,6 +3,7 @@ package engine.menus;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -85,5 +86,10 @@ public class MainMenu extends Menu {
 						Character.toUpperCase(Resources.Commands.Take.getKey())+": Select";
 		g.setColor(Resources.white);
 		g.drawString(commands, getWidth()/2-(commands.length()*13/2), getHeight()-30);
+	}
+
+	@Override
+	public KeyListener getKeyListener() {
+		return new MenuKeyListener(this);
 	}
 }

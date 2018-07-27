@@ -1,20 +1,25 @@
 package engine;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
-import javax.swing.*;
+
+import javax.swing.BorderFactory;
 
 import objects.effect.EffectNormal;
 import objects.looker.LookerStuff;
 import tiles.*;
 
-public class DungeonPanel extends JPanel implements Observer {
+public class DungeonPanel extends GamePanel implements Observer {
 	protected static final long serialVersionUID = 1L;
 	
-	protected Window win;
 	protected int[][] light;
 	protected boolean isLight;
 	protected int[][] fireLine;
@@ -33,9 +38,8 @@ public class DungeonPanel extends JPanel implements Observer {
 	protected Color wall;
 	
 	public DungeonPanel(Window w) {
-		super();
+		super(w);
 		setBorder(BorderFactory.createLineBorder(Color.white));
-		this.win = w;
 		this.light = Resources.drawCircle(9);
 		this.isLight=true;
 		
@@ -435,5 +439,10 @@ public class DungeonPanel extends JPanel implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		System.out.println("update");
+	}
+
+	@Override
+	public KeyListener getKeyListener() {
+		return new DungeonKeyListener(this.win.getDungeon(), this.win.getMap(), this.win);
 	}
 }

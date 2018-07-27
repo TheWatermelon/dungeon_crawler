@@ -1,6 +1,7 @@
 package engine.menus;
 
 import java.awt.*;
+import java.awt.event.KeyListener;
 
 import engine.Resources;
 import engine.Window;
@@ -90,5 +91,10 @@ public class PauseMenu extends Menu {
 				Character.toUpperCase(Resources.Commands.Take.getKey())+": Select";
 		g.setColor(Resources.white);
 		g.drawString(commands, getWidth()/2-(commands.length()*13/2), getHeight()-30);
+	}
+
+	@Override
+	public KeyListener getKeyListener() {
+		return new MenuKeyListener(this);
 	}
 }

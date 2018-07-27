@@ -7,27 +7,28 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 import engine.menus.*;
+import engine.menus.Menu;
 
-public class Window extends JFrame {
+public class Window extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	private Dungeon d;
 	
 	private KeyListener keyListener;
 	
-	private JPanel global;
+	private GamePanel global;
 	private JPanel headPanel;
 	private JPanel footPanel;
 	private FadePanel leftPanel;
 	private FadePanel rightPanel;
-	private JPanel mainMenu;
-	private JPanel loadMenu;
-	private JPanel saveMenu;
-	private JPanel pauseMenu;
-	private JPanel optionsMenuNewGame;
-	private JPanel optionsMenuInGame;
-	private JPanel commandsMenu;
-	private JPanel inventoryMenu;
+	private GamePanel mainMenu;
+	private GamePanel loadMenu;
+	private GamePanel saveMenu;
+	private GamePanel pauseMenu;
+	private GamePanel optionsMenuNewGame;
+	private GamePanel optionsMenuInGame;
+	private GamePanel commandsMenu;
+	private GamePanel inventoryMenu;
 	private JTextPane headWest;
 	private JTextPane headEast;
 	private JTextPane footWest;
@@ -52,7 +53,6 @@ public class Window extends JFrame {
 
 		this.keyListener = new DungeonKeyListener(d, d.getMap(), this);
 		this.dungeon = new DungeonPanel(this);
-		d.getMap().addObserver(dungeon);
 		addKeyListener(keyListener);
 
 		this.commands = Character.toUpperCase(Resources.Commands.Up.getKey())+","+
@@ -73,7 +73,13 @@ public class Window extends JFrame {
 		this.commandsMenu = new CommandsMenu(this);
 		this.inventoryMenu = new InventoryMenuList(this);
 		
-		this.global = new JPanel();
+		this.global = new GamePanel(this) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public KeyListener getKeyListener() {
+				return new DungeonKeyListener(this.win.d, this.win.d.getMap(), this.win);
+			}};
 		this.global.setLayout(new BorderLayout());
 		this.global.setBackground(Color.black);
 		
@@ -210,122 +216,70 @@ public class Window extends JFrame {
 	public Map getMap() { return d.getMap(); }
 	
 	public KeyListener getKeyListener() { return keyListener; }
-	public DungeonPanel getDungeonPanel() { return dungeon; }
+	public DungeonPanel getDungeonPanel() { return (DungeonPanel)dungeon; }
 	public QuickActionsPanel getQuickActionPanel() { return (QuickActionsPanel)this.footEast; }
 	public Dungeon getDungeon() { return d; }
 	
 	public boolean isMainMenu() { return isMainMenu; }
 	
-	public void showMainMenu() {
-		isMainMenu=true;
+	public void showPanel(GamePanel panel, KeyListener newKeyListener) {
 		remove(focusedPanel);
-		add(mainMenu);
-		focusedPanel = mainMenu;
+		add(panel);
+		focusedPanel = panel;
 		removeKeyListener(keyListener);
-		keyListener = new MenuKeyListener((engine.menus.Menu)mainMenu);
-		addKeyListener(keyListener);
-		Resources.playMenuMusic();
+		keyListener = newKeyListener;
+		addKeyListener(newKeyListener);
 		revalidate();
 		repaint();
+	}
+	
+	public void showMainMenu() {
+		isMainMenu=true;
+		Resources.playMenuMusic();
+		showPanel(mainMenu, ((Menu)mainMenu).getKeyListener());
 	}
 	
 	public void showLoadMenu() {
-		remove(focusedPanel);
-		add(loadMenu);
-		focusedPanel = loadMenu;
-		removeKeyListener(keyListener);
-		keyListener = new LoadMenuKeyListener((LoadMenu)loadMenu);
-		addKeyListener(keyListener);
-		revalidate();
-		repaint();
+		showPanel(loadMenu, ((Menu)loadMenu).getKeyListener());
 	}
 	
 	public void showSaveMenu() {
-		remove(focusedPanel);
-		add(saveMenu);
-		focusedPanel = saveMenu;
-		removeKeyListener(keyListener);
-		keyListener = new SaveMenuKeyListener((SaveMenu)saveMenu);
-		addKeyListener(keyListener);
-		revalidate();
-		repaint();
+		showPanel(saveMenu, ((Menu)saveMenu).getKeyListener());
 	}
 	
 	public void showDungeon() {
 		isMainMenu=false;
-		remove(focusedPanel);
-		add(global);
-		focusedPanel = global;
-		removeKeyListener(keyListener);
-		keyListener = new DungeonKeyListener(d, d.getMap(), this);
-		addKeyListener(keyListener);
 		Resources.pauseMenuMusic();
 		Resources.playDungeonMusic();
-		revalidate();
-		refresh();
+		showPanel(global, new DungeonKeyListener(d, d.getMap(), this));
 	}
 	
 	public void showInventoryMenu() {
-		remove(focusedPanel);
-		add(inventoryMenu);
-		focusedPanel = inventoryMenu;
 		((InventoryMenuList) inventoryMenu).setInventory(this.d.getPlayer().getInventory());
 		((InventoryMenuList) inventoryMenu).resetFocusedItem();
-		removeKeyListener(keyListener);
-		keyListener = new InventoryMenuListKeyListener((InventoryMenuList) inventoryMenu);
-		addKeyListener(keyListener);
 		Resources.pauseDungeonMusic();
 		Resources.playOpenMenuSound();
 		Resources.playMenuMusic();
-		revalidate();
-		repaint();
+		showPanel(inventoryMenu, ((Menu)inventoryMenu).getKeyListener());
 	}
 	
 	public void showPauseMenu() {
-		remove(focusedPanel);
-		add(pauseMenu);
-		focusedPanel = pauseMenu;
-		removeKeyListener(keyListener);
-		keyListener = new MenuKeyListener((engine.menus.Menu)pauseMenu);
-		addKeyListener(keyListener);
 		Resources.pauseDungeonMusic();
 		Resources.playOpenMenuSound();
 		Resources.playMenuMusic();
-		revalidate();
-		repaint();
+		showPanel(pauseMenu, ((Menu)pauseMenu).getKeyListener());
 	}
 	
 	public void showOptionsMenuNewGame() {
-		remove(focusedPanel);
-		add(optionsMenuNewGame);
-		focusedPanel = optionsMenuNewGame;
-		removeKeyListener(keyListener);
-		keyListener = new MenuKeyListener((engine.menus.Menu)optionsMenuNewGame);
-		addKeyListener(keyListener);
-		revalidate();
-		repaint();
+		showPanel(optionsMenuNewGame, ((Menu)optionsMenuNewGame).getKeyListener());
 	}
 
 	public void showOptionsMenuInGame() {
-		remove(focusedPanel);
-		add(optionsMenuInGame);
-		focusedPanel = optionsMenuInGame;
-		removeKeyListener(keyListener);
-		keyListener = new MenuKeyListener((engine.menus.Menu)optionsMenuInGame);
-		addKeyListener(keyListener);
-		revalidate();
-		repaint();
+		showPanel(optionsMenuInGame, ((Menu)optionsMenuInGame).getKeyListener());
 	}
 	
 	public void showCommandsMenu() {
-		remove(focusedPanel);
-		add(commandsMenu);
-		focusedPanel = commandsMenu;
-		removeKeyListener(keyListener);
-		keyListener = new MenuKeyListener((engine.menus.Menu)commandsMenu);
-		addKeyListener(keyListener);
-		revalidate();
-		repaint();
+		showPanel(commandsMenu, ((Menu)commandsMenu).getKeyListener());
 	}
 	
 	public void refreshListener() {

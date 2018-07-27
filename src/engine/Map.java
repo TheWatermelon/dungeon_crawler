@@ -9,7 +9,7 @@ import objects.mob.*;
 import rooms.*;
 import tiles.*;
 
-public class Map extends Observable {
+public class Map {
 	protected Tile[][] table;
 	protected Vector<Room> rooms;
 	protected Vector<Monster> monsters;
@@ -557,7 +557,7 @@ public class Map extends Observable {
 	 * checkAction : trigger the action corresponding to the point (x, y)
 	 * (triggered by a player action : take item, fire, ...)
 	 */
-	public void checkAction(int x, int y) {
+	public void checkAction(int x, int y) {		
 		Item i = isItem(x, y);
 		
 		if(i == null) { checkFire(); }
@@ -709,9 +709,7 @@ public class Map extends Observable {
 			if(this.jerry.isDead()) { return; }
 			// The player attacks the monster he is facing
 			if((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y)) {
-				System.out.print("before: ["+battleLog+"]");
 				battleLog=this.jerry.fight(this.monsters.get(i));
-				System.out.println(" after : ["+battleLog+"]");
 				monsterKilled = monsters.get(i).isDead();
 				if(monsterKilled && !(monsters.get(i) instanceof Boss)) {
 					monsterDropItem(monsters.get(i));

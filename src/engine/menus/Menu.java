@@ -1,20 +1,19 @@
 package engine.menus;
 
-import javax.swing.*;
+import java.awt.event.KeyListener;
 
+import engine.GamePanel;
 import engine.Resources;
 import engine.Window;
 
-public abstract class Menu extends JPanel {
+public abstract class Menu extends GamePanel {
 	private static final long serialVersionUID = 1L;
 	
-	protected Window win;
 	protected String[] items;
 	protected int focusedItem;
 	
 	public Menu(Window win) { 
-		super(); 
-		this.win = win; 
+		super(win); 
 	}
 	
 	public void setFocusedItem(int val) { this.focusedItem = val; }
@@ -36,4 +35,6 @@ public abstract class Menu extends JPanel {
 	public abstract void exitMenu();
 	
 	protected abstract void initPanel();
+	
+	public abstract KeyListener getKeyListener();
 }

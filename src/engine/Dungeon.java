@@ -4,7 +4,7 @@ import java.util.*;
 
 import objects.mob.Player;
 
-public class Dungeon {
+public class Dungeon{
 	protected ArrayList<Map> levels;
 	protected int currentLevel;
 	protected Window win;

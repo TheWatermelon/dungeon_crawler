@@ -3,6 +3,7 @@ package engine.menus;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyListener;
 
 import engine.Resources;
 import engine.Window;
@@ -261,5 +262,10 @@ public class InventoryMenuGrid extends Menu {
 						Character.toUpperCase(Resources.Commands.Pause.getKey())+": Drop";
 		g.setColor(Resources.white);
 		g.drawString(commands, getWidth()/2-(commands.length()*13/2), getHeight()-30);
+	}
+
+	@Override
+	public KeyListener getKeyListener() {
+		return new InventoryMenuGridKeyListener(this);
 	}
 }
