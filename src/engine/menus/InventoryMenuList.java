@@ -129,7 +129,7 @@ public class InventoryMenuList extends Menu {
 		String name = win.getMap().getPlayer().toString(); 
 		String healthBar = win.getMap().getPlayer().drawHealthBar();
 		//String stuff = win.getMap().getPlayer().getWeaponInfo();
-		g.drawString(name, getWidth()/2-(name.length()*13/2), 60);
+		g.drawString(name, getWidth()/2-(name.length()*12/2), 60);
 		g.drawString(healthBar, getWidth()/2-(healthBar.length()*12/2), 80);
 		//g.drawString(stuff, getWidth()/2-(stuff.length()*12/2), 100);
 
@@ -142,24 +142,24 @@ public class InventoryMenuList extends Menu {
 		g.drawString(""+win.getMap().getPlayer().getLooker().getRight(), getWidth()/2+15, 150);
 		if(win.getMap().getPlayer().getHelmet().getMaxDurability()!=-1) {
 			g.setColor(win.getMap().getPlayer().getHelmet().getColor());
-			g.drawString(""+win.getMap().getPlayer().getHelmet().getTile().getSymbol(), getWidth()/2-13, 140);
+			g.drawString(""+win.getMap().getPlayer().getHelmet().getTile().getSymbol(), getWidth()/2-12, 140);
 		}
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		
-		g.drawString("Inventory", getWidth()/2-(9*13/2), getHeight()/2-87);
+		g.drawString("Inventory", getWidth()/2-(9*12/2), getHeight()/2-87);
 		
 		initPanel();
 		
 		String gold = "Gold : "+win.getMap().getPlayer().getGold();
 		g.setColor(Resources.yellow);
-		g.drawString(gold, getWidth()/2-(gold.length()*13/2), getHeight()/2-37);
+		g.drawString(gold, getWidth()/2-(gold.length()*12/2), getHeight()/2-37);
 		
 		int offsetY=getHeight()/2-12;
 		for(int i=0; i<items.length; i++) {
 			if(i == focusedItem) { g.setColor(Resources.orange); } 
 			else { g.setColor(Resources.white); }
-			int offsetX = items[i].length()*13/2;
+			int offsetX = items[i].length()*12/2;
 			g.drawString(items[i], getWidth()/2-offsetX, offsetY);
 			if(i<inv.getSize()) {
 				g.setColor(inv.get(i).getColor());
@@ -225,7 +225,7 @@ public class InventoryMenuList extends Menu {
 						Resources.Commands.Left.getKey()+"/"+
 						Resources.Commands.Right.getKey()+": Drop";
 		g.setColor(Resources.white);
-		g.drawString(commands, getWidth()/2-(commands.length()*13/2), getHeight()-30);
+		g.drawString(commands, getWidth()/2-(commands.length()*12/2), getHeight()-30);
 	}
 
 	@Override

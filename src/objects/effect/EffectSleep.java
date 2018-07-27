@@ -2,6 +2,7 @@ package objects.effect;
 
 import java.awt.Color;
 
+import engine.Message;
 import engine.Resources;
 import objects.mob.Mob;
 
@@ -19,7 +20,7 @@ public class EffectSleep extends EffectOther {
 		this.duration=this.maxDuration; 
 		this.affected=m; 
 		m.setEffect(this); 
-		m.getLog().appendMessage(m+" fall asleep!");
+		m.getLog().appendMessage(m+" fall asleep!", Message.Type.Important);
 	}
 	
 	@Override
@@ -28,11 +29,11 @@ public class EffectSleep extends EffectOther {
 	@Override
 	public boolean apply() {
 		if(duration>0) {
-			affected.getLog().appendMessage(affected+" is sleeping!");
+			affected.getLog().appendMessage(affected+" is sleeping!", Message.Type.Important);
 			duration--;
 			return false;
 		} else {
-			affected.getLog().appendMessage(affected+" is awake!");
+			affected.getLog().appendMessage(affected+" is awake!", Message.Type.Important);
 			affected.setEffect(new EffectNormal());
 		}
 		return true;

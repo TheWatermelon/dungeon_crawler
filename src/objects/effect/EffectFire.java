@@ -2,6 +2,7 @@ package objects.effect;
 
 import java.awt.Color;
 
+import engine.Message;
 import engine.Resources;
 import objects.mob.Mob;
 
@@ -29,10 +30,10 @@ public class EffectFire extends EffectOther {
 		if(duration>0) {
 			affected.hp-=duration;
 			duration--;
-			affected.getLog().appendMessage(affected+" is burning!");
+			affected.getLog().appendMessage(affected+" is burning!", Message.Type.Important);
 			if(affected.hp<=0) { affected.murder(); return false; }
 		} else {
-			affected.getLog().appendMessage(affected+" set off the fire!");
+			affected.getLog().appendMessage(affected+" set off the fire!", Message.Type.Important);
 			affected.setEffect(new EffectNormal());
 		}
 		return true;

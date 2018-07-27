@@ -39,9 +39,9 @@ public class Dungeon{
 	 * levelUp : ascend one level
 	 */
 	public void levelUp() {
-		if(currentLevel-1<0) { log.appendMessage("You can't escape..."); return; }
+		if(currentLevel-1<0) { log.appendMessage("You can't escape...", Message.Type.Normal); return; }
 		Resources.playStairUpSound();
-		log.appendMessage("Going up...");
+		log.appendMessage("Going up...", Message.Type.Normal);
 		currentLevel--;
 		if(currentLevel%5==0 && currentLevel!=0) { 
 			win.getDungeonPanel().hideLight(); 
@@ -55,7 +55,7 @@ public class Dungeon{
 	 */
 	public void levelDown() {
 		Resources.playStairDownSound();
-		log.appendMessage("Going down...");
+		log.appendMessage("Going down...", Message.Type.Normal);
 		if(currentLevel+1<levels.size()) {
 			currentLevel++;
 			if(currentLevel%5==0 && currentLevel!=0) { 
@@ -113,6 +113,6 @@ public class Dungeon{
 		l.load(filename);
 		this.win.getDungeonPanel().initPlayerRectangle();
 		this.win.getQuickActionPanel().setInventory(this.player.getInventory());
-		this.log.appendMessage("Welcome back "+this.getPlayer()+" !");
+		this.log.appendMessage("Welcome back "+this.getPlayer()+" !", Message.Type.Normal);
 	}
 }

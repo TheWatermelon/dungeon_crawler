@@ -21,11 +21,10 @@ public class Boss extends Monster {
 		this.log = l;
 	}
 	
-	public void murder() {
+	public String murder() {
 		this.dead = true;
 		this.hp=0;
 		this.mobTile = TileFactory.getInstance().createTileStairsDown();
-		log.appendMessage("[Boss] "+description+" defeated !");
-		log.appendMessage("Stairs revealed !");
+		return "[Boss] "+description+" defeated, stairs revealed !";
 	}
 }

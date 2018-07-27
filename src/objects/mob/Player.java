@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.util.Random;
 
 import engine.Dungeon;
+import engine.Message;
 import engine.MessageLog;
 import engine.Resources;
 import objects.effect.*;
@@ -43,11 +44,11 @@ public class Player extends Mob {
 		this.dungeon=d;
 	}
 	
-	public void murder() {
+	public String murder() {
 		this.dead = true;
 		this.hp=0;
-		log.appendMessage("Dead! Press "+Resources.Commands.Restart.getKey()+" to restart");
 		Resources.playGameOverSound();
+		return "Dead! Press "+Resources.Commands.Restart.getKey()+" to restart";
 	}
 	
 	public String fight(Monster m) {		
@@ -58,8 +59,7 @@ public class Player extends Mob {
 		// Player attacks once
 		battleLog+=fightTurn(m);
 		if(m.hp <= 0) { 
-			log.appendMessage(battleLog);
-			m.murder(); 
+			battleLog += ", " + m.murder(); 
 			this.monstersKilled++;
 		}
 		return battleLog;
@@ -116,7 +116,7 @@ public class Player extends Mob {
 	public void cure() {
 		resetHealth();
 		effect = new EffectNormal();
-		log.appendMessage(description+" is cured!");
+		log.appendMessage(description+" is cured!", Message.Type.Other);
 	}
 	
 	public void heal(int val) {
@@ -151,7 +151,7 @@ public class Player extends Mob {
 	
 	public void addGold(int amount) {
 		this.gold+=amount;
-		log.appendMessage("Gained "+amount+"G");
+		log.appendMessage("Gained "+amount+"G", Message.Type.Important);
 	}
 	
 	public boolean isFullHealth() {
@@ -189,7 +189,7 @@ public class Player extends Mob {
 			potionEffect--;
 			if(potionEffect==0) {
 				vit=0;
-				log.appendMessage("Potion effect vanished!");
+				log.appendMessage("Potion effect vanished!", Message.Type.Normal);
 			}
 		}
 	}
@@ -219,9 +219,9 @@ public class Player extends Mob {
 			this.w.unequip();
 			this.w = new Weapon();
 			if(this.w instanceof Weapon) {
-				log.appendMessage("Weapon broke!");
+				log.appendMessage("Weapon broke!", Message.Type.Important);
 			} else if(this.w  instanceof Bow) {
-				log.appendMessage("Bow broke!");
+				log.appendMessage("Bow broke!", Message.Type.Important);
 			}
 			Resources.playWeaponWornOutSound();
 		}
@@ -232,7 +232,7 @@ public class Player extends Mob {
 			inventory.removeItem(this.s);
 			this.s.unequip();
 			this.s = new Shield();
-			log.appendMessage("Shield broke!");
+			log.appendMessage("Shield broke!", Message.Type.Important);
 			Resources.playWeaponWornOutSound();
 		}
 	}
@@ -242,7 +242,7 @@ public class Player extends Mob {
 			inventory.removeItem(this.h);
 			this.h.unequip();
 			this.h = new Helmet();
-			log.appendMessage(this.h.getType()+" fell off!");
+			log.appendMessage(this.h.getType()+" fell off!", Message.Type.Important);
 			Resources.playWeaponWornOutSound();
 		}
 	}
@@ -305,7 +305,7 @@ public class Player extends Mob {
 			if(this.gold>=e.getVal()) {
 				this.gold -= e.getVal();
 				e.setDurability(e.getDurability()+1);
-				log.appendMessage("Spent "+e.getVal()+" to repare "+e);
+				log.appendMessage("Spent "+e.getVal()+" to repare "+e, Message.Type.Normal);
 			}
 		}
 	}

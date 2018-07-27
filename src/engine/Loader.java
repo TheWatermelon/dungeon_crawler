@@ -423,7 +423,6 @@ public class Loader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		return this.dungeon;
 	}
 }

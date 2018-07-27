@@ -8,6 +8,7 @@ import javax.swing.text.*;
 
 import engine.menus.*;
 import engine.menus.Menu;
+import engine.menus.PopupMenu;
 
 public class Window extends JFrame{
 	private static final long serialVersionUID = 1L;
@@ -29,7 +30,7 @@ public class Window extends JFrame{
 	private GamePanel optionsMenuInGame;
 	private GamePanel commandsMenu;
 	private GamePanel inventoryMenu;
-	private JTextPane headWest;
+	private JPanel headWest;
 	private JTextPane headEast;
 	private JTextPane footWest;
 	private JPanel footCenter;
@@ -93,15 +94,7 @@ public class Window extends JFrame{
 		this.headPanel = new JPanel();
 		this.headPanel.setLayout(new BorderLayout());
 		/* Log */
-		this.headWest = new JTextPane();
-		this.headWest.setEditable(false);
-		this.headWest.setFocusable(false);
-		this.headWest.setBackground(Color.black);
-		this.headWest.setForeground(Color.white);
-		this.headWest.setFont(new Font("Consolas", Font.PLAIN, 12));
-		this.headWest.setPreferredSize(new Dimension(this.getWidth()/2, 70));
-		StyledDocument doc3 = this.headWest.getStyledDocument();
-		doc3.setParagraphAttributes(0, doc3.getLength(), justify, false);
+		this.headWest = new LogPanel(d.getLog());
 		this.headPanel.add(this.headWest, BorderLayout.CENTER);
 		/* Commands */
 		this.headEast = new JTextPane();
@@ -179,9 +172,6 @@ public class Window extends JFrame{
 	public void setLabel(String s, String s1, String s2, String s3, String s4) {
 		if(!this.subFootCenterRight.getText().equals(s)) {
 			this.subFootCenterRight.setText(s);
-		}
-		if(!this.headWest.getText().equals(s1)) {
-			this.headWest.setText(s1);
 		}
 		this.refreshCommands();
 		if(!this.headEast.getText().equals(this.commands)) {
@@ -282,6 +272,10 @@ public class Window extends JFrame{
 		showPanel(commandsMenu, ((Menu)commandsMenu).getKeyListener());
 	}
 	
+	public void showPopup(PopupMenu popup) {
+		showPanel(popup, popup.getKeyListener());
+	}
+	
 	public void refreshListener() {
 		if(keyListener instanceof DungeonKeyListener) {
 			((DungeonKeyListener)keyListener).refresh(d.getMap(), this);
@@ -301,10 +295,8 @@ public class Window extends JFrame{
 	
 	public void refresh() {
 		dungeon.setDirty(true);
-		if(!d.getMap().isPlayerDead()) {
-			d.getMap().printDungeon();
-			setLabel(d.getMap().getMobInfo(), d.getMap().getLog(), d.getMap().getPlayer().getInfo(), d.getMap().getPlayer().getWeaponInfo(), d.getMap().getPrintableLevelInfo());
-		}
+		d.getMap().printDungeon();
+		setLabel(d.getMap().getMobInfo(), d.getMap().getLog(), d.getMap().getPlayer().getInfo(), d.getMap().getPlayer().getWeaponInfo(), d.getMap().getPrintableLevelInfo());
 		refreshListener();
 		revalidate();
 		repaint();

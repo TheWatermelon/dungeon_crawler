@@ -3,6 +3,7 @@ package objects.effect;
 import java.awt.Color;
 import java.util.Random;
 
+import engine.Message;
 import engine.Resources;
 import objects.mob.Mob;
 
@@ -28,7 +29,7 @@ public class EffectHeavy extends EffectSelf {
 		Random rnd = new Random();
 		
 		if(rnd.nextInt(7)==0) {
-			affected.getLog().appendMessage("Hmmph that's too heavy!");
+			affected.getLog().appendMessage("Hmmph that's too heavy!", Message.Type.Important);
 			return false;
 		}
 		return true;

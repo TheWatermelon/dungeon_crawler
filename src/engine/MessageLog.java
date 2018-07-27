@@ -3,23 +3,24 @@ package engine;
 import java.util.Vector;
 
 public class MessageLog {
-	private Vector<String> log;
+	private Vector<Message> log;
 	
 	public MessageLog() {
-		this.log = new Vector<String>();
+		this.log = new Vector<Message>();
 	}
 	
-	public void appendMessage(String msg) {
+	public void appendMessage(String msg, Message.Type type) {
 		if(msg.length()>Resources.getInstance().msgLength) {
 			msg = msg.substring(0, Resources.getInstance().msgLength);
 			msg += "...";
 		}
-		this.log.add("  "+msg);
+		this.log.add(new Message("  "+msg, type));
 	}
 	
-	public String getLast(int lines) {
+	public String getLastStrings(int lines) {
 		String res="";
 		
+		/* Not enough lines in the log */
 		if(log.size()-lines<0) {
 			for(int i=0; i<log.size(); i++) {
 				res += log.get(i);
@@ -36,6 +37,23 @@ public class MessageLog {
 		return res;
 	}
 	
+	public Message[] getLastMessages(int lines) {
+		Message[] res = new Message[lines];
+		
+		/* Not enough lines in the log */
+		if(log.size()-lines<0) {
+			for(int i=0; i<log.size(); i++) {
+				res[i] = log.get(i);
+			}
+		} else {
+			for(int i=lines; i>0; i--) {
+				res[lines-i] = log.get(log.size()-i);
+			}
+		}
+		
+		return res;
+	}
+	
 	public void clean() {
 		if(this.log.size()>=53) {
 			for(int i=0; i<50; i++) {
@@ -45,6 +63,6 @@ public class MessageLog {
 	}
 	
 	public void clear() {
-		this.log = new Vector<String>();
+		this.log.clear();
 	}
 }

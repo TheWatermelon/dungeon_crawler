@@ -3,6 +3,7 @@ package objects.effect;
 import java.awt.Color;
 import java.util.Random;
 
+import engine.Message;
 import engine.Resources;
 import objects.mob.Mob;
 
@@ -20,7 +21,7 @@ public class EffectParalyze extends EffectOther {
 		this.duration=this.maxDuration; 
 		this.affected=m; 
 		m.setEffect(this); 
-		m.getLog().appendMessage(m+" is paralyzed!");
+		m.getLog().appendMessage(m+" is paralyzed!", Message.Type.Important);
 	}
 	
 	@Override
@@ -31,11 +32,11 @@ public class EffectParalyze extends EffectOther {
 		if(duration>0) {
 			duration--;
 			if((new Random()).nextInt(2)==0) {
-				affected.getLog().appendMessage(affected+" is paralyzed!");
+				affected.getLog().appendMessage(affected+" is paralyzed!", Message.Type.Important);
 				return false;
 			}
 		} else {
-			affected.getLog().appendMessage(affected+" is cured from paralysis!");
+			affected.getLog().appendMessage(affected+" is cured from paralysis!", Message.Type.Important);
 			affected.setEffect(new EffectNormal());
 		}
 		return true;

@@ -2,6 +2,7 @@ package objects.item;
 
 import java.util.ArrayList;
 
+import engine.Message;
 import engine.MessageLog;
 import engine.Resources;
 import objects.effect.EffectNormal;
@@ -74,10 +75,10 @@ public class Inventory {
 					((Equipement)content.get(itemSlot)).resetDurability();
 				}
 			} else { content.add(i); }
-			log.appendMessage(i+" taken");
+			log.appendMessage(i+" taken", Message.Type.Normal);
 			return true;
 		} else {
-			log.appendMessage("Inventory full !");
+			log.appendMessage("Inventory full !", Message.Type.Important);
 			return false;
 		}
 	}
@@ -96,7 +97,7 @@ public class Inventory {
 		i.pos.x=player.pos.x;
 		i.pos.y=player.pos.y;
 		player.getDungeon().getMap().getItems().add(i);
-		log.appendMessage(i.description+" dropped !");
+		log.appendMessage(i.description+" dropped !", Message.Type.Normal);
 	}
 	
 	public void repareItem(Item i) {

@@ -17,10 +17,14 @@ public class MenuKeyListener implements KeyListener {
 				e.getKeyCode() == KeyEvent.VK_ENTER) {
             menu.selectFocusedItem();
         } else if(e.getKeyChar() == Resources.Commands.Up.getKey() ||
-        		e.getKeyCode() == KeyEvent.VK_UP) {
+        		e.getKeyCode() == KeyEvent.VK_UP ||
+        		e.getKeyChar() == Resources.Commands.Left.getKey() ||
+        		e.getKeyCode() == KeyEvent.VK_LEFT) {
 			menu.decFocusedItem();
 		} else if(e.getKeyChar() == Resources.Commands.Down.getKey() ||
-        		e.getKeyCode() == KeyEvent.VK_DOWN) {
+        		e.getKeyCode() == KeyEvent.VK_DOWN ||
+        		e.getKeyChar() == Resources.Commands.Right.getKey() ||
+        		e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			menu.incFocusedItem();
 		} else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			menu.exitMenu();

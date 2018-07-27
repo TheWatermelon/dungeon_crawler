@@ -511,7 +511,7 @@ public class Map {
 			items.remove(i);
 			if(content == 0) {
 				if(rnd.nextInt(2)==0) {
-					log.appendMessage("Open Barrel... Potion!");
+					log.appendMessage("Open Barrel... Potion!", Message.Type.Normal);
 					if(rnd.nextInt(2)==0) {
 						items.add(new HealingPotion(x, y));
 					} else {
@@ -522,31 +522,31 @@ public class Map {
 					int itemValue = rnd.nextInt((level-1)%5+1);
 					if (itemValue==0) itemValue++;
 					if(itemChance==0) {
-						log.appendMessage("Open Barrel... Weapon!");
+						log.appendMessage("Open Barrel... Weapon!", Message.Type.Normal);
 						items.add(new Weapon(x, y, itemValue));
 					} else if(itemChance==1) {
-						log.appendMessage("Open Barrel... Shield!");
+						log.appendMessage("Open Barrel... Shield!", Message.Type.Normal);
 						items.add(new Shield(x, y, itemValue));
 					} else if(itemChance==2) {
-						log.appendMessage("Open Barrel... Bow!");
+						log.appendMessage("Open Barrel... Bow!", Message.Type.Normal);
 						items.add(new Bow(x, y, itemValue));
 					} else if(itemChance==3) {
-						log.appendMessage("Open Barrel... Helmet!");
+						log.appendMessage("Open Barrel... Helmet!", Message.Type.Normal);
 						items.add(new Helmet(x, y, itemValue));
 					}
 				}
 			} else if(content==1) {
-				log.appendMessage("Open Barrel... Gold!");
+				log.appendMessage("Open Barrel... Gold!", Message.Type.Normal);
 				items.add(new Gold(x, y));
 			} else if(content == 2) {
-				log.appendMessage("Open Barrel... Boom!");
+				log.appendMessage("Open Barrel... Boom!", Message.Type.Normal);
 				this.jerry.harm(25);
 			} else if(content == 3) {
 				Monster m = new Monster(i.pos.x, i.pos.y, Resources.getLetterAt(level-1), Resources.getNameAt(level-1), log);
 				this.monsters.add(m);
-				log.appendMessage("A "+m.description+" popped out the barrel !");
+				log.appendMessage("A "+m.description+" popped out the barrel !", Message.Type.Normal);
 			} else {
-				log.appendMessage("Open Barrel... Nothing!");
+				log.appendMessage("Open Barrel... Nothing!", Message.Type.Normal);
 			}
 			if(content == 2) { Resources.playBarrelExplodeSound(); }
 			else { Resources.playBarrelSound(); }
@@ -577,7 +577,7 @@ public class Map {
 					i.setVal(i.getVal()-1);
 				}
 				if(i.getVal()==0){
-					log.appendMessage("The fountain disappear...");
+					log.appendMessage("The fountain disappear...", Message.Type.Normal);
 					items.remove(i);
 				}
 			}
@@ -608,7 +608,7 @@ public class Map {
 			}
 			if(jerry.pos.x==firePoint.x &&
 					jerry.pos.y==firePoint.y) {
-				log.appendMessage("This would be too easy...");
+				log.appendMessage("This would be too easy...", Message.Type.Important);
 			}
 		} else {
 			if(jerry.getWeapon() instanceof Bow) {
@@ -706,7 +706,10 @@ public class Map {
 		String battleLog="";
 		for(int i=0; i<this.monsters.size(); i++) {
 			if(this.monsters.get(i).isDead()) { continue; }
-			if(this.jerry.isDead()) { return; }
+			if(this.jerry.isDead()) { 
+				log.appendMessage(this.jerry.description+" has fainted !", Message.Type.Important);
+				return; 
+			}
 			// The player attacks the monster he is facing
 			if((x == this.monsters.get(i).pos.x) && (y == this.monsters.get(i).pos.y)) {
 				battleLog=this.jerry.fight(this.monsters.get(i));
@@ -722,7 +725,7 @@ public class Map {
 			String tmp=monsterAttack(monsters.get(i));
 			if(!tmp.equals("")) { battleLog+=(!battleLog.equals(""))?(", "+tmp):tmp; }
 		}
-		if(!battleLog.equals("")) { log.appendMessage(battleLog); }
+		if(!battleLog.equals("")) { log.appendMessage(battleLog, Message.Type.Urgent); }
 	}
 	
 	/**
@@ -737,7 +740,7 @@ public class Map {
 				if(!tmp.equals("")) { battleLog+=(!battleLog.equals(""))?(", "+tmp):tmp; }
 			}
 		}
-		if(!battleLog.equals("")) { log.appendMessage(battleLog); }
+		if(!battleLog.equals("")) { log.appendMessage(battleLog, Message.Type.Urgent); }
 	}
 	
 	/**
@@ -761,7 +764,7 @@ public class Map {
 			if((dir[i][0]+x == m.pos.x) && (dir[i][1]+y == m.pos.y) && !m.isDead()) {
 				battleLog=m.fightTurn(jerry);
 				if(jerry.hp<=0) {
-					log.appendMessage(battleLog);
+					log.appendMessage(battleLog, Message.Type.Urgent);
 					jerry.murder();
 					return "";
 				}
@@ -999,7 +1002,7 @@ public class Map {
 	 */
 	public String getLog() {
 		this.log.clean();
-		return this.log.getLast(4);
+		return this.log.getLastStrings(5);
 	}
 	
 	/**

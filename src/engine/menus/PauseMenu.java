@@ -33,7 +33,22 @@ public class PauseMenu extends Menu {
 			win.showSaveMenu();
 		} else {
 			focusedItem=0;
-			win.showMainMenu();
+			String[] message = {"Are you sure you want to quit ?",
+					"Any non-save progress will be lost"
+			};
+			win.showPopup(new PopupMenu(win, message, "Sure !", "I forgot to save") {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void doAction() {
+					this.win.showMainMenu();
+				}
+
+				@Override
+				public void exitMenu() {
+					this.win.showPauseMenu();
+				}
+			});
 		}
 	}
 	
@@ -57,7 +72,7 @@ public class PauseMenu extends Menu {
 		String name = win.getMap().getPlayer().toString(); 
 		String healthBar = win.getMap().getPlayer().drawHealthBar();
 		//String stuff = "Gold : "+win.getMap().getPlayer().getGold()+" "+win.getMap().getPlayer().getWeaponInfo();
-		g.drawString(name, getWidth()/2-(name.length()*13/2), 60);
+		g.drawString(name, getWidth()/2-(name.length()*12/2), 60);
 		g.drawString(healthBar, getWidth()/2-(healthBar.length()*12/2), 80);
 		//g.drawString(stuff, getWidth()/2-(stuff.length()*12/2), 100);
 
@@ -70,18 +85,18 @@ public class PauseMenu extends Menu {
 		g.drawString(""+win.getMap().getPlayer().getLooker().getRight(), getWidth()/2+15, 150);
 		if(win.getMap().getPlayer().getHelmet().getMaxDurability()!=-1) {
 			g.setColor(win.getMap().getPlayer().getHelmet().getColor());
-			g.drawString(""+win.getMap().getPlayer().getHelmet().getTile().getSymbol(), getWidth()/2-13, 140);
+			g.drawString(""+win.getMap().getPlayer().getHelmet().getTile().getSymbol(), getWidth()/2-12, 140);
 		}
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		
-		g.drawString("Pause", getWidth()/2-32, getHeight()/2-87);
+		g.drawString("Pause", getWidth()/2-(5*12)/2, getHeight()/2-87);
 		
 		int offsetY=getHeight()/2-37;
 		for(int i=0; i<items.length; i++) {
 			if(i == focusedItem) { g.setColor(Resources.orange); } 
 			else { g.setColor(Resources.white);	}
-			int offsetX = items[i].length()*13/2;
+			int offsetX = items[i].length()*12/2;
 			g.drawString(items[i], getWidth()/2-offsetX, offsetY);
 			offsetY+=25;
 		}
@@ -90,7 +105,7 @@ public class PauseMenu extends Menu {
 				Character.toUpperCase(Resources.Commands.Down.getKey())+": Down, "+
 				Character.toUpperCase(Resources.Commands.Take.getKey())+": Select";
 		g.setColor(Resources.white);
-		g.drawString(commands, getWidth()/2-(commands.length()*13/2), getHeight()-30);
+		g.drawString(commands, getWidth()/2-(commands.length()*12/2), getHeight()-30);
 	}
 
 	@Override

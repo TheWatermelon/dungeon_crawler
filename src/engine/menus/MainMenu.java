@@ -40,7 +40,22 @@ public class MainMenu extends Menu {
 			focusedItem=0;
 			win.showOptionsMenuInGame();
 		} else {
-			System.exit(0);
+			String[] message = {"Quit to desktop ?"
+			};
+			win.showPopup(new PopupMenu(win, message, "Yeah", "Nope") {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void doAction() {
+					System.exit(0);
+				}
+
+				@Override
+				public void exitMenu() {
+					win.showMainMenu();
+				}
+				
+			});
 		}
 	}
 
@@ -70,13 +85,13 @@ public class MainMenu extends Menu {
 			e.printStackTrace();
 		}
 		
-		g.drawString(win.getTitle(), getWidth()/2-(win.getTitle().length()*13/2), getHeight()/2-87);
+		g.drawString(win.getTitle(), getWidth()/2-(win.getTitle().length()*12/2), getHeight()/2-87);
 		
 		int offsetY=getHeight()/2-37;
 		for(int i=0; i<items.length; i++) {
 			if(i == focusedItem) { g.setColor(Resources.orange); } 
 			else { g.setColor(Resources.white); }
-			int offsetX = items[i].length()*13/2;
+			int offsetX = items[i].length()*12/2;
 			g.drawString(items[i], getWidth()/2-offsetX, offsetY);
 			offsetY+=25;
 		}
@@ -85,7 +100,7 @@ public class MainMenu extends Menu {
 				Character.toUpperCase(Resources.Commands.Down.getKey())+": Down, "+
 						Character.toUpperCase(Resources.Commands.Take.getKey())+": Select";
 		g.setColor(Resources.white);
-		g.drawString(commands, getWidth()/2-(commands.length()*13/2), getHeight()-30);
+		g.drawString(commands, getWidth()/2-(commands.length()*12/2), getHeight()-30);
 	}
 
 	@Override

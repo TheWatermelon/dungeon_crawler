@@ -99,14 +99,14 @@ public class Monster extends Mob {
 		return ((this.symbol - 'a') / 10);
 	}
 	
-	public void murder() {
+	public String murder() {
 		if(!dead) {
 			this.dead = true;
 			this.hp=0;
-			this.log.appendMessage(description+" fainted");
 			this.mobTile = TileFactory.getInstance().createTileCorpse();
 			Resources.playMonsterDeadSound();
 		}
+		return description+" fainted!";
 	}
 	
 	public String fightTurn(Player p) {

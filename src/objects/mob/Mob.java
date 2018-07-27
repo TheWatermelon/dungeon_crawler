@@ -31,7 +31,7 @@ public abstract class Mob {
 	public int bonusVit;
 	public Effect effect;
 
-	public abstract void murder();
+	public abstract String murder();
 
 	public abstract int getAtk();
 	public abstract int getDef();

@@ -85,14 +85,14 @@ public class LoadMenu extends Menu {
 		
 		initPanel();
 		
-		g.drawString("Load game", getWidth()/2-60, getHeight()/2-95);
+		g.drawString("Load game", getWidth()/2-(9*12/2), getHeight()/2-95);
 		
 		int offsetY=getHeight()/2-57;
 		for(int i=0; i<items.length; i++) {
 			if(i == focusedItem) { g.setColor(Resources.orange); } 
 			else if(i<this.shortFilenames.length && this.shortFilenames[i].equals("empty")) { g.setColor(Resources.gray); }
 			else { g.setColor(Resources.white); }
-			int offsetX = items[i].length()*13/2;
+			int offsetX = items[i].length()*12/2;
 			g.drawString(items[i], getWidth()/2-offsetX, offsetY);
 			offsetY+=25;
 		}
@@ -103,7 +103,7 @@ public class LoadMenu extends Menu {
 				Character.toUpperCase(Resources.Commands.Right.getKey())+": Delete save, "+
 				Character.toUpperCase(Resources.Commands.Take.getKey())+": Select";
 		g.setColor(Resources.white);
-		g.drawString(commands, getWidth()/2-(commands.length()*13/2), getHeight()-30);
+		g.drawString(commands, getWidth()/2-(commands.length()*12/2), getHeight()-30);
 	}
 
 	@Override
