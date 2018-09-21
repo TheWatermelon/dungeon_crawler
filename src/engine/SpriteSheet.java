@@ -40,7 +40,7 @@ public class SpriteSheet {
 		if(this.spritesColor[this.sprites16.indexOf(sprite)].getRGB() == c.getRGB()) {
 			return this.coloredSprites16.get(this.sprites16.indexOf(sprite));
 		} else {
-			BufferedImage newSprite = this.coloredSprites16.get(this.sprites16.indexOf(sprite));
+			BufferedImage newSprite = this.coloredSprites16.get(this.sprites16.indexOf(sprite)).getSubimage(0, 0, 16, 16);
 			this.spritesColor[this.sprites16.indexOf(sprite)] = c;
 			Color darkC = c.darker();
 	

@@ -113,6 +113,7 @@ public class Dungeon{
 		l.load(filename);
 		this.win.getDungeonPanel().initPlayerRectangle();
 		this.win.getQuickActionPanel().setInventory(this.player.getInventory());
+		this.win.refresh();
 		this.log.appendMessage("Welcome back "+this.getPlayer()+" !", Message.Type.Normal);
 	}
 }
