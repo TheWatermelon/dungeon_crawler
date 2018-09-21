@@ -1,8 +1,10 @@
 package engine;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
 
 public class SpriteSheet {
 	private ArrayList<BufferedImage> sprites16;
@@ -11,17 +13,49 @@ public class SpriteSheet {
 	private ArrayList<BufferedImage> coloredSprites32;
 	private Color[] spritesColor;
 	
+	/*
+	//// TEST ////
+	JPanel spritesTable;
+	JPanel coloredSpritesTable;
+	////////////////////
+	 */
+	
 	public SpriteSheet(ArrayList<BufferedImage> sprites) {
 		this.sprites16 = new ArrayList<BufferedImage>(sprites);
-		this.coloredSprites16 = new ArrayList<BufferedImage>(sprites);
+		this.coloredSprites16 = new ArrayList<BufferedImage>();
+		for(BufferedImage sprite : this.sprites16) {
+			this.coloredSprites16.add(SpriteSheet.copyImage(sprite));
+		}
 		this.sprites32 = new ArrayList<BufferedImage>();
 		this.coloredSprites32 = new ArrayList<BufferedImage>();
 		this.spritesColor = new Color[this.sprites16.size()];
 		for(int i=0; i<sprites.size(); i++) { spritesColor[i] = Color.BLACK; }
+		/*
 		for(int i=0; i<sprites.size(); i++) { 
-			this.sprites32.add(this.doubleSpriteSize(sprites16.get(i)));
-			this.coloredSprites32.add(this.doubleSpriteSize(sprites16.get(i)));
+			BufferedImage sprite32 = this.doubleSpriteSize(sprites16.get(i));
+			this.sprites32.add(sprite32);
+			this.coloredSprites32.add(sprite32);
 		}
+		*/
+		
+		/*
+		//// TEST ////
+		JFrame spriteFrame = new JFrame("Sprites");
+		spriteFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.spritesTable = new SpritesTable(sprites16, coloredSprites16);
+		spriteFrame.setSize(spritesTable.getSize());
+		spriteFrame.add(spritesTable);
+		spriteFrame.setVisible(true);
+		//////////////
+		 */
+	}
+	
+	public static BufferedImage copyImage(BufferedImage source){
+	    BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
+	    Graphics2D g = b.createGraphics();
+	    g.drawImage(source, 0, 0, null);
+	    g.dispose();
+	    return b;
 	}
 	
 	public int count() {
@@ -37,11 +71,12 @@ public class SpriteSheet {
 	}
 
 	public BufferedImage getColoredSprite16(BufferedImage sprite, Color c) {
-		if(this.spritesColor[this.sprites16.indexOf(sprite)].getRGB() == c.getRGB()) {
-			return this.coloredSprites16.get(this.sprites16.indexOf(sprite));
+		int spriteIndex = this.sprites16.indexOf(sprite);
+		if(this.spritesColor[spriteIndex].getRGB() == c.getRGB()) {
+			return this.coloredSprites16.get(spriteIndex);
 		} else {
-			BufferedImage newSprite = this.coloredSprites16.get(this.sprites16.indexOf(sprite)).getSubimage(0, 0, 16, 16);
-			this.spritesColor[this.sprites16.indexOf(sprite)] = c;
+			BufferedImage newSprite = SpriteSheet.copyImage(this.sprites16.get(spriteIndex));
+			this.spritesColor[spriteIndex] = c;
 			Color darkC = c.darker();
 	
 			for(int i=0; i<sprite.getWidth(); i++) {
@@ -57,17 +92,19 @@ public class SpriteSheet {
 					}
 				}
 			}
+			this.coloredSprites16.set(spriteIndex, newSprite);
 			return newSprite;
 		}
 
 	}
 	
 	public BufferedImage getColoredSprite32(BufferedImage sprite, Color c) {
-		if(this.spritesColor[this.sprites32.indexOf(sprite)] == c) {
-			return this.coloredSprites32.get(this.sprites32.indexOf(sprite));
+		int spriteIndex = this.sprites32.indexOf(sprite);
+		if(this.spritesColor[spriteIndex] == c) {
+			return this.coloredSprites32.get(spriteIndex);
 		} else {
-			BufferedImage newSprite = this.coloredSprites32.get(this.sprites32.indexOf(sprite));
-			this.spritesColor[this.sprites32.indexOf(sprite)] = c;
+			BufferedImage newSprite = SpriteSheet.copyImage(this.coloredSprites32.get(spriteIndex));
+			this.spritesColor[spriteIndex] = c;
 			Color darkC = c.darker();
 	
 			for(int i=0; i<sprite.getWidth(); i++) {
@@ -83,6 +120,7 @@ public class SpriteSheet {
 					}
 				}
 			}
+			this.coloredSprites32.set(spriteIndex, newSprite);
 			return newSprite;
 		}
 

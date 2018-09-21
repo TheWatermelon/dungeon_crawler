@@ -44,10 +44,6 @@ public class Window extends JFrame{
 	
 	private String commands;
 	
-	//// TEST ////
-	private JPanel spritesTable;
-	//////////////
-	
 	public Window(String title, Dungeon d) {
 		super(title);
 		this.d = d;
@@ -171,14 +167,6 @@ public class Window extends JFrame{
 		showMainMenu();
 		
 		this.setVisible(true);
-		
-		//// TEST ////
-		JFrame spriteFrame = new JFrame("Sprites");
-		spriteFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.spritesTable = new SpritesTable(this.dungeon.sprites);
-		spriteFrame.add(spritesTable);
-		spriteFrame.setVisible(true);
-		//////////////
 	}
 	
 	public void setLabel(String s, String s1, String s2, String s3, String s4) {
@@ -254,6 +242,7 @@ public class Window extends JFrame{
 		Resources.pauseMenuMusic();
 		Resources.playDungeonMusic();
 		showPanel(global, new DungeonKeyListener(d, d.getMap(), this));
+		refresh();
 	}
 	
 	public void showInventoryMenu() {
@@ -313,9 +302,5 @@ public class Window extends JFrame{
 		refreshCommands();
 		revalidate();
 		repaint();
-		
-		//// TEST ////
-		this.spritesTable.repaint();
-		//////////////
 	}
 }

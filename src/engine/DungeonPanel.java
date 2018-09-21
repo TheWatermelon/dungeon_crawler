@@ -37,10 +37,6 @@ public class DungeonPanel extends GamePanel implements Observer {
 	// Theme colors
 	protected Color wall;
 	
-	//// TEST ////
-	protected BufferedImage[] sprites;
-	//////////////
-	
 	public DungeonPanel(Window w) {
 		super(w);
 		setBorder(BorderFactory.createLineBorder(Color.white));
@@ -67,8 +63,6 @@ public class DungeonPanel extends GamePanel implements Observer {
 		this.basicColors[9] = Resources.green;
 		
 		Resources.getInstance().theme = pickTheme();
-		
-		this.sprites = new BufferedImage[256];
 	}
 	
 	/**
@@ -415,11 +409,6 @@ public class DungeonPanel extends GamePanel implements Observer {
 				}
 				//g.drawChars(c, 0, 1, offsetX, offsetY);
 				BufferedImage sprite = Resources.getInstance().sprites.getSprite16((int)c[0]);
-				//// TEST ////
-				if(this.sprites[(int)c[0]] == null) {
-					this.sprites[(int)c[0]] = Resources.getInstance().sprites.doubleSpriteSize(sprite);
-				}
-				//////////////
 				sprite = Resources.getInstance().sprites.getColoredSprite16(sprite, g.getColor());
 				g2d.drawImage(sprite, offsetX, offsetY, this);
 				if(table.charAt(i*win.getMap().getWidth()+j)==TileFactory.getInstance().createTilePlayer().getSymbol()) { 

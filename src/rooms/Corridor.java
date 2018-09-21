@@ -39,7 +39,7 @@ public class Corridor extends Room {
 				height=rnd.nextInt(getHeight()-1)+1;
 			}
 			
-			int itemValue = rnd.nextInt((level-1)%5+1);
+			int itemValue = rnd.nextInt((level)%6+1);
 			if(itemValue==0) itemValue++;
 			
 			if(floorType==0) {
