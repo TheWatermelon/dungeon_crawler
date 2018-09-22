@@ -35,6 +35,8 @@ public class Resources {
 	private static String[] helmetType = { "Cap", "Hat", "Helmet" };
 	
 	private static Font dungeonFont;
+	
+	public static String version = "6.1";
 		
 	public static Color white = Color.WHITE;
 	public static Color yellow = Color.YELLOW;

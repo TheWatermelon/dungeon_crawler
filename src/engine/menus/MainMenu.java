@@ -101,6 +101,10 @@ public class MainMenu extends Menu {
 						Character.toUpperCase(Resources.Commands.Take.getKey())+": Select";
 		g.setColor(Resources.white);
 		g.drawString(commands, getWidth()/2-(commands.length()*12/2), getHeight()-30);
+
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		g.drawString("Version "+Resources.version, 5, getHeight()-10);
 	}
 
 	@Override
