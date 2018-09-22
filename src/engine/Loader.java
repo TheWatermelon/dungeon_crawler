@@ -120,7 +120,7 @@ public class Loader {
 			int helmetDur = convertNeg(br.read());			// helmet durability
 			//System.out.println("helmetDur: "+helmetDur);
 			int helmetMaxDur = convertNeg(br.read());		// helmet max durability
-			System.out.println("helmetMaxDur: "+helmetMaxDur);
+			//System.out.println("helmetMaxDur: "+helmetMaxDur);
 			int helmetEffectId = convertNeg(br.read());		// helmet effect id
 			//System.out.println("helmetEffectId: "+helmetEffectId);
 			effectDur = br.read();							// helmet effect duration
@@ -146,7 +146,7 @@ public class Loader {
 			int weaponDur = convertNeg(br.read());			// weapon durability
 			//System.out.println("weaponDur: "+weaponDur);
 			int weaponMaxDur = convertNeg(br.read());		// weapon max durability
-			System.out.println("weaponMaxDur: "+weaponMaxDur);
+			//System.out.println("weaponMaxDur: "+weaponMaxDur);
 			int weaponEffectId = convertNeg(br.read());		// weapon effect id
 			//System.out.println("weaponEffectId: "+weaponEffectId);
 			effectDur = br.read();							// weapon effect duration
@@ -176,7 +176,7 @@ public class Loader {
 			int shieldDur = convertNeg(br.read());			// shield durability
 			//System.out.println("shieldDur: "+shieldDur);
 			int shieldMaxDur = convertNeg(br.read());		// shield max durability
-			System.out.println("shieldMaxDur: "+shieldMaxDur);
+			//System.out.println("shieldMaxDur: "+shieldMaxDur);
 			int shieldEffectId = convertNeg(br.read());		// shield effect id
 			//System.out.println("shieldEffectId: "+shieldEffectId);
 			effectDur = br.read();							// shield effect duration
