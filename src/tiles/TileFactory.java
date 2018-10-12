@@ -22,9 +22,31 @@ public class TileFactory {
 	private TilePotion tilePotion = new TilePotion();
 	private TileBow tileBow = new TileBow();
 	private TileHelmet tileHelmet = new TileHelmet();
+
+	private Tile[] tiles = {
+		tileVoid,
+		tileStone,
+		tileDirt,
+		tileMoss,
+		tileWall,
+		tileClosedDoor,
+		tileOpenedDoor,
+		tileStairsDown,
+		tileStairsUp,
+		tileBarrel,
+		tileFountain,
+		tileGold,
+		tilePotion,
+		tileHelmet,
+		tileWeapon,
+		tileBow,
+		tileShield,
+		tileCorpse,
+		tilePlayer
+	};
 	
 	private TileFactory() {
-		// CRAP CONSTRUCTOR
+		// STUB
 	}
 	
 	public static TileFactory getInstance() {
@@ -52,4 +74,8 @@ public class TileFactory {
 	public TilePotion createTilePotion() { return tilePotion; }
 	public TileBow createTileBow() { return tileBow; }
 	public TileHelmet createTileHelmet() { return tileHelmet; }
+
+	public Tile getTileAt(int index) {
+		return this.tiles[index];
+	}
 }

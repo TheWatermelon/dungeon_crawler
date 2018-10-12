@@ -36,7 +36,7 @@ public class Resources {
 	
 	private static Font dungeonFont;
 	
-	public static String version = "6.1";
+	public static String version = "6.1.1";
 		
 	public static Color white = Color.WHITE;
 	public static Color yellow = Color.YELLOW;
@@ -314,7 +314,7 @@ public class Resources {
 		Vector<Room> r = new Vector<Room>();
 		Village v = new Village();
 		r.add(v);
-		return new Map(d, t, r, new Vector<Monster>(), new Vector<Item>(), new Point(0, 0), new Point(v.p1.x+16,v.p1.y+16));
+		return new Map(d, t, r, new Vector<Monster>(), new Vector<Item>(), new Point(0, 0), new Point(v.getStairDownX(), v.getStairDownY()));
 	}
 	
 	/* Menu sounds */

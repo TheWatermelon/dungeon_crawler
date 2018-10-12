@@ -10,12 +10,14 @@ public class Dungeon{
 	protected Window win;
 	protected MessageLog log;
 	protected Player player;
+	protected Map village;
 	
 	public Dungeon() {
 		log = new MessageLog();
 		levels = new ArrayList<Map>();
 		player = new Player(Resources.getInstance().resolution, Resources.getInstance().resolution/2, log, this);
-		levels.add(Resources.createVillage(this));
+		village = Resources.createVillage(this);
+		levels.add(village);
 		win = new Window("Dungeon Crawler", this);
 		win.setVisible(true);
 	}
@@ -91,7 +93,7 @@ public class Dungeon{
 		player.reset();
 		player.pos.x = Resources.getInstance().resolution;
 		player.pos.y = Resources.getInstance().resolution/2;
-		levels.add(Resources.createVillage(this));
+		levels.add(village);
 		start();
 	}
 	
