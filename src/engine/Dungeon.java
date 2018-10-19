@@ -32,6 +32,7 @@ public class Dungeon{
 	protected void setCurrentLevel(int currLvl) { this.currentLevel = currLvl; }
 	
 	public void start() {
+		win.showDungeon();
 		win.getDungeonPanel().initPlayerRectangle();
 		win.refreshListener();
 		win.refresh();

@@ -36,7 +36,7 @@ public class Resources {
 	
 	private static Font dungeonFont;
 	
-	public static String version = "6.1.1";
+	public static String version = "6.1.2";
 		
 	public static Color white = Color.WHITE;
 	public static Color yellow = Color.YELLOW;
@@ -60,8 +60,10 @@ public class Resources {
 	public static Color cyan = Color.CYAN;
 	public static Color magenta = Color.MAGENTA;
 	public static Color pink = Color.PINK;
+
+	public static Color[] basicColors = {lightGray,white,brown,orange,red,pink,magenta,blue,cyan,green};
 	
-	public Color theme = lightGray;
+	public Color theme = basicColors[0];
 	
 	public int difficulty=1;
 	
@@ -81,7 +83,7 @@ public class Resources {
 	
 	public SpriteSheet sprites;
 	/* whether to use original char_table or texture_table */
-	public boolean textures = true;
+	public boolean textures = false;
 	
 	public enum Commands {
 		Up('z'),
@@ -127,6 +129,14 @@ public class Resources {
 			res = new Resources();
 		}
 		return res;
+	}
+
+	/**
+	 * pickTheme : randomly pick a color theme for the walls
+	 * @return
+	 */
+	public static Color pickTheme() {
+		return basicColors[(new Random()).nextInt(basicColors.length)];
 	}
 	
 	public static Font getDungeonFont() {

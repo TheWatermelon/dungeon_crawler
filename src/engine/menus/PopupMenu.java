@@ -10,12 +10,10 @@ import engine.Window;
 
 public abstract class PopupMenu extends Menu {
 	private static final long serialVersionUID = 1L;
-	/*protected GamePanel parent;*/
 	protected String[] msg;
 	
-	public PopupMenu(Window w, /*GamePanel p,*/ String[] message, String action, String cancel) {
+	public PopupMenu(Window w, String[] message, String action, String cancel) {
 		super(w);
-		/*this.parent = p;*/
 		this.msg = message;
 		items = new String[2];
 		items[0] = action;

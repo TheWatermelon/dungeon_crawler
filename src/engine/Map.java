@@ -9,6 +9,8 @@ import objects.mob.*;
 import rooms.*;
 import tiles.*;
 
+import engine.menus.PopupMenu;
+
 public class Map {
 	protected Tile[][] table;
 	protected Vector<Room> rooms;
@@ -708,6 +710,21 @@ public class Map {
 			if(this.monsters.get(i).isDead()) { continue; }
 			if(this.jerry.isDead()) { 
 				log.appendMessage(this.jerry.description+" has fainted !", Message.Type.Important);
+				String[] message = {this.jerry.description+" has fainted !",
+				"Level: "+this.dungeon.getLevel()+" \tGold: "+this.jerry.getGold()+" \tKills: "+this.jerry.getKills()};
+				this.dungeon.getWin().showPopup(new PopupMenu(this.dungeon.getWin(), message, "Restart", "Quit") 
+					{
+						private static final long serialVersionUID = 1L;
+
+						public void doAction() {
+							this.win.getDungeon().newGame();
+						}
+
+						public void exitMenu() {
+							this.win.showMainMenu();
+						}
+					}
+				);
 				return; 
 			}
 			// The player attacks the monster he is facing
@@ -860,7 +877,7 @@ public class Map {
 	}
 	
 	/**
-	 * moveAllMonsters : move all monsters to them closer to the player
+	 * moveAllMonsters : move all monsters closer to the player
 	 */
 	protected void moveAllMonsters() {
 		for(Monster m : this.monsters) {

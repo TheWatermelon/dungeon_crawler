@@ -36,7 +36,7 @@ public class OptionsMenuNewGame extends Menu {
 		} else if(focusedItem == 3) {	// Cycle difficulty
 			Resources.getInstance().difficulty=(Resources.getInstance().difficulty+1)%3;
 		} else if(focusedItem == 4) {	// Cycle theme
-			Resources.getInstance().theme = win.getDungeonPanel().pickTheme();
+			Resources.getInstance().theme = Resources.pickTheme();
 		} else {						// Launch game
 			focusedItem=0;
 			win.getDungeon().newGame();

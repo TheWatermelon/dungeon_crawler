@@ -32,8 +32,6 @@ public class DungeonPanel extends GamePanel implements Observer {
 	protected String table;
 	protected Color borderColor;
 	
-
-	protected Color[] basicColors;
 	// Theme colors
 	protected Color wall;
 	
@@ -50,19 +48,7 @@ public class DungeonPanel extends GamePanel implements Observer {
 		this.table="";
 		this.borderColor = Resources.white;
 		
-		this.basicColors = new Color[10];
-		this.basicColors[0] = Resources.lightGray;
-		this.basicColors[1] = Resources.white;
-		this.basicColors[2] = Resources.brown;
-		this.basicColors[3] = Resources.orange;
-		this.basicColors[4] = Resources.red;
-		this.basicColors[5] = Resources.pink;
-		this.basicColors[6] = Resources.magenta;
-		this.basicColors[7] = Resources.blue;
-		this.basicColors[8] = Resources.cyan;
-		this.basicColors[9] = Resources.green;
-		
-		Resources.getInstance().theme = pickTheme();
+		this.wall = Resources.getInstance().theme;
 	}
 	
 	/**
@@ -79,15 +65,6 @@ public class DungeonPanel extends GamePanel implements Observer {
 	 * hideLight : disable isLight
 	 */
 	public void hideLight() { isLight=false; }
-	
-	/**
-	 * pickTheme : randomly pick a color theme for the walls
-	 * @return
-	 */
-	public Color pickTheme() {
-		this.wall = basicColors[(new Random()).nextInt(basicColors.length)];
-		return this.wall;
-	}
 	
 	/**
 	 * prepareColor : set g color based on Tile in (i;j)
@@ -386,6 +363,8 @@ public class DungeonPanel extends GamePanel implements Observer {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.WHITE);
 		g.setFont(Resources.getDungeonFont());
+
+		this.wall = Resources.getInstance().theme;
 		
 		if(dirty) { refreshTable(); dirty=false; }
 		

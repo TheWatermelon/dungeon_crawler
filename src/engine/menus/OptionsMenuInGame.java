@@ -63,7 +63,7 @@ public class OptionsMenuInGame extends Menu {
 				Resources.getInstance().soundVolume-=16.0f;
 			}
 		} else if(focusedItem == 4) {	// Cycle theme
-			Resources.getInstance().theme = win.getDungeonPanel().pickTheme();
+			Resources.getInstance().theme = Resources.pickTheme();
 		} else {						// Exit game
 			this.exitMenu();
 		}

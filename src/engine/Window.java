@@ -71,10 +71,8 @@ public class Window extends JFrame{
 	}
 
 	protected void initGamePanel() {
-		this.keyListener = new DungeonKeyListener(d, d.getMap(), this);
 		this.dungeon = new DungeonPanel(this);
-		addKeyListener(keyListener);
-
+		
 		this.global = new GamePanel(this) {
 			private static final long serialVersionUID = 1L;
 
