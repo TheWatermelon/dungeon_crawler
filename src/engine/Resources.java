@@ -80,6 +80,8 @@ public class Resources {
 	public Clip menuMusic;
 	
 	public SpriteSheet sprites;
+	/* whether to use original char_table or texture_table */
+	public boolean textures = true;
 	
 	public enum Commands {
 		Up('z'),
@@ -103,7 +105,12 @@ public class Resources {
 	
 	private Resources() {
 		try {
-			BufferedImage sheet = ImageIO.read(Main.class.getResourceAsStream("/char_table.png"));
+			BufferedImage sheet = null;
+			if(this.textures) {
+				sheet = ImageIO.read(Main.class.getResourceAsStream("/texture_table.png"));
+			} else {
+				sheet = ImageIO.read(Main.class.getResourceAsStream("/char_table.png"));
+			}
 			sprites = new SpriteSheetBuilder().
 					withSpriteSheet(sheet).
 					withCols(13).
