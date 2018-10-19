@@ -55,8 +55,6 @@ public class Village extends Room {
 		this.p1 = new Point(middleX-this.width/2,middleY-this.height/2);
 		/* p2 is the bottom right corner of the map */
 		this.p2 = new Point(middleX+this.width/2-1,middleY+this.height/2-1);
-		System.out.println(this.p1);
-		System.out.println(this.p2);
 		this.door = new Vector<Door>();
 		this.floor = TileFactory.getInstance().createTileStone();
 		this.show = true;
@@ -67,7 +65,6 @@ public class Village extends Room {
 				if(this.map[i][j] == 7) { this.stairDown = new Point(this.p1.x+j,this.p1.y+i); }
 			}
 		}
-		System.out.println(this.stairDown);
 	}
 
 	@Override

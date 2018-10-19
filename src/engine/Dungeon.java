@@ -89,11 +89,12 @@ public class Dungeon{
 	public void newGame() {
 		log.clear();
 		levels.clear();
+		levels.add(village);
 		currentLevel=0;
 		player.reset();
 		player.pos.x = Resources.getInstance().resolution;
 		player.pos.y = Resources.getInstance().resolution/2;
-		levels.add(village);
+		win.initGamePanel();
 		start();
 	}
 	

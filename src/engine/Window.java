@@ -52,19 +52,14 @@ public class Window extends JFrame{
 		this.setResizable(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		this.keyListener = new DungeonKeyListener(d, d.getMap(), this);
-		this.dungeon = new DungeonPanel(this);
-		addKeyListener(keyListener);
-
-		this.commands = Character.toUpperCase(Resources.Commands.Up.getKey())+","+
-				Character.toUpperCase(Resources.Commands.Left.getKey())+","+
-				Character.toUpperCase(Resources.Commands.Down.getKey())+","+
-				Character.toUpperCase(Resources.Commands.Right.getKey())+
-				": Move "+getMap().getPlayer()+"  \n"+
-				Character.toUpperCase(Resources.Commands.Take.getKey())+": Take/Use Bow  \n"+
-				Character.toUpperCase(Resources.Commands.Inventory.getKey())+": Inventory  \n"+
-				Character.toUpperCase(Resources.Commands.Pause.getKey())+": Pause  ";
+		initMenus();
 		
+		this.focusedPanel = this.mainMenu;
+		//this.keyListener = ((Menu)mainMenu).getKeyListener();
+		showMainMenu();
+	}
+
+	protected void initMenus() {
 		this.mainMenu = new MainMenu(this);
 		this.loadMenu = new LoadMenu(this);
 		this.saveMenu = new SaveMenu(this);
@@ -73,7 +68,13 @@ public class Window extends JFrame{
 		this.optionsMenuInGame = new OptionsMenuInGame(this);
 		this.commandsMenu = new CommandsMenu(this);
 		this.inventoryMenu = new InventoryMenuList(this);
-		
+	}
+
+	protected void initGamePanel() {
+		this.keyListener = new DungeonKeyListener(d, d.getMap(), this);
+		this.dungeon = new DungeonPanel(this);
+		addKeyListener(keyListener);
+
 		this.global = new GamePanel(this) {
 			private static final long serialVersionUID = 1L;
 
@@ -162,11 +163,6 @@ public class Window extends JFrame{
 		this.global.add(this.rightPanel, BorderLayout.EAST);
 		this.global.add(this.footPanel, BorderLayout.SOUTH);
 		this.add(this.global);
-		focusedPanel = global;
-		
-		showMainMenu();
-		
-		this.setVisible(true);
 	}
 	
 	public void setLabel(String s, String s1, String s2, String s3, String s4) {
@@ -224,7 +220,7 @@ public class Window extends JFrame{
 	}
 	
 	public void showMainMenu() {
-		isMainMenu=true;
+		this.isMainMenu=true;
 		Resources.playMenuMusic();
 		showPanel(mainMenu, ((Menu)mainMenu).getKeyListener());
 	}
@@ -238,7 +234,7 @@ public class Window extends JFrame{
 	}
 	
 	public void showDungeon() {
-		isMainMenu=false;
+		if(this.global == null) { initGamePanel(); }
 		Resources.pauseMenuMusic();
 		Resources.playDungeonMusic();
 		showPanel(global, new DungeonKeyListener(d, d.getMap(), this));
@@ -255,6 +251,7 @@ public class Window extends JFrame{
 	}
 	
 	public void showPauseMenu() {
+		this.isMainMenu=false;
 		Resources.pauseDungeonMusic();
 		Resources.playOpenMenuSound();
 		Resources.playMenuMusic();
