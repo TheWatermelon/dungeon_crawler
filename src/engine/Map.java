@@ -85,6 +85,7 @@ public class Map {
 	}
 	
 	public Tile[][] getTable() { return this.table; }
+	public Tile getTileAt(int x, int y) { return this.table[y][x]; }
 	public int getHeight() { return this.height; }
 	public int getWidth() { return this.width; }
 	public Vector<Monster> getMonsters() { return monsters; }
@@ -828,6 +829,7 @@ public class Map {
 			monstersAttack();
 		}
 		moveAllMonsters();
+		//moveAllMonstersUsingPathfinding();
 	}
 	
 	/**
@@ -874,6 +876,14 @@ public class Map {
 	protected void moveMonster(Monster m, Direction dir) {
 		m.pos.x+=dir.getX();
 		m.pos.y+=dir.getY();
+	}
+
+	/**
+	 * teleportMob : sets mob position to point p
+	 */
+	protected void teleportMob(Mob m, Point p) {
+		m.pos.x = p.x;
+		m.pos.y = p.y;
 	}
 	
 	/**
@@ -945,6 +955,13 @@ public class Map {
 				}
 			}
 		}
+	}
+
+	/**
+	 * moveAllMonstersUsingPathfinding : move all monsters using the Pathfinding algorithm
+	 */
+	protected void moveAllMonstersUsingPathfinding() {
+		System.out.println(Pathfinding.getPathFor(this.stairDown, this.jerry.pos, table));
 	}
 	
 	/**
