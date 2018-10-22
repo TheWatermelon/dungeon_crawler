@@ -36,7 +36,7 @@ public class Resources {
 	
 	private static Font dungeonFont;
 	
-	public static String version = "6.1.2";
+	public static String version = "6.1.21-pathfinding";
 		
 	public static Color white = Color.WHITE;
 	public static Color yellow = Color.YELLOW;
