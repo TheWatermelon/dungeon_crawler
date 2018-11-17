@@ -449,6 +449,21 @@ public class Map {
 			}
 		}
 	}
+
+	/**
+	 *
+	 */
+	protected Room getRoomFor(Mob m) {
+		Room room=null;
+		for(int i=0; i<this.rooms.size(); i++) {
+			if(m.pos.x >= this.rooms.get(i).p1.x && m.pos.x <= this.rooms.get(i).p2.x 
+					&& m.pos.y >= this.rooms.get(i).p1.y && m.pos.y <= this.rooms.get(i).p2.y) {
+				room=rooms.get(i);
+				break;
+			}
+		}
+		return room;
+	}
 	
 	/**
 	 * playerIn : get the room the player is in,
@@ -829,7 +844,6 @@ public class Map {
 			monstersAttack();
 		}
 		moveAllMonsters();
-		//moveAllMonstersUsingPathfinding();
 	}
 	
 	/**
@@ -873,7 +887,7 @@ public class Map {
 	/**
 	 * moveMonster : move the monster m to the direction dir
 	 */
-	protected void moveMonster(Monster m, Direction dir) {
+	protected void moveMob(Mob m, Direction dir) {
 		m.pos.x+=dir.getX();
 		m.pos.y+=dir.getY();
 	}
@@ -892,76 +906,98 @@ public class Map {
 	protected void moveAllMonsters() {
 		for(Monster m : this.monsters) {
 			if(!m.isDead() && rnd.nextInt(10)>1 && isVisible(m.pos.x, m.pos.y) && m.getEffect().apply()) {
-				if(this.jerry.pos.y<m.pos.y) {
-					// NORTH
-					if(isWalkable(m.pos.x, m.pos.y-1)) {
-						moveMonster(m, Direction.North);
-					} else if(this.jerry.pos.x<m.pos.x) {
-						// ALT WEST
-						if(isWalkable(m.pos.x-1, m.pos.y)) {
-							moveMonster(m, Direction.West);
-						}
-					} else if(this.jerry.pos.x>m.pos.x) {
-						// ALT EAST
-						if(isWalkable(m.pos.x+1, m.pos.y)) {
-							moveMonster(m, Direction.East);
-						}
-					}
-				} else if(this.jerry.pos.y>m.pos.y) {
-					// SOUTH
-					if(isWalkable(m.pos.x, m.pos.y+1)) {
-						moveMonster(m, Direction.South);
-					} else if(this.jerry.pos.x<m.pos.x) {
-						// ALT WEST
-						if(isWalkable(m.pos.x-1, m.pos.y)) {
-							moveMonster(m, Direction.West);
-						}
-					} else if(this.jerry.pos.x>m.pos.x) {
-						// ALT EAST
-						if(isWalkable(m.pos.x+1, m.pos.y)) {
-							moveMonster(m, Direction.East);
-						}
-					}
-				} else if(this.jerry.pos.x<m.pos.x) {
-					// WEST
-					if(isWalkable(m.pos.x-1, m.pos.y)) {
-						moveMonster(m, Direction.West);
-					} else if(this.jerry.pos.y<m.pos.y) {
-						// ALT NORTH
-						if(isWalkable(m.pos.x, m.pos.y-1)) {
-							moveMonster(m, Direction.North);
-						}
-					} else if(this.jerry.pos.y>m.pos.y) {
-						// ALT SOUTH
-						if(isWalkable(m.pos.x, m.pos.y+1)) {
-							moveMonster(m, Direction.South);
-						}
-					}
-				} else if(this.jerry.pos.x>m.pos.x) {
-					// EAST
-					if(isWalkable(m.pos.x+1, m.pos.y)) {
-						moveMonster(m, Direction.East);
-					} else if(this.jerry.pos.y<m.pos.y) {
-						// ALT NORTH
-						if(isWalkable(m.pos.x, m.pos.y-1)) {
-							moveMonster(m, Direction.North);
-						}
-					} else if(this.jerry.pos.y>m.pos.y) {
-						// ALT SOUTH
-						if(isWalkable(m.pos.x, m.pos.y+1)) {
-							moveMonster(m, Direction.South);
-						}
-					}
+				/*
+				if(Math.abs(this.jerry.pos.x-m.pos.x)<4 && Math.abs(this.jerry.pos.y-m.pos.y)<4) {
+					moveMobUsingPathfinding(m);
+				} else {
+					moveMobUsingAxisComparison(m);
+				}
+				*/
+				moveMobUsingAxisComparison(m);
+			}
+		}
+	}
+
+	/**
+	 * moveMobUsingAxisComparison
+	 */
+	protected void moveMobUsingAxisComparison(Mob m) {
+		if(this.jerry.pos.y<m.pos.y) {
+			// NORTH
+			if(isWalkable(m.pos.x, m.pos.y-1)) {
+				moveMob(m, Direction.North);
+			} else if(this.jerry.pos.x<m.pos.x) {
+				// ALT WEST
+				if(isWalkable(m.pos.x-1, m.pos.y)) {
+					moveMob(m, Direction.West);
+				}
+			} else if(this.jerry.pos.x>m.pos.x) {
+				// ALT EAST
+				if(isWalkable(m.pos.x+1, m.pos.y)) {
+					moveMob(m, Direction.East);
+				}
+			}
+		} else if(this.jerry.pos.y>m.pos.y) {
+			// SOUTH
+			if(isWalkable(m.pos.x, m.pos.y+1)) {
+				moveMob(m, Direction.South);
+			} else if(this.jerry.pos.x<m.pos.x) {
+				// ALT WEST
+				if(isWalkable(m.pos.x-1, m.pos.y)) {
+					moveMob(m, Direction.West);
+				}
+			} else if(this.jerry.pos.x>m.pos.x) {
+				// ALT EAST
+				if(isWalkable(m.pos.x+1, m.pos.y)) {
+					moveMob(m, Direction.East);
+				}
+			}
+		} else if(this.jerry.pos.x<m.pos.x) {
+			// WEST
+			if(isWalkable(m.pos.x-1, m.pos.y)) {
+				moveMob(m, Direction.West);
+			} else if(this.jerry.pos.y<m.pos.y) {
+				// ALT NORTH
+				if(isWalkable(m.pos.x, m.pos.y-1)) {
+					moveMob(m, Direction.North);
+				}
+			} else if(this.jerry.pos.y>m.pos.y) {
+				// ALT SOUTH
+				if(isWalkable(m.pos.x, m.pos.y+1)) {
+					moveMob(m, Direction.South);
+				}
+			}
+		} else if(this.jerry.pos.x>m.pos.x) {
+			// EAST
+			if(isWalkable(m.pos.x+1, m.pos.y)) {
+				moveMob(m, Direction.East);
+			} else if(this.jerry.pos.y<m.pos.y) {
+				// ALT NORTH
+				if(isWalkable(m.pos.x, m.pos.y-1)) {
+					moveMob(m, Direction.North);
+				}
+			} else if(this.jerry.pos.y>m.pos.y) {
+				// ALT SOUTH
+				if(isWalkable(m.pos.x, m.pos.y+1)) {
+					moveMob(m, Direction.South);
 				}
 			}
 		}
 	}
 
 	/**
-	 * moveAllMonstersUsingPathfinding : move all monsters using the Pathfinding algorithm
+	 * moveMobUsingPathfinding : move all visible monsters using the Pathfinding algorithm
+	 * (because visible = accessible);
 	 */
-	protected void moveAllMonstersUsingPathfinding() {
-		System.out.println(Pathfinding.getPathFor(this.stairDown, this.jerry.pos, table));
+	protected void moveMobUsingPathfinding(Mob m) {
+		Point nextPos;
+		if(!m.isDead() && this.getRoomFor(m).isVisible()) {
+			nextPos = Pathfinding.getNextStep(m.pos, this.jerry.pos, table);
+			if(nextPos != null) { 
+				//System.out.println("Moving "+m.pos+" to "+nextPos);
+				this.teleportMob(m, nextPos);
+			}
+		}
 	}
 	
 	/**
