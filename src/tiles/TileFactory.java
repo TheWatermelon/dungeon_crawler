@@ -75,6 +75,10 @@ public class TileFactory {
 	public TileBow createTileBow() { return tileBow; }
 	public TileHelmet createTileHelmet() { return tileHelmet; }
 
+	public int getTilesLength() {
+		return this.tiles.length;
+	}
+	
 	public Tile getTileAt(int index) {
 		return this.tiles[index];
 	}
