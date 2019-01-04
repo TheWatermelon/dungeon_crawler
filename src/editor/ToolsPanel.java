@@ -16,7 +16,7 @@ public class ToolsPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Tile currentTile;
+	private TileTool currentTile;
 	
 	public ToolsPanel() {
 		super();
@@ -28,14 +28,16 @@ public class ToolsPanel extends JPanel {
 			t.addMouseListener(new ToolMouseListener(t));
 			this.add(t);
 		}
+
+		this.currentTile = new TileTool(this, TileFactory.getInstance().createTileVoid());
 	}
 	
-	public void setCurrentTile(Tile t) {
+	public void setCurrentTile(TileTool t) {
 		this.currentTile = t;
 		//System.out.println("Current tile : "+this.currentTile);
 	}
 	
-	public Tile getCurrentTile() {
+	public TileTool getCurrentTile() {
 		return this.currentTile;
 	}
 	

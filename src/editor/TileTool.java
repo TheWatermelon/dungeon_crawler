@@ -18,6 +18,7 @@ public class TileTool extends Tool {
 	private ToolsPanel parent;
 	private Tile t;
 	public boolean hover;
+	public boolean selected;
 	
 	public TileTool(ToolsPanel p, Tile t) {
 		super();
@@ -46,12 +47,20 @@ public class TileTool extends Tool {
 			g.setColor(Color.red);
 			g.drawRect(1, 1, 16, 16);
 		} else {
-			g.setColor(Color.white);
+			if(this.selected) {
+				g.setColor(Color.blue);
+				g.drawRect(1, 1, 16, 16);
+			} else {
+				g.setColor(Color.white);
+			}
 		}
 		g.drawRect(0, 0, 18, 18);
 	}
 	
 	public void updateCurrentTile() {
-		this.parent.setCurrentTile(this.t);
+		this.selected = true;
+		this.parent.getCurrentTile().selected = false;
+		this.parent.setCurrentTile(this);
+		this.repaint();
 	}
 }
