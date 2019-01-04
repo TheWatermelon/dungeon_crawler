@@ -43,6 +43,7 @@ public class TileTool extends Tool {
 		g2d.drawImage(sprite, 1, 1, this);
 		
 		// Tool focus
+		g.setColor(Color.white);
 		if(this.hover) {
 			g.setColor(Color.red);
 			g.drawRect(1, 1, 16, 16);
@@ -50,17 +51,12 @@ public class TileTool extends Tool {
 			if(this.selected) {
 				g.setColor(Color.blue);
 				g.drawRect(1, 1, 16, 16);
-			} else {
-				g.setColor(Color.white);
 			}
 		}
 		g.drawRect(0, 0, 18, 18);
 	}
 	
 	public void updateCurrentTile() {
-		this.selected = true;
-		this.parent.getCurrentTile().selected = false;
 		this.parent.setCurrentTile(this);
-		this.repaint();
 	}
 }

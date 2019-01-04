@@ -7,7 +7,6 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import tiles.Tile;
 import tiles.TileFactory;
 
 public class ToolsPanel extends JPanel {
@@ -33,8 +32,11 @@ public class ToolsPanel extends JPanel {
 	}
 	
 	public void setCurrentTile(TileTool t) {
+		this.currentTile.selected = false;
+		this.currentTile.repaint();
 		this.currentTile = t;
-		//System.out.println("Current tile : "+this.currentTile);
+		this.currentTile.selected = true;
+		this.currentTile.repaint();
 	}
 	
 	public TileTool getCurrentTile() {

@@ -50,7 +50,7 @@ public class Editor extends JFrame {
 		JToolBar toolBar = new JToolBar();
 		contentPane.add(toolBar, BorderLayout.NORTH);
 		
-		JScrollPane scrollPane = new JScrollPane(new TileGrid(30));
+		JScrollPane scrollPane = new JScrollPane(new TileGrid(30, (ToolsPanel)toolsPanel));
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 	}
 
