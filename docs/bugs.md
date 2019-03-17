@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Bugs
-permalink: /bugs/
+permalink: /dungeon_crawler/bugs/
 ---
 ## Load & save
 
