@@ -2,6 +2,7 @@
 
 This project is a dungeon crawler with procedural generation written in Java.
 
+[site](https://thewatermelon.github.io/dungeon_crawler)
 
 ## Game mechanics
 
@@ -17,7 +18,7 @@ This project is a dungeon crawler with procedural generation written in Java.
 
 ## Screenshots
 
-![dungeon](doc/10_tenthLook.png?raw=true)
+![dungeon](docs/looks/10_tenthLook.png?raw=true)
 
 ## Music
 
