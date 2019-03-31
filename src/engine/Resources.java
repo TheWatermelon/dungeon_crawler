@@ -64,6 +64,8 @@ public class Resources {
 	public static Color[] basicColors = {lightGray,white,brown,orange,red,pink,magenta,blue,cyan,green};
 	
 	public Color theme = basicColors[0];
+	public Color foreground = Color.black;
+	public Color background = new Color(0xFF, 0xFF, 0xFF);
 	
 	public int difficulty=1;
 	

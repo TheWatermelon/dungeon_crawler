@@ -28,13 +28,13 @@ public class QuickActionsPanel extends JPanel {
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.BLACK);
+		g.setColor(Resources.getInstance().background);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		
 		int offsetX=30, offsetY=10;
 		// Quick Action 1
-		g.setColor(Color.white);
+		g.setColor(Resources.getInstance().foreground);
 		g.drawRect(offsetX, offsetY, 35, 35);
 		g.drawString(""+Character.toUpperCase(Resources.Commands.QuickAction1.getKey()), offsetX-15, offsetY+28);
 		if(inv.getQuickItem1()!=null) {
@@ -47,7 +47,7 @@ public class QuickActionsPanel extends JPanel {
 			g.setColor(inv.getQuickItem1().getColor());
 			g.drawString(""+inv.getQuickItem1().getTile().getSymbol(), offsetX+12, offsetY+23);
 			g.setFont(new Font("Monospaced", Font.PLAIN, 10));
-			g.setColor(Resources.white);
+			g.setColor(Resources.getInstance().foreground);
 			if(inv.getQuickItem1() instanceof Equipement) {
 				g.drawString(""+((Equipement)inv.getQuickItem1()).getDurability(), offsetX+20, offsetY+30);
 			} else {
@@ -69,7 +69,7 @@ public class QuickActionsPanel extends JPanel {
 			g.setColor(inv.getQuickItem2().getColor());
 			g.drawString(""+inv.getQuickItem2().getTile().getSymbol(), offsetX+12, offsetY+23);
 			g.setFont(new Font("Monospaced", Font.PLAIN, 10));
-			g.setColor(Resources.white);
+			g.setColor(Resources.getInstance().foreground);
 			if(inv.getQuickItem2() instanceof Equipement) {
 				g.drawString(""+((Equipement)inv.getQuickItem2()).getDurability(), offsetX+20, offsetY+30);
 			} else {

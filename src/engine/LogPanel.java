@@ -17,7 +17,7 @@ public class LogPanel extends JPanel {
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.BLACK);
+		g.setColor(Resources.getInstance().background);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setFont(new Font("Consolas", Font.PLAIN, 12));
 		

@@ -18,7 +18,7 @@ public class FadePanel extends JComponent implements ActionListener {
 	}
 
 	public void setColor(Color c) {
-		this.initColor = c;
+		this.fadeColor = c;
 	}
 
 	public void resetFading() {
@@ -31,11 +31,24 @@ public class FadePanel extends JComponent implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent ae) {
-		if (this.fadeColor.getRGB() != Color.BLACK.getRGB()) {
+		if (this.fadeColor.getRGB() != this.initColor.getRGB()) {
 			int step = 10;
-			int red = (this.fadeColor.getRed()-step >= 0)? this.fadeColor.getRed()-step: 0;
-			int green = (this.fadeColor.getGreen()-step >= 0)? this.fadeColor.getGreen()-step: 0;
-			int blue = (this.fadeColor.getBlue()-step >= 0)? this.fadeColor.getBlue()-step: 0;
+			int red=this.fadeColor.getRed(), green=this.fadeColor.getGreen(), blue=this.fadeColor.getBlue();
+			if(this.fadeColor.getRed() > this.initColor.getRed()) {
+				red = (this.fadeColor.getRed()-step >= this.initColor.getRed())? this.fadeColor.getRed()-step: this.initColor.getRed();
+			} else if(this.fadeColor.getRed() < this.initColor.getRed()) {
+				red = (this.fadeColor.getRed()+step <= this.initColor.getRed())? this.fadeColor.getRed()+step: this.initColor.getRed();
+			}
+			if(this.fadeColor.getGreen() > this.initColor.getGreen()) {
+				green = (this.fadeColor.getGreen()-step >= this.initColor.getGreen())? this.fadeColor.getGreen()-step: this.initColor.getGreen();
+			} else if(this.fadeColor.getGreen() < this.initColor.getGreen()) {
+				green = (this.fadeColor.getGreen()+step <= this.initColor.getGreen())? this.fadeColor.getGreen()+step: this.initColor.getGreen();
+			}
+			if(this.fadeColor.getBlue() > this.initColor.getBlue()) {
+				blue = (this.fadeColor.getBlue()-step >= this.initColor.getBlue())? this.fadeColor.getBlue()-step: this.initColor.getBlue();
+			} else if(this.fadeColor.getBlue() < this.initColor.getBlue()) {
+				blue = (this.fadeColor.getBlue()+step <= this.initColor.getBlue())? this.fadeColor.getBlue()+step: this.initColor.getBlue();
+			}
 			this.fadeColor = new Color(red, green, blue);
 			this.repaint();
 		} else {

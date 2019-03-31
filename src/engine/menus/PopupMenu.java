@@ -37,9 +37,9 @@ public abstract class PopupMenu extends Menu {
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.BLACK);
+		g.setColor(Resources.getInstance().background);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(Color.WHITE);
+		g.setColor(Resources.getInstance().foreground);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		
 		// DEBUG : draw a cross on the panel
@@ -61,7 +61,7 @@ public abstract class PopupMenu extends Menu {
 		offsetX = getWidth()/2-(items[0].length()*12)-30;
 		for(int i=0; i<items.length; i++) {
 			if(i == focusedItem) { g.setColor(Resources.orange); } 
-			else { g.setColor(Resources.white); }
+			else { g.setColor(Resources.getInstance().foreground); }
 			g.drawString(items[i], offsetX, offsetY);
 			offsetX = getWidth()/2+30;
 		}
@@ -69,7 +69,7 @@ public abstract class PopupMenu extends Menu {
 		String commands=Character.toUpperCase(Resources.Commands.Left.getKey())+": Left, "+
 				Character.toUpperCase(Resources.Commands.Right.getKey())+": Right, "+
 				Character.toUpperCase(Resources.Commands.Take.getKey())+": Select";
-		g.setColor(Resources.white);
+		g.setColor(Resources.getInstance().foreground);
 		g.drawString(commands, getWidth()/2-(commands.length()*12/2), getHeight()-30);
 	}
 }

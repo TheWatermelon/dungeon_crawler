@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class Message {
 	public enum Type {
-		Normal(Color.WHITE),
+		Normal(Resources.getInstance().foreground),
 		Unimportant(Color.GRAY),
 		Important(Color.YELLOW),
 		Urgent(Color.RED),

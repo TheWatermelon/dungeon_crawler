@@ -9,7 +9,7 @@
       <delete dir="${outputDir}" />
    </target>
 	
-   <target name="prepare" depends="clean">
+   <target name="prepare" depends="init">
       <mkdir dir="${outputDir}" />
    </target>
    

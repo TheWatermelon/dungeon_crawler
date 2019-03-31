@@ -121,10 +121,10 @@ public class InventoryMenuList extends Menu {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.BLACK);
+		g.setColor(Resources.getInstance().background);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		g.setColor(Color.WHITE);
+		g.setColor(Resources.getInstance().foreground);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		String name = win.getMap().getPlayer().toString(); 
 		String healthBar = win.getMap().getPlayer().drawHealthBar();
@@ -144,7 +144,7 @@ public class InventoryMenuList extends Menu {
 			g.setColor(win.getMap().getPlayer().getHelmet().getColor());
 			g.drawString(""+win.getMap().getPlayer().getHelmet().getTile().getSymbol(), getWidth()/2-12, 140);
 		}
-		g.setColor(Color.WHITE);
+		g.setColor(Resources.getInstance().foreground);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		
 		g.drawString("Inventory", getWidth()/2-(9*12/2), getHeight()/2-87);
@@ -158,7 +158,7 @@ public class InventoryMenuList extends Menu {
 		int offsetY=getHeight()/2-12;
 		for(int i=0; i<items.length; i++) {
 			if(i == focusedItem) { g.setColor(Resources.orange); } 
-			else { g.setColor(Resources.white); }
+			else { g.setColor(Resources.getInstance().foreground); }
 			int offsetX = items[i].length()*12/2;
 			g.drawString(items[i], getWidth()/2-offsetX, offsetY);
 			if(i<inv.getSize()) {
@@ -169,7 +169,7 @@ public class InventoryMenuList extends Menu {
 		}
 		
 		// Quick action 1
-		g.setColor(Resources.white);
+		g.setColor(Resources.getInstance().foreground);
 		int QAoffsetX = getWidth()/2-(int)Math.round(4*35);
 		int QAoffsetY= getHeight()/2-87;
 		g.drawRect(QAoffsetX, QAoffsetY, 35, 35);
@@ -185,7 +185,7 @@ public class InventoryMenuList extends Menu {
 			g.setColor(inv.getQuickItem1().getColor());
 			g.drawString(""+inv.getQuickItem1().getTile().getSymbol(), QAoffsetX+12, QAoffsetY+23);
 			g.setFont(new Font("Monospaced", Font.PLAIN, 10));
-			g.setColor(Resources.white);
+			g.setColor(Resources.getInstance().foreground);
 			if(inv.getQuickItem1() instanceof Equipement) {
 				g.drawString(""+((Equipement)inv.getQuickItem1()).getDurability(), QAoffsetX+20, QAoffsetY+30);
 			} else {
@@ -207,7 +207,7 @@ public class InventoryMenuList extends Menu {
 			g.setColor(inv.getQuickItem2().getColor());
 			g.drawString(""+inv.getQuickItem2().getTile().getSymbol(), QAoffsetX+12, QAoffsetY+23);
 			g.setFont(new Font("Monospaced", Font.PLAIN, 10));
-			g.setColor(Resources.white);
+			g.setColor(Resources.getInstance().foreground);
 			if(inv.getQuickItem2() instanceof Equipement) {
 				g.drawString(""+((Equipement)inv.getQuickItem2()).getDurability(), QAoffsetX+20, QAoffsetY+30);
 			} else {
@@ -224,7 +224,7 @@ public class InventoryMenuList extends Menu {
 						Resources.Commands.QuickAction2.getKey()+": Quick Slot, "+
 						Resources.Commands.Left.getKey()+"/"+
 						Resources.Commands.Right.getKey()+": Drop";
-		g.setColor(Resources.white);
+		g.setColor(Resources.getInstance().foreground);
 		g.drawString(commands, getWidth()/2-(commands.length()*12/2), getHeight()-30);
 	}
 

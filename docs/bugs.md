@@ -3,9 +3,11 @@ layout: page
 title: Bugs
 permalink: /bugs/
 ---
-## Load & save
+## Fading panels
 
-* Bug in load : stair up disappear
+fading panels aren't fading for barrels nor monsters hit
+
+
 
 ## Mobs
 

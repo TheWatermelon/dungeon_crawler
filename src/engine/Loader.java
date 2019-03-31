@@ -139,8 +139,8 @@ public class Loader {
 			/* Player weapon */
 			//System.out.println("[Player weapon]");
 			int isWeapon = br.read();			// is weapon or bow
-			//if(isWeapon==1) { System.out.println("weapon"); }
-			//else { System.out.println("bow"); }
+			//if(isWeapon==1) { //System.out.println("weapon"); }
+			//else { //System.out.println("bow"); }
 			int weaponVal = br.read();			// weapon val
 			//System.out.println("weaponVal: "+weaponVal);
 			int weaponDur = convertNeg(br.read());			// weapon durability
@@ -284,8 +284,8 @@ public class Loader {
 					int roomP1X = br.read(), roomP1Y = br.read(), roomP2X = br.read(), roomP2Y = br.read();
 					//System.out.print(" room points: ("+roomP1X+","+roomP1Y+") ("+roomP2X+","+roomP2Y+")");
 					boolean isRoomVisible = (br.read()==1)? true : false;
-					//if(isRoomVisible) { System.out.print(" visible "); }
-					//else { System.out.print(" hidden "); }
+					//if(isRoomVisible) { //System.out.print(" visible "); }
+					//else { //System.out.print(" hidden "); }
 					br.readLine();
 					int doorSize = br.read();
 					//System.out.println(doorSize+" doors");

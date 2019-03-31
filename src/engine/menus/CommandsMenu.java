@@ -77,9 +77,9 @@ public class CommandsMenu extends Menu implements Observer {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.BLACK);
+		g.setColor(Resources.getInstance().background);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(Color.WHITE);
+		g.setColor(Resources.getInstance().foreground);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		
 		g.drawString("Commands", getWidth()/2-(8*12/2), getHeight()/2-87);
@@ -87,7 +87,7 @@ public class CommandsMenu extends Menu implements Observer {
 		int offsetY=getHeight()/2-37;
 		for(int i=0; i<items.length; i++) {
 			if(i == focusedItem) { g.setColor(Resources.orange); } 
-			else { g.setColor(Resources.white); }
+			else { g.setColor(Resources.getInstance().foreground); }
 			int offsetX = items[i].length()*12/2;
 			g.drawString(items[i], getWidth()/2-offsetX, offsetY);
 			offsetY+=25;
@@ -102,7 +102,7 @@ public class CommandsMenu extends Menu implements Observer {
 			commands="Type the new key or type Enter to cancel";
 		}
 				
-		g.setColor(Resources.white);
+		g.setColor(Resources.getInstance().foreground);
 		g.drawString(commands, getWidth()/2-(commands.length()*12/2), getHeight()-30);
 	}
 

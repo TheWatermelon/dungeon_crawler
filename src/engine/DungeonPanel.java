@@ -359,9 +359,9 @@ public class DungeonPanel extends GamePanel implements Observer {
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();
-		g.setColor(Color.BLACK);
+		g.setColor(Resources.getInstance().background);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(Color.WHITE);
+		g.setColor(Resources.getInstance().foreground);
 		g.setFont(Resources.getDungeonFont());
 
 		this.wall = Resources.getInstance().theme;

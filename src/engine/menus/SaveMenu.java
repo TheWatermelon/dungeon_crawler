@@ -78,9 +78,9 @@ public class SaveMenu extends Menu {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.BLACK);
+		g.setColor(Resources.getInstance().background);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(Color.WHITE);
+		g.setColor(Resources.getInstance().foreground);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		
 		initPanel();
@@ -91,7 +91,7 @@ public class SaveMenu extends Menu {
 		for(int i=0; i<items.length; i++) {
 			if(i == focusedItem) { g.setColor(Resources.orange); } 
 			else if(i<this.shortFilenames.length && (!this.shortFilenames[i].equals("empty") && !this.shortFilenames[i].equals(this.win.getDungeon().getPlayer().description))) { g.setColor(Resources.gray); }
-			else { g.setColor(Resources.white); }
+			else { g.setColor(Resources.getInstance().foreground); }
 			int offsetX = items[i].length()*12/2;
 			g.drawString(items[i], getWidth()/2-offsetX, offsetY);
 			offsetY+=25;
@@ -102,7 +102,7 @@ public class SaveMenu extends Menu {
 				Character.toUpperCase(Resources.Commands.Left.getKey())+"/"+
 				Character.toUpperCase(Resources.Commands.Right.getKey())+": Delete save, "+
 				Character.toUpperCase(Resources.Commands.Take.getKey())+": Select";
-		g.setColor(Resources.white);
+		g.setColor(Resources.getInstance().foreground);
 		g.drawString(commands, getWidth()/2-(commands.length()*12/2), getHeight()-30);
 	}
 

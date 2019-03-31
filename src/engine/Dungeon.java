@@ -115,6 +115,7 @@ public class Dungeon{
 		this.log.clear();
 		Loader l = new Loader(this);
 		l.load(filename);
+		this.win.initGamePanel();
 		this.win.getDungeonPanel().initPlayerRectangle();
 		this.win.getQuickActionPanel().setInventory(this.player.getInventory());
 		this.win.refresh();

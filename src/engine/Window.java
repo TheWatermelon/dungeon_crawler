@@ -81,7 +81,7 @@ public class Window extends JFrame{
 				return new DungeonKeyListener(this.win.d, this.win.d.getMap(), this.win);
 			}};
 		this.global.setLayout(new BorderLayout());
-		this.global.setBackground(Color.black);
+		this.global.setBackground(Resources.getInstance().background);
 		
 		SimpleAttributeSet center = new SimpleAttributeSet();
 		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
@@ -99,8 +99,8 @@ public class Window extends JFrame{
 		this.headEast = new JTextPane();
 		this.headEast.setEditable(false);
 		this.headEast.setFocusable(false); 
-		this.headEast.setBackground(Color.black);
-		this.headEast.setForeground(Color.white);
+		this.headEast.setBackground(Resources.getInstance().background);
+		this.headEast.setForeground(Resources.getInstance().foreground);
 		this.headEast.setFont(new Font("Consolas", Font.PLAIN, 12));
 		this.headEast.setPreferredSize(new Dimension(this.getWidth()/4, 70));
 		StyledDocument doc4 = this.headEast.getStyledDocument();
@@ -108,8 +108,8 @@ public class Window extends JFrame{
 		this.headPanel.add(headEast, BorderLayout.EAST);
 		
 		/* Color panels */
-		this.leftPanel = new FadePanel(Color.black);
-		this.rightPanel = new FadePanel(Color.black);
+		this.leftPanel = new FadePanel(Resources.getInstance().background);
+		this.rightPanel = new FadePanel(Resources.getInstance().background);
 		
 		this.footPanel = new JPanel();
 		this.footPanel.setLayout(new BorderLayout());
@@ -117,8 +117,8 @@ public class Window extends JFrame{
 		this.footWest = new JTextPane(); 
 		this.footWest.setEditable(false);
 		this.footWest.setFocusable(false);
-		this.footWest.setBackground(Color.black);
-		this.footWest.setForeground(Color.white);
+		this.footWest.setBackground(Resources.getInstance().background);
+		this.footWest.setForeground(Resources.getInstance().foreground);
 		this.footWest.setFont(new Font("Monospaced", Font.BOLD, 12));
 		this.footWest.setPreferredSize(new Dimension(this.getWidth()/4, 50));
 		StyledDocument doc1 = this.footWest.getStyledDocument();
@@ -130,8 +130,8 @@ public class Window extends JFrame{
 		this.subFootCenterLeft = new JTextPane(); 
 		this.subFootCenterLeft.setEditable(false);
 		this.subFootCenterLeft.setFocusable(false);
-		this.subFootCenterLeft.setBackground(Color.black);
-		this.subFootCenterLeft.setForeground(Color.white);
+		this.subFootCenterLeft.setBackground(Resources.getInstance().background);
+		this.subFootCenterLeft.setForeground(Resources.getInstance().foreground);
 		this.subFootCenterLeft.setFont(new Font("Monospaced", Font.BOLD, 12));
 		this.subFootCenterLeft.setPreferredSize(new Dimension(this.getWidth()/4, 50));
 		//StyledDocument doc = this.foot1.getStyledDocument();
@@ -141,8 +141,8 @@ public class Window extends JFrame{
 		this.subFootCenterRight = new JTextPane(); 
 		this.subFootCenterRight.setEditable(false);
 		this.subFootCenterRight.setFocusable(false);
-		this.subFootCenterRight.setBackground(Color.black);
-		this.subFootCenterRight.setForeground(Color.white);
+		this.subFootCenterRight.setBackground(Resources.getInstance().background);
+		this.subFootCenterRight.setForeground(Resources.getInstance().foreground);
 		this.subFootCenterRight.setFont(new Font("Monospaced", Font.BOLD, 12));
 		this.subFootCenterRight.setPreferredSize(new Dimension(this.getWidth()/4, 50));
 		StyledDocument doc2 = this.subFootCenterRight.getStyledDocument();
@@ -182,25 +182,25 @@ public class Window extends JFrame{
 	
 	public void notifyColor(Color c) {
 		this.leftPanel.setColor(c);
-		this.leftPanel.resetFading();
+		//this.leftPanel.resetFading();
 		this.leftPanel.startFading();
 		
 		this.rightPanel.setColor(c);
-		this.rightPanel.resetFading();
+		//this.rightPanel.resetFading();
 		this.rightPanel.startFading();
 	}
 	
 	public void denotifyColor() {
-		this.leftPanel.setColor(Color.BLACK);
+		this.leftPanel.resetFading();
 		this.leftPanel.repaint();
-		this.rightPanel.setColor(Color.BLACK);
+		this.rightPanel.resetFading();
 		this.rightPanel.repaint();
 	}
 	
 	public Map getMap() { return d.getMap(); }
 	
 	public KeyListener getKeyListener() { return keyListener; }
-	public DungeonPanel getDungeonPanel() { return (DungeonPanel)dungeon; }
+	public DungeonPanel getDungeonPanel() { return dungeon; }
 	public QuickActionsPanel getQuickActionPanel() { return (QuickActionsPanel)this.footEast; }
 	public Dungeon getDungeon() { return d; }
 	

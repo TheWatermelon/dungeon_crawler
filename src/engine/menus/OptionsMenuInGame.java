@@ -87,9 +87,9 @@ public class OptionsMenuInGame extends Menu {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.BLACK);
+		g.setColor(Resources.getInstance().background);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(Color.WHITE);
+		g.setColor(Resources.getInstance().foreground);
 		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		
 		initPanel();
@@ -99,7 +99,7 @@ public class OptionsMenuInGame extends Menu {
 		int offsetY=getHeight()/2-57;
 		for(int i=0; i<items.length; i++) {
 			if(i == focusedItem) { g.setColor(Resources.orange); } 
-			else { g.setColor(Resources.white); }
+			else { g.setColor(Resources.getInstance().foreground); }
 			int offsetX = items[i].length()*12/2;
 			g.drawString(items[i], getWidth()/2-offsetX, offsetY);
 			offsetY+=25;
@@ -110,7 +110,7 @@ public class OptionsMenuInGame extends Menu {
 		String commands=Character.toUpperCase(Resources.Commands.Up.getKey())+": Up, "+
 				Character.toUpperCase(Resources.Commands.Down.getKey())+": Down, "+
 				Character.toUpperCase(Resources.Commands.Take.getKey())+": Select";
-		g.setColor(Resources.white);
+		g.setColor(Resources.getInstance().foreground);
 		g.drawString(commands, getWidth()/2-(commands.length()*12/2), getHeight()-30);
 	}
 
